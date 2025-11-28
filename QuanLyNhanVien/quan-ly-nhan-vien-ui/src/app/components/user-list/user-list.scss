@@ -1,0 +1,86 @@
+.user-list-container {
+    padding-top: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.table-card {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.table-header {
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #f0f0f0;
+
+    .header-title h2 { margin: 0; font-size: 24px; color: #333; }
+    .subtitle { color: #666; font-size: 14px; }
+    
+    .search-field {
+        width: 300px;
+        ::ng-deep .mat-mdc-text-field-wrapper { background-color: #fff !important; }
+    }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+
+    .avatar-placeholder {
+        width: 32px;
+        height: 32px;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #555;
+        font-size: 14px;
+    }
+    .email-text { font-weight: 500; color: #333; }
+}
+
+/* Role Badges */
+.role-chips {
+    display: flex;
+    gap: 8px;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    
+    &.admin {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+    
+    &.user {
+        background-color: #e3f2fd;
+        color: #1565c0;
+        border: 1px solid #bbdefb;
+    }
+}
+
+.text-center { text-align: center; }
+.no-data { text-align: center; padding: 20px; color: #999; }
+
+.btn-role {
+    font-size: 12px;
+    min-width: 100px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

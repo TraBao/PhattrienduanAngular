@@ -1,0 +1,81 @@
+<div class="payroll-container">
+    <div class="header-section">
+        <h2>{{ isAdmin ? 'Quản lý Lương & Thưởng' : 'Phiếu lương của tôi' }}</h2>
+        <div class="filter-group" *ngIf="isAdmin">
+            <mat-form-field appearance="outline" class="small-field">
+                <mat-label>Tháng</mat-label>
+                <mat-select [(ngModel)]="selectedMonth" (selectionChange)="loadMonthlyPayroll()">
+                    <mat-option *ngFor="let m of months" [value]="m">Tháng {{m}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="small-field">
+                <mat-label>Năm</mat-label>
+                <mat-select [(ngModel)]="selectedYear" (selectionChange)="loadMonthlyPayroll()">
+                    <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="onCalculate()">
+                <mat-icon>calculate</mat-icon> Tính lương
+            </button>
+                <button mat-stroked-button color="accent" (click)="onExport()">
+                <mat-icon>file_download</mat-icon> Xuất Excel
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive mat-elevation-z2">
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
+                <td mat-cell *matCellDef="let row"> <b>{{row.employeeName}}</b> </td>
+            </ng-container>
+            <ng-container matColumnDef="monthYear">
+                <th mat-header-cell *matHeaderCellDef> Thời gian </th>
+                <td mat-cell *matCellDef="let row"> Tháng {{row.month}}/{{row.year}} </td>
+            </ng-container>
+            <ng-container matColumnDef="basicSalary">
+                <th mat-header-cell *matHeaderCellDef> Lương cơ bản </th>
+                <td mat-cell *matCellDef="let row"> {{row.basicSalary | number}} đ </td>
+            </ng-container>
+            <ng-container matColumnDef="workDays">
+                <th mat-header-cell *matHeaderCellDef> Công thực tế </th>
+                <td mat-cell *matCellDef="let row"> {{row.totalWorkDays}} / 26 </td>
+            </ng-container>
+            <ng-container matColumnDef="finalSalary">
+                <th mat-header-cell *matHeaderCellDef> THỰC NHẬN </th>
+                <td mat-cell *matCellDef="let row" class="text-money"> 
+                    {{row.finalSalary | number}} đ 
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
+                <td mat-cell *matCellDef="let row">
+                    <span class="status-badge" [ngClass]="row.status.toLowerCase()">
+                        {{ row.status === 'Paid' ? 'Đã thanh toán' : 'Chờ thanh toán' }}
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let row">
+                    <button *ngIf="row.status === 'Pending'" 
+                            mat-stroked-button color="primary" 
+                            (click)="markPaid(row.id)">
+                        Xác nhận trả
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell p-4 text-center" [attr.colspan]="displayedColumns.length">
+                    Chưa có dữ liệu lương.
+                </td>
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

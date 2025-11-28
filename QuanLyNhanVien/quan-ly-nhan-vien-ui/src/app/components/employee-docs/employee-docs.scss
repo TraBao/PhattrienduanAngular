@@ -1,0 +1,29 @@
+.docs-container {
+    padding: 20px 0;
+}
+
+.upload-zone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    
+    .file-name {
+        flex: 1;
+        font-style: italic;
+        color: #666;
+    }
+}
+
+.file-icon {
+    vertical-align: middle;
+    margin-right: 8px;
+    color: #555;
+    font-size: 20px;
+}
+
+.mt-3 { margin-top: 16px; }
+table { width: 100%; }

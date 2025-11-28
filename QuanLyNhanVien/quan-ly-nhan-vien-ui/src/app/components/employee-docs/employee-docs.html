@@ -1,0 +1,54 @@
+<div class="docs-container">
+    <h3>Hồ sơ & Hợp đồng</h3>
+    <div class="upload-zone">
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" #fileInput hidden>
+        
+        <button mat-stroked-button color="primary" (click)="fileInput.click()">
+            <mat-icon>attach_file</mat-icon> Chọn file
+        </button>
+
+        <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+
+        <button mat-raised-button 
+                color="primary" 
+                [disabled]="!selectedFile || isUploading"
+                (click)="upload()">
+            <mat-icon>cloud_upload</mat-icon> 
+            {{ isUploading ? 'Đang tải...' : 'Upload ngay' }}
+        </button>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 mt-3">
+        <ng-container matColumnDef="fileName">
+            <th mat-header-cell *matHeaderCellDef> Tên tài liệu </th>
+            <td mat-cell *matCellDef="let element"> 
+                <mat-icon class="file-icon">description</mat-icon> 
+                {{element.fileName}} 
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="fileSize">
+            <th mat-header-cell *matHeaderCellDef> Kích thước </th>
+            <td mat-cell *matCellDef="let element"> {{ formatSize(element.fileSize) }} </td>
+        </ng-container>
+        <ng-container matColumnDef="uploadedAt">
+            <th mat-header-cell *matHeaderCellDef> Ngày tải lên </th>
+            <td mat-cell *matCellDef="let element"> {{element.uploadedAt | date:'dd/MM/yyyy HH:mm'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" (click)="download(element)" matTooltip="Tải về">
+                    <mat-icon>download</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delete(element.id)" matTooltip="Xóa file">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell p-3 text-center" colspan="4">Chưa có tài liệu nào.</td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,44 @@
+<button class="chat-toggle-btn" (click)="toggleChat()" matTooltip="Chat với mọi người">
+    <mat-icon class="toggle-icon">{{ isOpen ? 'keyboard_arrow_down' : 'chat' }}</mat-icon>
+</button>
+<div class="chat-box" [class.open]="isOpen">
+    <div class="chat-header">
+        <div class="header-content">
+            <mat-icon class="header-icon">forum</mat-icon>
+            <span class="header-title">Thảo luận chung</span>
+        </div>
+        <button mat-icon-button class="close-btn" (click)="toggleChat()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="chat-messages" #scrollContainer>
+        <div *ngIf="messages.length === 0" class="empty-state">
+            <mat-icon class="empty-icon">chat_bubble_outline</mat-icon>
+            <p>Chưa có tin nhắn nào.<br>Hãy là người bắt đầu cuộc trò chuyện!</p>
+        </div>
+        <div *ngFor="let msg of messages" class="message-wrapper"
+            [ngClass]="{'my-message': msg.user === currentUser, 'other-message': msg.user !== currentUser}">
+            <span class="sender-name" *ngIf="msg.user !== currentUser">
+                {{ msg.user }}
+            </span>
+
+            <div class="bubble-container">
+                <div class="msg-bubble" [matTooltip]="msg.time | date:'HH:mm dd/MM'">
+                    {{ msg.message }}
+                </div>
+            </div>
+            <span class="time-stamp">{{ msg.time | date:'HH:mm' }}</span>
+        </div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text"
+                [(ngModel)]="txtMessage"
+                (keyup.enter)="sendMessage()"
+                placeholder="Nhập tin nhắn..."
+                autocomplete="off">
+        
+        <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="!txtMessage.trim()">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</div>

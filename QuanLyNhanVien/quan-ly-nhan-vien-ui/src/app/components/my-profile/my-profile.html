@@ -1,0 +1,56 @@
+<div class="profile-container" *ngIf="employee; else noData">
+    <mat-card class="profile-card">
+        <div class="profile-header-section">
+            <div class="avatar-wrapper">
+                <img *ngIf="avatarDisplay; else textAvatar" [src]="avatarDisplay" class="avatar-img">
+                
+                <ng-template #textAvatar>
+                    <div class="avatar-placeholder">
+                        {{ employee.firstName.charAt(0) }}
+                    </div>
+                </ng-template>
+                <button mat-mini-fab color="primary" class="upload-btn" (click)="fileInput.click()" matTooltip="Đổi ảnh đại diện">
+                    <mat-icon>camera_alt</mat-icon>
+                </button>
+                <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept="image/*">
+            </div>
+
+            <div class="header-info">
+                <h2 class="profile-name">{{ employee.lastName }} {{ employee.firstName }}</h2>
+                <p class="profile-email">{{ employee.email }}</p>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="mt-4">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Phòng ban ID:</span>
+                    <span class="value">{{ employee.departmentId }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Ngày sinh:</span>
+                    <span class="value">{{ employee.dateOfBirth | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Mức lương:</span>
+                    <span class="value highlight">*** (Bảo mật)</span>
+                </div>
+            </div>
+
+            <mat-divider class="my-4"></mat-divider>
+
+            <h3>Hồ sơ & Bằng cấp của tôi</h3>
+            <app-employee-docs [employeeId]="employee.id"></app-employee-docs>
+
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<ng-template #noData>
+    <div class="p-4 text-center">
+        <h3>Tài khoản này chưa được liên kết với hồ sơ nhân viên nào.</h3>
+        <p>Vui lòng liên hệ Admin để tạo hồ sơ nhân viên cho email: {{ employee?.email }}</p>
+    </div>
+</ng-template>

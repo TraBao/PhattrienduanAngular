@@ -1,0 +1,137 @@
+<div class="leave-container">
+    <div class="page-header">
+        <h2>Quản lý Nghỉ phép</h2>
+        <button mat-raised-button color="primary" (click)="showForm = !showForm" *ngIf="!showForm">
+            <mat-icon>add</mat-icon> Tạo đơn xin nghỉ
+        </button>
+    </div>
+    <mat-card *ngIf="showForm" class="form-card">
+        <mat-card-header>
+            <mat-card-title>Đơn xin nghỉ phép</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="leaveForm" (ngSubmit)="onSubmitRequest()">
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Từ ngày</mat-label>
+                        <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Đến ngày</mat-label>
+                        <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="leaveForm.errors?.['dateInvalid'] && (leaveForm.touched || leaveForm.dirty)" 
+                    class="error-message">
+                    <mat-icon>error</mat-icon>
+                    Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu!
+                </div>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Lý do nghỉ</mat-label>
+                    <textarea matInput formControlName="reason" rows="3"></textarea>
+                </mat-form-field>
+
+                <div class="form-actions">
+                    <button mat-button type="button" (click)="showForm = false">Hủy</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="leaveForm.invalid">Gửi đơn</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-tab-group animationDuration="0ms" class="mt-3">
+        <mat-tab label="Đơn của tôi">
+            <div class="table-responsive mt-3">
+                <table mat-table [dataSource]="myLeavesSource" class="mat-elevation-z2">
+                    <ng-container matColumnDef="startDate">
+                        <th mat-header-cell *matHeaderCellDef> Thời gian </th>
+                        <td mat-cell *matCellDef="let row"> 
+                            {{row.startDate | date:'dd/MM'}} - {{row.endDate | date:'dd/MM/yyyy'}} 
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="reason">
+                        <th mat-header-cell *matHeaderCellDef> Lý do </th>
+                        <td mat-cell *matCellDef="let row"> {{row.reason}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="row.status.toLowerCase()">
+                                {{ row.status === 'Pending' ? 'Chờ duyệt' : (row.status === 'Approved' ? 'Đã duyệt' : 'Từ chối') }}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button color="warn" *ngIf="row.status === 'Pending'" (click)="cancelRequest(row.id)" matTooltip="Hủy đơn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="myDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: myDisplayedColumns;"></tr>
+                </table>
+                <mat-paginator #paginatorMy [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-tab>
+        <mat-tab label="Phê duyệt (Admin)" *ngIf="isAdmin">
+            <div class="table-responsive mt-3">
+                <table mat-table [dataSource]="allLeavesSource" class="mat-elevation-z2">
+                    <ng-container matColumnDef="fullName">
+                        <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
+                        <td mat-cell *matCellDef="let row"> <b>{{row.fullName}}</b> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="startDate">
+                        <th mat-header-cell *matHeaderCellDef> Thời gian </th>
+                        <td mat-cell *matCellDef="let row"> 
+                            {{row.startDate | date:'dd/MM'}} - {{row.endDate | date:'dd/MM'}} 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="reason">
+                        <th mat-header-cell *matHeaderCellDef> Lý do </th>
+                        <td mat-cell *matCellDef="let row"> {{row.reason}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="row.status.toLowerCase()">
+                                {{ row.status }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="adminActions">
+                        <th mat-header-cell *matHeaderCellDef> Thao tác </th>
+                        <td mat-cell *matCellDef="let row">
+                            <div *ngIf="row.status === 'Pending'">
+                                <button mat-icon-button class="text-green" (click)="approve(row.id)" matTooltip="Duyệt">
+                                    <mat-icon>check_circle</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="reject(row.id)" matTooltip="Từ chối">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </div>
+                            <span *ngIf="row.status !== 'Pending'" class="text-muted text-small">
+                                Đã xử lý
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="adminDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: adminDisplayedColumns;"></tr>
+                </table>
+                <mat-paginator #paginatorAll [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

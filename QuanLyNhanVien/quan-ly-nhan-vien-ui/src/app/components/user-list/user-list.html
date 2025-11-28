@@ -1,0 +1,66 @@
+<div class="user-list-container">
+    <mat-card class="table-card">
+        <div class="table-header">
+            <div class="header-title">
+                <h2>Quản lý Tài khoản</h2>
+                <span class="subtitle">Phân quyền và kiểm soát truy cập</span>
+            </div>
+            
+            <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+                <mat-icon matPrefix>search</mat-icon>
+                <mat-label>Tìm tài khoản...</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Email..." #input>
+            </mat-form-field>
+        </div>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tài khoản (Email) </th>
+                    <td mat-cell *matCellDef="let row"> 
+                        <div class="user-info">
+                            <div class="avatar-placeholder">{{ row.email.charAt(0).toUpperCase() }}</div>
+                            <span class="email-text">{{row.email}}</span>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="roles">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vai trò (Role) </th>
+                    <td mat-cell *matCellDef="let row">
+                        <div class="role-chips">
+                            <span class="role-badge admin" *ngIf="row.roles.includes('Admin')">Admin</span>
+                            <span class="role-badge user" *ngIf="!row.roles.includes('Admin')">Nhân viên</span>
+                        </div>
+                    </td>
+                </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Thao tác </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                    <button *ngIf="row.roles.includes('Admin')"
+                            mat-raised-button
+                            color="warn"
+                            (click)="toggleRole(row)"
+                            matTooltip="Gỡ quyền quản trị">
+                        <mat-icon>remove_moderator</mat-icon> Hạ quyền
+                    </button>
+                    <button *ngIf="!row.roles.includes('Admin')"
+                            mat-raised-button
+                            color="primary"
+                            (click)="toggleRole(row)"
+                            matTooltip="Cấp quyền quản trị">
+                        <mat-icon>add_moderator</mat-icon> Thăng cấp
+                    </button>
+                </td>
+            </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell no-data" colspan="3">Không tìm thấy user nào.</td>
+                </tr>
+            </table>
+        </div>
+        
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    </mat-card>
+</div>

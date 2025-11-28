@@ -1,0 +1,634 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\departmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\departmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\announcementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\announcementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\announcement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\announcement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\payroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\payroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\documentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\documentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\employeedocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\employeedocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\attendancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\attendancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\attendance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\attendance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\leaverequestscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\leaverequestscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\dtos\\leaverequestdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\dtos\\leaverequestdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\models\\leaverequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\models\\leaverequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\authdtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\authdtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\authdtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\authdtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251110115329_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251110115329_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251110152000_seedinitialdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251110152000_seedinitialdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124045733_addleaverequests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124045733_addleaverequests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124094720_addannouncements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124094720_addannouncements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124085725_fixpayrolldecimal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124085725_fixpayrolldecimal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124085005_addpayroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124085005_addpayroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124080330_adddocuments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124080330_adddocuments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251124074021_addattendance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251124074021_addattendance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251125051357_addmessagetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251125051357_addmessagetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|c:\\users\\admin\\onedrive\\desktop\\ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n angular\\quanlynhanvien\\quanlynhanvien.api\\migrations\\20251125041645_addavatarurl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DF41C02-61EF-44F6-86C2-67DDC89188D6}|QuanLyNhanVien.Api\\QuanLyNhanVien.Api.csproj|solutionrelative:quanlynhanvien.api\\migrations\\20251125041645_addavatarurl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Message.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Message.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Message.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Message.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Message.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T05:11:51.679Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Employee.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Employee.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Employee.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Employee.cs",
+              "ViewState": "AgIAAA0AAADAzMzMzMwiwBcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:43:47.234Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Program.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Program.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Program.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:36:24.423Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Department.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Department.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Department.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Department.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Department.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:44:12.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwDwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:44:35.903Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DepartmentsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DepartmentsController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\DepartmentsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DepartmentsController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\DepartmentsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T09:08:16.381Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\ChatController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\ChatController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:04:35.899Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "20251125051357_AddMessageTable.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251125051357_AddMessageTable.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251125051357_AddMessageTable.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251125051357_AddMessageTable.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251125051357_AddMessageTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T05:13:57.305Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChatHub.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Hubs\\ChatHub.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Hubs\\ChatHub.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Hubs\\ChatHub.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Hubs\\ChatHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T05:17:21.961Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "20251124085725_FixPayrollDecimal.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124085725_FixPayrollDecimal.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124085725_FixPayrollDecimal.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124085725_FixPayrollDecimal.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124085725_FixPayrollDecimal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:57:26.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EmployeesController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\EmployeesController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\EmployeesController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\EmployeesController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\EmployeesController.cs",
+              "ViewState": "AgIAAHoAAACAMzMzMzMlwIUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T14:18:20.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\DashboardController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:17:49.568Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "20251125041645_AddAvatarUrl.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251125041645_AddAvatarUrl.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251125041645_AddAvatarUrl.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251125041645_AddAvatarUrl.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251125041645_AddAvatarUrl.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T04:16:46.189Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AnnouncementsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AnnouncementsController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\AnnouncementsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AnnouncementsController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\AnnouncementsController.cs",
+              "ViewState": "AgIAAB4AAADAzMzMzMwmwBIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:47:53.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Announcement.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Announcement.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Announcement.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Announcement.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Announcement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:46:03.139Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "20251124094720_AddAnnouncements.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124094720_AddAnnouncements.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124094720_AddAnnouncements.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124094720_AddAnnouncements.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124094720_AddAnnouncements.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T09:47:21.219Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PayrollController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\PayrollController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\PayrollController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\PayrollController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\PayrollController.cs",
+              "ViewState": "AgIAAHIAAADAzMzMzMwuwIkAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:52:44.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "20251124085005_AddPayroll.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124085005_AddPayroll.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124085005_AddPayroll.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124085005_AddPayroll.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124085005_AddPayroll.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:50:05.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Payroll.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Payroll.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Payroll.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Payroll.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Payroll.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:47:59.198Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "EmployeeDocument.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\EmployeeDocument.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\EmployeeDocument.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\EmployeeDocument.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\EmployeeDocument.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:00:47.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AttendanceController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AttendanceController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\AttendanceController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AttendanceController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\AttendanceController.cs",
+              "ViewState": "AgIAADMAAAAAMjMzMzPzvxMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:40:54.531Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DocumentsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DocumentsController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\DocumentsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\DocumentsController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\DocumentsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:04:19.659Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "20251124080330_AddDocuments.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124080330_AddDocuments.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124080330_AddDocuments.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124080330_AddDocuments.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124080330_AddDocuments.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:03:31.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "20251124074021_AddAttendance.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124074021_AddAttendance.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124074021_AddAttendance.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124074021_AddAttendance.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124074021_AddAttendance.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:40:21.689Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Attendance.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Attendance.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Attendance.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Attendance.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Attendance.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:38:33.776Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "LeaveRequestsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\LeaveRequestsController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\LeaveRequestsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\LeaveRequestsController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\LeaveRequestsController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAACwAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T04:59:27.712Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "20251124045733_AddLeaveRequests.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124045733_AddLeaveRequests.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251124045733_AddLeaveRequests.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251124045733_AddLeaveRequests.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251124045733_AddLeaveRequests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T04:57:33.587Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LeaveRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\LeaveRequest.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\LeaveRequest.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\LeaveRequest.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\LeaveRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T04:55:15.826Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "LeaveRequestDtos.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Dtos\\LeaveRequestDtos.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Models\\Dtos\\LeaveRequestDtos.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Models\\Dtos\\LeaveRequestDtos.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\Dtos\\LeaveRequestDtos.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T04:58:38.146Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-15T09:04:01.754Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\appsettings.json",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\appsettings.json",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-10T11:45:07.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\AuthDtos\\LoginDto.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\AuthDtos\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\AuthDtos\\LoginDto.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\AuthDtos\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-15T08:53:07.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\AuthDtos\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\AuthDtos\\RegisterDto.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\AuthDtos\\RegisterDto.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\AuthDtos\\RegisterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-15T08:52:40.5Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "20251110152000_SeedInitialData.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110152000_SeedInitialData.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251110152000_SeedInitialData.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110152000_SeedInitialData.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251110152000_SeedInitialData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T15:20:01.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "20251110115329_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110115329_InitialCreate.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251110115329_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110115329_InitialCreate.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251110115329_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:53:30.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "20251110114633_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs",
+              "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs",
+              "RelativeToolTip": "QuanLyNhanVien.Api\\Migrations\\20251110114633_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T11:46:33.962Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

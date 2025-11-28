@@ -1,0 +1,50 @@
+.payroll-container {
+    padding-top: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    h2 { margin: 0; }
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .small-field {
+        width: 120px;
+        margin-bottom: -1.25em;
+    }
+}
+
+.text-money {
+    color: #2e7d32;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &.pending {
+        background-color: #fff3e0;
+        color: #ef6c00;
+        border: 1px solid #ffe0b2;
+    }
+    &.paid {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+}
+table { width: 100%; }

@@ -1,0 +1,1773 @@
+{
+  "Version": 1,
+  "Hash": "xzJhbF1RwBzY7Mkpq3PxPrqHJICDNfLlSYcG1pUsZwk=",
+  "Source": "QuanLyNhanVien.Api",
+  "BasePath": "_content/QuanLyNhanVien.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "QuanLyNhanVien.Api\\wwwroot",
+      "Source": "QuanLyNhanVien.Api",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\031126ba-678e-4c54-9744-6db0e0312e28.jpeg",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/031126ba-678e-4c54-9744-6db0e0312e28#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "enan78p5ms",
+      "Integrity": "quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\031126ba-678e-4c54-9744-6db0e0312e28.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/07bbf68b-975c-4f5b-b707-2cdc6d2d3696#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\0937451f-6bf6-4da5-863e-c8863826dac5.jpg",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/0937451f-6bf6-4da5-863e-c8863826dac5#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "l1h22fihyr",
+      "Integrity": "yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\0937451f-6bf6-4da5-863e-c8863826dac5.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\26ed207b-298d-4582-b69a-d7834e0788f4.jpeg",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/26ed207b-298d-4582-b69a-d7834e0788f4#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "enan78p5ms",
+      "Integrity": "quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\26ed207b-298d-4582-b69a-d7834e0788f4.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2b01de90-d63a-4425-ba58-be039fdd63d4.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/2b01de90-d63a-4425-ba58-be039fdd63d4#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "b7zo3q9cn2",
+      "Integrity": "N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\2b01de90-d63a-4425-ba58-be039fdd63d4.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2ef07a7d-bb94-42be-a616-415595dfc20e.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/2ef07a7d-bb94-42be-a616-415595dfc20e#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "b7zo3q9cn2",
+      "Integrity": "N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\2ef07a7d-bb94-42be-a616-415595dfc20e.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/431ff3d3-24fc-4ae0-96e6-44d92e8bc7be#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\68b3b2b6-f52a-471c-b768-4e94b2d90591.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/68b3b2b6-f52a-471c-b768-4e94b2d90591#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "aiczm2dc1j",
+      "Integrity": "7ueRvlDWZln3hG24MQsq+HoK6ItJNFN2sMRoWnmal/4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\68b3b2b6-f52a-471c-b768-4e94b2d90591.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\71b43c38-10fb-485d-affd-90e710e7f673.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/71b43c38-10fb-485d-affd-90e710e7f673#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\71b43c38-10fb-485d-affd-90e710e7f673.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\87889246-df0b-467a-a6d8-90ca6f74b515.jpeg",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/87889246-df0b-467a-a6d8-90ca6f74b515#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "enan78p5ms",
+      "Integrity": "quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\87889246-df0b-467a-a6d8-90ca6f74b515.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\882eef28-5f3e-461d-aee5-8ace103434ae.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/882eef28-5f3e-461d-aee5-8ace103434ae#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "j9y9hkzt2k",
+      "Integrity": "twZumPaFLmgLq5Es1lEaw0r9hBKjVU1Yq7HvHGruFvQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\882eef28-5f3e-461d-aee5-8ace103434ae.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\a8561efe-209a-4310-b607-a5897c369322.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/a8561efe-209a-4310-b607-a5897c369322#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\a8561efe-209a-4310-b607-a5897c369322.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae558167-9665-4f98-b7c1-c95eb76a1de6.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/ae558167-9665-4f98-b7c1-c95eb76a1de6#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "b7zo3q9cn2",
+      "Integrity": "N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\ae558167-9665-4f98-b7c1-c95eb76a1de6.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/ae9819d6-76f9-4d58-8913-0fb89b7f30f2#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "l1h22fihyr",
+      "Integrity": "yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ec123f94-9ba8-4041-a99b-d095fe2158ed.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/ec123f94-9ba8-4041-a99b-d095fe2158ed#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\ec123f94-9ba8-4041-a99b-d095fe2158ed.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\f9314ea9-341f-44a3-acb7-5c1350f03dc0.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/f9314ea9-341f-44a3-acb7-5c1350f03dc0#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "b7zo3q9cn2",
+      "Integrity": "N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\f9314ea9-341f-44a3-acb7-5c1350f03dc0.png"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\fa45c7ca-779f-45b7-9e81-7cd82b756739.png",
+      "SourceId": "QuanLyNhanVien.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\",
+      "BasePath": "_content/QuanLyNhanVien.Api",
+      "RelativePath": "uploads/fa45c7ca-779f-45b7-9e81-7cd82b756739#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c3v1u39nld",
+      "Integrity": "WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\fa45c7ca-779f-45b7-9e81-7cd82b756739.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "uploads/031126ba-678e-4c54-9744-6db0e0312e28.enan78p5ms.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\031126ba-678e-4c54-9744-6db0e0312e28.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "enan78p5ms"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/031126ba-678e-4c54-9744-6db0e0312e28.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/031126ba-678e-4c54-9744-6db0e0312e28.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\031126ba-678e-4c54-9744-6db0e0312e28.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/07bbf68b-975c-4f5b-b707-2cdc6d2d3696.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:31:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\07bbf68b-975c-4f5b-b707-2cdc6d2d3696.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:31:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/0937451f-6bf6-4da5-863e-c8863826dac5.jpg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\0937451f-6bf6-4da5-863e-c8863826dac5.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:58:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/0937451f-6bf6-4da5-863e-c8863826dac5.l1h22fihyr.jpg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\0937451f-6bf6-4da5-863e-c8863826dac5.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:58:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "l1h22fihyr"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/0937451f-6bf6-4da5-863e-c8863826dac5.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/26ed207b-298d-4582-b69a-d7834e0788f4.enan78p5ms.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\26ed207b-298d-4582-b69a-d7834e0788f4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "enan78p5ms"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/26ed207b-298d-4582-b69a-d7834e0788f4.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/26ed207b-298d-4582-b69a-d7834e0788f4.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\26ed207b-298d-4582-b69a-d7834e0788f4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/2b01de90-d63a-4425-ba58-be039fdd63d4.b7zo3q9cn2.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2b01de90-d63a-4425-ba58-be039fdd63d4.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 05:08:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b7zo3q9cn2"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/2b01de90-d63a-4425-ba58-be039fdd63d4.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/2b01de90-d63a-4425-ba58-be039fdd63d4.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2b01de90-d63a-4425-ba58-be039fdd63d4.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 05:08:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/2ef07a7d-bb94-42be-a616-415595dfc20e.b7zo3q9cn2.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2ef07a7d-bb94-42be-a616-415595dfc20e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:56:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b7zo3q9cn2"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/2ef07a7d-bb94-42be-a616-415595dfc20e.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/2ef07a7d-bb94-42be-a616-415595dfc20e.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\2ef07a7d-bb94-42be-a616-415595dfc20e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:56:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:33:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\431ff3d3-24fc-4ae0-96e6-44d92e8bc7be.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:33:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/68b3b2b6-f52a-471c-b768-4e94b2d90591.aiczm2dc1j.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\68b3b2b6-f52a-471c-b768-4e94b2d90591.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47316"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7ueRvlDWZln3hG24MQsq+HoK6ItJNFN2sMRoWnmal/4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 06:25:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "aiczm2dc1j"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/68b3b2b6-f52a-471c-b768-4e94b2d90591.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ueRvlDWZln3hG24MQsq+HoK6ItJNFN2sMRoWnmal/4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/68b3b2b6-f52a-471c-b768-4e94b2d90591.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\68b3b2b6-f52a-471c-b768-4e94b2d90591.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47316"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7ueRvlDWZln3hG24MQsq+HoK6ItJNFN2sMRoWnmal/4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 06:25:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ueRvlDWZln3hG24MQsq+HoK6ItJNFN2sMRoWnmal/4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/71b43c38-10fb-485d-affd-90e710e7f673.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\71b43c38-10fb-485d-affd-90e710e7f673.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:56:44 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/71b43c38-10fb-485d-affd-90e710e7f673.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/71b43c38-10fb-485d-affd-90e710e7f673.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\71b43c38-10fb-485d-affd-90e710e7f673.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:56:44 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/87889246-df0b-467a-a6d8-90ca6f74b515.enan78p5ms.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\87889246-df0b-467a-a6d8-90ca6f74b515.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "enan78p5ms"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/87889246-df0b-467a-a6d8-90ca6f74b515.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/87889246-df0b-467a-a6d8-90ca6f74b515.jpeg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\87889246-df0b-467a-a6d8-90ca6f74b515.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-quwucrBHFhFxnBC7FVNjLyeXpBwCx+PpgROhNxsrClE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/882eef28-5f3e-461d-aee5-8ace103434ae.j9y9hkzt2k.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\882eef28-5f3e-461d-aee5-8ace103434ae.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "150479"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"twZumPaFLmgLq5Es1lEaw0r9hBKjVU1Yq7HvHGruFvQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 06:25:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "j9y9hkzt2k"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/882eef28-5f3e-461d-aee5-8ace103434ae.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-twZumPaFLmgLq5Es1lEaw0r9hBKjVU1Yq7HvHGruFvQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/882eef28-5f3e-461d-aee5-8ace103434ae.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\882eef28-5f3e-461d-aee5-8ace103434ae.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "150479"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"twZumPaFLmgLq5Es1lEaw0r9hBKjVU1Yq7HvHGruFvQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 06:25:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-twZumPaFLmgLq5Es1lEaw0r9hBKjVU1Yq7HvHGruFvQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/a8561efe-209a-4310-b607-a5897c369322.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\a8561efe-209a-4310-b607-a5897c369322.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 05:08:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/a8561efe-209a-4310-b607-a5897c369322.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/a8561efe-209a-4310-b607-a5897c369322.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\a8561efe-209a-4310-b607-a5897c369322.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 05:08:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ae558167-9665-4f98-b7c1-c95eb76a1de6.b7zo3q9cn2.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae558167-9665-4f98-b7c1-c95eb76a1de6.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:58:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b7zo3q9cn2"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/ae558167-9665-4f98-b7c1-c95eb76a1de6.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ae558167-9665-4f98-b7c1-c95eb76a1de6.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae558167-9665-4f98-b7c1-c95eb76a1de6.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:58:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:57:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ae9819d6-76f9-4d58-8913-0fb89b7f30f2.l1h22fihyr.jpg",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:57:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "l1h22fihyr"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yQCEn7RnrjxKGk8IYDcvUMGFEFMxpJVpkoGCOdaXyZA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ec123f94-9ba8-4041-a99b-d095fe2158ed.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ec123f94-9ba8-4041-a99b-d095fe2158ed.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:42:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/ec123f94-9ba8-4041-a99b-d095fe2158ed.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ec123f94-9ba8-4041-a99b-d095fe2158ed.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\ec123f94-9ba8-4041-a99b-d095fe2158ed.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:42:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/f9314ea9-341f-44a3-acb7-5c1350f03dc0.b7zo3q9cn2.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\f9314ea9-341f-44a3-acb7-5c1350f03dc0.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b7zo3q9cn2"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/f9314ea9-341f-44a3-acb7-5c1350f03dc0.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/f9314ea9-341f-44a3-acb7-5c1350f03dc0.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\f9314ea9-341f-44a3-acb7-5c1350f03dc0.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "48560"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:41:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-N+P0MQfZqoN+OiKrGW5IA+RkMzPBKt3Idb/6TFU01Y8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/fa45c7ca-779f-45b7-9e81-7cd82b756739.c3v1u39nld.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\fa45c7ca-779f-45b7-9e81-7cd82b756739.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:57:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c3v1u39nld"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/fa45c7ca-779f-45b7-9e81-7cd82b756739.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/fa45c7ca-779f-45b7-9e81-7cd82b756739.png",
+      "AssetFile": "C:\\Users\\Admin\\OneDrive\\Desktop\\Phát triển dự án Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\wwwroot\\uploads\\fa45c7ca-779f-45b7-9e81-7cd82b756739.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "52592"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Nov 2025 04:57:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WJKl/wZjZ9f0svhJTwwg0tWF6+bi37deVONucyCNSRQ="
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<div class="login-wrapper">
+    <mat-card class="login-card">
+        <div class="login-header">
+            <div class="icon-circle">
+                <mat-icon>lock</mat-icon>
+            </div>
+            <h2>Đăng Nhập</h2>
+            <p>Chào mừng quay trở lại hệ thống</p>
+        </div>
+
+        <mat-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <mat-icon matPrefix>email</mat-icon>
+                    <input matInput formControlName="email" type="email" placeholder="admin@example.com" required>
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                        Vui lòng nhập email
+                    </mat-error>
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                        Email không đúng định dạng
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mật khẩu</mat-label>
+                    <mat-icon matPrefix>vpn_key</mat-icon>
+                    <input matInput formControlName="password" type="password" required>
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                        Vui lòng nhập mật khẩu
+                    </mat-error>
+                </mat-form-field>
+                <div *ngIf="errorMessage" class="alert-error">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>{{ errorMessage }}</span>
+                </div>
+                <div class="action-area">
+                    <button mat-raised-button color="primary" class="btn-submit" type="submit" [disabled]="loginForm.invalid">
+                        ĐĂNG NHẬP
+                    </button>
+                    
+                    <div class="divider">
+                        <span>Hoặc</span>
+                    </div>
+
+                    <a routerLink="/register" mat-stroked-button color="primary" class="btn-register">
+                        Đăng Ký Tài Khoản Mới
+                    </a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

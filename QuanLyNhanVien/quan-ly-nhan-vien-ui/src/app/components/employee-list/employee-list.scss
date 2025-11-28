@@ -1,0 +1,129 @@
+.list-container {
+    padding-top: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.table-card {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 0 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .header-title {
+        h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .search-field {
+            font-size: 14px;
+            width: 250px;
+            margin-bottom: -1.25em;
+        }
+
+        .btn-add {
+            height: 42px;
+            padding: 0 20px;
+        }
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-mdc-row:hover {
+    background-color: #f5f7fa;
+    cursor: default;
+}
+
+.avatar-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.font-bold { font-weight: 500; color: #2c3e50; }
+.text-muted { color: #7f8c8d; }
+.text-right { text-align: right; justify-content: flex-end; }
+.actions-cell {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+.text-center { text-align: center; justify-content: center; }
+
+.amount-text {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    color: #27ae60;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    .search-field {
+        font-size: 14px;
+        width: 250px;
+        ::ng-deep .mat-mdc-text-field-wrapper {
+            background-color: white !important;
+        }
+    }
+    .btn-add {
+        height: 48px;
+        padding: 0 24px;
+        font-weight: 500;
+        border-radius: 8px;
+    }
+}
+
+.no-data-cell {
+    text-align: center;
+    padding: 40px !important;
+    color: #999;
+    
+    mat-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        margin-bottom: 10px;
+        display: block;
+        margin: 0 auto 10px;
+        color: #e0e0e0;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
