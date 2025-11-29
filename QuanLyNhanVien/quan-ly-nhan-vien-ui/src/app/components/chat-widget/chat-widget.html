@@ -1,41 +1,59 @@
-<button class="chat-toggle-btn" (click)="toggleChat()" matTooltip="Chat với mọi người">
+<button class="chat-toggle-btn" (click)="toggleChat()" matTooltip="">
     <mat-icon class="toggle-icon">{{ isOpen ? 'keyboard_arrow_down' : 'chat' }}</mat-icon>
 </button>
-<div class="chat-box" [class.open]="isOpen">
-    <div class="chat-header">
-        <div class="header-content">
-            <mat-icon class="header-icon">forum</mat-icon>
-            <span class="header-title">Thảo luận chung</span>
+
+<div class="chat-box" [class.open]="isOpen" (click)="$event.stopPropagation()">
+    <div class="chat-tabs">
+        <div class="tab-item" [class.active]="activeTab === 'global'" (click)="switchTab('global')">
+            <mat-icon>public</mat-icon> Chung
         </div>
-        <button mat-icon-button class="close-btn" (click)="toggleChat()">
+        <div class="tab-item" [class.active]="activeTab === 'dept'" (click)="switchTab('dept')">
+            <mat-icon>groups</mat-icon> Phòng ban
+        </div>
+        <div class="close-icon" (click)="toggleChat()">
             <mat-icon>close</mat-icon>
-        </button>
+        </div>
     </div>
-    <div class="chat-messages" #scrollContainer>
+    <div class="admin-dept-select" *ngIf="activeTab === 'dept' && isAdmin">
+        <mat-form-field appearance="outline" class="dept-select-field">
+            <mat-label>Chọn phòng chat</mat-label>
+            <mat-select [value]="selectedDeptId" (selectionChange)="onAdminChangeDept($event)">
+                <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                    {{ dept.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="chat-messages" #scrollContainer [class.has-admin-select]="activeTab === 'dept' && isAdmin">
         <div *ngIf="messages.length === 0" class="empty-state">
-            <mat-icon class="empty-icon">chat_bubble_outline</mat-icon>
-            <p>Chưa có tin nhắn nào.<br>Hãy là người bắt đầu cuộc trò chuyện!</p>
+            <mat-icon class="empty-icon">forum</mat-icon>
+            <p *ngIf="activeTab === 'global'">Kênh thông báo chung toàn công ty.</p>
+            <p *ngIf="activeTab === 'dept'">
+                {{ isAdmin ? 'Vui lòng chọn phòng ban để xem chat.' : 'Chưa có tin nhắn nào.' }}
+            </p>
         </div>
         <div *ngFor="let msg of messages" class="message-wrapper"
-            [ngClass]="{'my-message': msg.user === currentUser, 'other-message': msg.user !== currentUser}">
-            <span class="sender-name" *ngIf="msg.user !== currentUser">
-                {{ msg.user }}
+            [ngClass]="{'my-message': isMyMessage(msg.user), 'other-message': !isMyMessage(msg.user)}">
+            <span class="sender-name" *ngIf="!isMyMessage(msg.user)">
+                {{ msg.user.split('@')[0] }}
             </span>
-
+            
             <div class="bubble-container">
-                <div class="msg-bubble" [matTooltip]="msg.time | date:'HH:mm dd/MM'">
+                <div class="msg-bubble">
                     {{ msg.message }}
                 </div>
+                <span class="time-stamp">
+                    {{ msg.time | date:'HH:mm' }}
+                </span>
             </div>
-            <span class="time-stamp">{{ msg.time | date:'HH:mm' }}</span>
         </div>
     </div>
     <div class="chat-input-area">
-        <input type="text"
-                [(ngModel)]="txtMessage"
-                (keyup.enter)="sendMessage()"
-                placeholder="Nhập tin nhắn..."
-                autocomplete="off">
+        <input type="text" 
+            [(ngModel)]="txtMessage" 
+            (keyup.enter)="sendMessage()" 
+            placeholder="Nhập tin nhắn..." 
+            autocomplete="off">
         
         <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="!txtMessage.trim()">
             <mat-icon>send</mat-icon>

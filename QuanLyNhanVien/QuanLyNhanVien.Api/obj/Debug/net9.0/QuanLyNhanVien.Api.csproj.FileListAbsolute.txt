@@ -288,3 +288,4 @@ C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\Qu
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\bin\Debug\net9.0\SixLabors.Fonts.dll
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\bin\Debug\net9.0\System.IO.Packaging.dll
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\bin\Debug\net9.0\QuanLyNhanVien.Api.staticwebassets.runtime.json
+C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\QuanLyNhanVien.Api.sourcelink.json

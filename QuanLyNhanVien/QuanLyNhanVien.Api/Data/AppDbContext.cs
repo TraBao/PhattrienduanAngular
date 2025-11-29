@@ -28,9 +28,9 @@ namespace QuanLyNhanVien.Api.Data
                 .HasColumnType("decimal(18, 2)");
 
             modelBuilder.Entity<Department>().HasData(
-                new Department { Id = 1, Name = "Phòng Kỹ thuật" },
-                new Department { Id = 2, Name = "Phòng Nhân sự" },
-                new Department { Id = 3, Name = "Phòng Kinh doanh" }
+                new Department { Id = 1, Name = "Phòng Kỹ thuật", Description = "Chịu trách nhiệm về công nghệ và hạ tầng" },
+                new Department { Id = 2, Name = "Phòng Nhân sự", Description = "Tuyển dụng và quản lý nhân viên" },
+                new Department { Id = 3, Name = "Phòng Kinh doanh", Description = "Tìm kiếm khách hàng và bán sản phẩm" }
             );
 
             modelBuilder.Entity<Employee>().HasData(

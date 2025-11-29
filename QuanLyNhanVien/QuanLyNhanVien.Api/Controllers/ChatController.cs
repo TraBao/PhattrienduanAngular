@@ -16,15 +16,27 @@ namespace QuanLyNhanVien.Api.Controllers
         }
 
         [HttpGet("history")]
-        public async Task<IActionResult> GetHistory()
+        public async Task<IActionResult> GetHistory([FromQuery] string? receiver = null)
         {
-            var messages = await _context.Messages
+            var query = _context.Messages.AsQueryable();
+
+            if (string.IsNullOrEmpty(receiver))
+            {
+                query = query.Where(m => string.IsNullOrEmpty(m.ReceiverEmail));
+            }
+            else
+            {
+                query = query.Where(m => m.ReceiverEmail == receiver);
+            }
+
+            var messages = await query
                 .OrderBy(m => m.Timestamp)
                 .Select(m => new
                 {
                     user = m.SenderEmail,
                     message = m.Content,
-                    time = m.Timestamp
+                    time = m.Timestamp,
+                    receiver = m.ReceiverEmail
                 })
                 .ToListAsync();
 

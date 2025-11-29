@@ -11,6 +11,7 @@ import { MyProfileComponent } from './components/my-profile/my-profile';
 import { PayrollComponent } from './components/payroll/payroll';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard';
 import { AdminAnnouncementsComponent } from './components/admin-announcements/admin-announcements';
+import { DepartmentManagerComponent } from './components/department-manager/department-manager';
 
 export const routes: Routes = [
     { path: '', component: EmployeeList, canActivate: [AuthGuard] },
@@ -23,6 +24,11 @@ export const routes: Routes = [
     { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
     { path: 'announcements', component: AdminAnnouncementsComponent, canActivate: [AuthGuard] },
     { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] },
+    {
+        path: 'departments',
+        component: DepartmentManagerComponent,
+        canActivate: [AuthGuard]
+    },
     {
         path: 'users',
         component: UserListComponent,

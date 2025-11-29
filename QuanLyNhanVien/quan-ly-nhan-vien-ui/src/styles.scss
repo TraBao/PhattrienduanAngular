@@ -134,3 +134,7 @@ body {
     background-color: #2e7d32 !important;
     color: white !important;
 }
+
+.cdk-overlay-container {
+    z-index: 9999 !important;
+}

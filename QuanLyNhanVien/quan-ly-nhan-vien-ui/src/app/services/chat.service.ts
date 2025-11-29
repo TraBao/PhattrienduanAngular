@@ -14,23 +14,41 @@
     }
 
     public startConnection() {
+        const token = localStorage.getItem('jwtToken'); 
         this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5195/chatHub')
+        .withUrl('http://localhost:5195/chatHub', {
+            accessTokenFactory: () => token || ''
+        })
         .withAutomaticReconnect()
         .build();
 
         this.hubConnection.start()
-        .then(() => console.log('✅ SignalR Connected!'))
-        .catch(err => console.log('❌ SignalR Error: ' + err));
-        this.hubConnection.on('ReceiveMessage', (user, message, time) => {
-        this.messageReceived.next({ user, message, time });
+        .then(() => {
+            console.log('✅ SignalR Connected!');
+        })
+        .catch(err => console.error('❌ Error while starting SignalR connection: ' + err));
+
+        this.hubConnection.on('ReceiveMessage', (user, message, time, receiver) => {
+        this.messageReceived.next({ user, message, time, receiver });
         });
     }
-    public sendMessage(user: string, message: string) {
-        this.hubConnection.invoke('SendMessage', user, message)
+
+    public joinGroup(groupName: string) {
+        if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
+        this.hubConnection.invoke('JoinGroup', groupName)
+            .catch(err => console.error(err));
+        } else {
+        setTimeout(() => this.joinGroup(groupName), 1000);
+        }
+    }
+
+    public sendMessage(user: string, message: string, receiver: string | null = null) {
+        this.hubConnection.invoke('SendMessage', user, message, receiver)
         .catch(err => console.error(err));
     }
-    getChatHistory(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/history`);
+
+    getChatHistory(receiver: string | null = null): Observable<any[]> {
+        const url = receiver ? `${this.apiUrl}/history?receiver=${receiver}` : `${this.apiUrl}/history`;
+        return this.http.get<any[]>(url);
     }
     }

@@ -1,0 +1,65 @@
+<div class="dept-container">
+    <h2>🏢 Quản lý Phòng Ban</h2>
+    
+    <div class="content-wrapper">
+        <mat-card class="form-card">
+            <div class="card-header">
+                <h3>{{ isEditMode ? 'Cập nhật Phòng ban' : 'Thêm Phòng ban mới' }}</h3>
+            </div>
+            
+            <form (ngSubmit)="saveDepartment()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Tên phòng ban</mat-label>
+                    <input matInput [(ngModel)]="deptForm.name" name="name" required placeholder="Ví dụ: Phòng IT">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mô tả chức năng</mat-label>
+                    <textarea matInput [(ngModel)]="deptForm.description" name="description" rows="3" placeholder="Mô tả ngắn gọn..."></textarea>
+                </mat-form-field>
+
+                <div class="actions">
+                    <button *ngIf="isEditMode" mat-button type="button" (click)="resetForm()" color="warn">Hủy bỏ</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!deptForm.name">
+                        <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+                        {{ isEditMode ? 'Lưu thay đổi' : 'Thêm mới' }}
+                    </button>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card class="list-card">
+            <table mat-table [dataSource]="departments" class="full-width-table">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let element"> #{{element.id}} </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Tên phòng </th>
+                    <td mat-cell *matCellDef="let element" class="bold-text"> {{element.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Mô tả </th>
+                    <td mat-cell *matCellDef="let element" class="desc-text"> {{element.description}} </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Thao tác </th>
+                    <td mat-cell *matCellDef="let element" class="text-right">
+                        <button mat-icon-button color="primary" (click)="editDept(element)" matTooltip="Sửa">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteDept(element.id)" matTooltip="Xóa">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            
+            <div *ngIf="departments.length === 0" class="no-data">
+                Chưa có phòng ban nào.
+            </div>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<button class="ai-toggle-btn" (click)="toggleAi()" matTooltip="Trợ lý AI">
+    <mat-icon class="ai-icon">{{ isOpen ? 'close' : 'smart_toy' }}</mat-icon>
+</button>
+<div class="ai-box" [class.open]="isOpen">
+    <div class="ai-header">
+        <div class="header-title">
+            <mat-icon>psychology</mat-icon> HR Assistant AI
+        </div>
+        <div class="close-btn" (click)="toggleAi()"><mat-icon>remove</mat-icon></div>
+    </div>
+
+    <div class="ai-messages" #scrollMe>
+        <div *ngFor="let msg of messages" class="msg-wrapper"
+            [ngClass]="{'user-msg': msg.sender === 'user', 'ai-msg': msg.sender === 'ai'}">
+            
+             <div class="avatar" *ngIf="msg.sender === 'ai'">
+                <mat-icon>smart_toy</mat-icon>
+            </div>
+            <div class="bubble">
+                <span [innerHTML]="formatText(msg.text)"></span>
+            </div>
+        </div>
+        <div *ngIf="isLoading" class="msg-wrapper ai-msg">
+            <div class="avatar"><mat-icon>smart_toy</mat-icon></div>
+            <div class="bubble loading-dots">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-input">
+        <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Hỏi AI về chính sách..." [disabled]="isLoading">
+        <button mat-icon-button (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</div>

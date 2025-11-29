@@ -27,6 +27,9 @@
             <mat-icon>manage_accounts</mat-icon>
             <span class="nav-label">Tài khoản</span>
         </a>
+        <a mat-button routerLink="/departments" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
+            <mat-icon>apartment</mat-icon> Phòng ban
+        </a>
         
         <a mat-button routerLink="/payroll" routerLinkActive="active-link">
             <mat-icon>payments</mat-icon> Lương thưởng
@@ -83,3 +86,4 @@
     <router-outlet></router-outlet>
     </div>
 <app-chat-widget *ngIf="currentUser$ | async"></app-chat-widget>
+<app-ai-widget></app-ai-widget>

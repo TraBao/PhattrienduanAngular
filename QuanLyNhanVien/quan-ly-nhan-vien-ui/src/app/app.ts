@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MaterialModule } from './material-module';
 import { ChatService } from './services/chat.service';
 import { ChatWidgetComponent } from './components/chat-widget/chat-widget';
+import { AiWidgetComponent } from './components/ai-widget/ai-widget';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,8 @@ import { ChatWidgetComponent } from './components/chat-widget/chat-widget';
     MatDividerModule,
     RouterLinkActive,
     RouterLink,
-    ChatWidgetComponent
+    ChatWidgetComponent,
+    AiWidgetComponent
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
