@@ -1,82 +1,157 @@
-.dashboard-container {
-    padding-top: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+$bg-color: #f3f4f6;
+$primary: #3f51b5;
+$green: #2e7d32;
+$red: #d32f2f;
+$orange: #f57f17;
+
+.user-dash-container {
+    padding: 30px;
+    background-color: $bg-color;
+    min-height: 100vh;
 }
 
+.welcome-text h2 { 
+    margin-bottom: 24px; 
+    color: #1f2937; 
+    font-size: 22px; 
+    font-weight: 700; 
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 24px;
+    align-items: start;
+}
 .attendance-card {
-    padding: 30px;
+    border-radius: 20px !important;
+    padding: 30px !important;
     text-align: center;
-    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
-    border-radius: 16px !important;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
 }
 
 .time-section {
     margin-bottom: 30px;
-    h3 { color: #666; margin: 0; }
+    
+    .date-badge {
+        background: #eef2ff; color: $primary; 
+        padding: 6px 16px; border-radius: 20px; 
+        font-weight: 600; font-size: 14px;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+
     .digital-clock {
-        font-size: 48px;
-        font-weight: bold;
-        color: #3f51b5;
-        font-family: 'Courier New', Courier, monospace;
-        letter-spacing: 2px;
+        font-size: 64px;
+        font-weight: 800;
+        color: $primary;
+        margin: 15px 0;
+        font-family: 'Roboto Mono', monospace;
+        line-height: 1;
     }
 }
 
-.action-section {
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-button.btn-checkin, button.btn-checkout {
-    height: 60px;
-    padding: 0 40px;
-    font-size: 20px;
-    border-radius: 30px;
-    
-    mat-icon { 
-        width: 24px; height: 24px; font-size: 24px; margin-right: 8px; 
+.status-indicators {
+    display: flex; justify-content: center; gap: 10px;
+    .status-tag {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 14px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        
+        &.working { background: #e8f5e9; color: $green; border: 1px solid #c8e6c9; }
+        &.lunch { background: #fff8e1; color: $orange; border: 1px solid #ffe082; }
+        
+        mat-icon { font-size: 18px; width: 18px; height: 18px; }
     }
 }
 
 .btn-checkin {
-    background-color: #2e7d32 !important;
-    color: white !important;
-    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+    height: 60px; padding: 0 40px; font-size: 18px; border-radius: 30px;
+    background-color: $green !important; color: white !important;
+    box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+    transition: transform 0.2s;
+    
+    &:hover { transform: scale(1.05); }
+    mat-icon { margin-right: 10px; }
 }
 
-.btn-checkout {
-    background-color: #c62828 !important;
-    color: white !important;
-    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.4);
-}
+.working-panel {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
 
-.working-status p { font-size: 18px; margin-bottom: 15px; }
+    .info-row {
+        display: flex; justify-content: space-around; margin-bottom: 20px; text-align: left;
+        
+        .label { color: #64748b; font-size: 13px; display: block; margin-bottom: 4px; }
+        .value { font-size: 18px; color: #0f172a; }
+        
+        .late-badge {
+            background: $red; color: white; padding: 2px 6px; border-radius: 4px; 
+            font-size: 10px; margin-left: 6px; vertical-align: middle;
+        }
+
+        .progress-wrap { width: 150px; }
+        small { display: block; text-align: right; margin-top: 4px; font-weight: 600; color: $primary; }
+    }
+
+    .btn-checkout {
+        background-color: $red !important; color: white !important;
+        width: 100%; border-radius: 10px; height: 44px;
+        box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+    }
+}
 
 .done-status {
-    color: #2e7d32;
-    .done-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 10px; }
+    color: $green;
+    .success-icon { 
+        width: 64px; height: 64px; background: #dcfce7; border-radius: 50%;
+        margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+        color: $green;
+        mat-icon { font-size: 32px; width: 32px; height: 32px; }
+    }
 }
 
-.text-green { color: #2e7d32; font-weight: 500; }
-.text-red { color: #c62828; font-weight: 500; }
-.hours-badge {
-    background-color: #e3f2fd;
-    color: #1565c0;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: bold;
+.table-card { 
+    background: white; border-radius: 16px; overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 table { width: 100%; }
-.mt-4 { margin-top: 24px; }
+th.mat-header-cell { background: #f9fafb; font-weight: 600; color: #4b5563; }
 
-.news-card { margin-bottom: 20px; }
-.news-row {
-    display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee;
-    &:last-child { border-bottom: none; }
+.time-pill {
+    padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;
+    &.green { color: $green; background: #dcfce7; }
+    &.grey { color: #64748b; background: #f1f5f9; }
+    
+    &.red-bg { background: #fee2e2; color: $red; }
 }
-.important { color: #d32f2f; font-weight: bold; }
-.red-icon { color: #d32f2f; }
-.align-middle { vertical-align: middle; margin-right: 8px; }
+
+.hours-badge {
+    background: #e0e7ff; color: $primary; 
+    padding: 4px 10px; border-radius: 8px; font-weight: 700;
+}
+
+.news-card {
+    border-radius: 16px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    .align-middle { margin-right: 8px; color: $primary; }
+}
+
+.news-row {
+    display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #f1f5f9;
+    &:last-child { border-bottom: none; }
+
+    .news-icon {
+        width: 42px; height: 42px; background: #f1f5f9; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        &.important-bg { background: #fef2f2; }
+    }
+    
+    h4 { margin: 0 0 4px; font-size: 15px; color: #1e293b; &.important { color: $red; } }
+    p { margin: 0 0 6px; font-size: 13px; color: #64748b; line-height: 1.5; }
+    .red-icon { color: $red; }
+}
+
+@media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+}

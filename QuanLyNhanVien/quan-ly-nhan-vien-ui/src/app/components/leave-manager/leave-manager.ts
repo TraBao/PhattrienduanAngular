@@ -8,14 +8,20 @@ import { LeaveRequest } from '../../models/leave.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-leave-manager',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule, MatTabsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatTooltipModule
+  ],
   templateUrl: './leave-manager.html',
   styleUrls: ['./leave-manager.scss']
 })
@@ -62,7 +68,7 @@ export class LeaveManagerComponent implements OnInit {
                 this.myLeavesSource.paginator = this.paginatorMy;
             });
         },
-        error: (err) => console.error('Lỗi tải đơn cá nhân:', err)
+        error: (err) => console.error(err)
     });
   }
 
@@ -77,9 +83,8 @@ export class LeaveManagerComponent implements OnInit {
             });
         },
         error: (err) => {
-            console.error('Lỗi tải đơn Admin:', err);
             if(err.status === 403) {
-                  this.snackBar.open('Vui lòng đăng xuất và đăng nhập lại để cập nhật quyền Admin.', 'Đóng', { duration: 5000 });
+                  this.snackBar.open('Vui lòng đăng nhập lại.', 'Đóng', { duration: 5000 });
             }
         }
     });
@@ -131,8 +136,8 @@ export class LeaveManagerComponent implements OnInit {
         error: () => this.snackBar.open('Lỗi xử lý', 'Đóng', { duration: 3000, panelClass: 'error-snackbar' })
     });
   }
-  
 }
+
 export const dateRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const start = control.get('startDate')?.value;
   const end = control.get('endDate')?.value;

@@ -1,139 +1,260 @@
-.announcement-container {
-    padding: 20px;
-    max-width: 900px;
+$bg-color: #f3f4f6;
+$primary-color: #3f51b5;
+$accent-color: #ff4081;
+$card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+$card-hover-shadow: 0 8px 25px rgba(0,0,0,0.1);
+$radius: 16px;
+
+.page-container {
+    padding: 30px;
+    max-width: 800px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    font-family: 'Inter', sans-serif;
 }
 
-.create-card {
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+.page-header {
+    margin-bottom: 30px;
+    text-align: center;
+    h2 { font-size: 26px; font-weight: 700; color: #1f2937; margin: 0; }
+    .subtitle { color: #6b7280; font-size: 15px; margin-top: 5px; }
+}
+
+.editor-card {
+    border-radius: $radius;
+    box-shadow: $card-shadow;
     background: white;
-}
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 40px;
 
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-
-    .icon-box {
-        width: 48px;
-        height: 48px;
-        background: #e8eaf6;
-        border-radius: 12px;
+    .card-title-box {
+        padding: 20px 24px;
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
         display: flex;
         align-items: center;
-        justify-content: center;
-        
-        mat-icon { color: #3f51b5; font-size: 28px; width: 28px; height: 28px; }
+        gap: 12px;
+        font-weight: 600;
+        color: #444;
+
+        .icon-bg {
+            background: #e8eaf6;
+            color: $primary-color;
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
     }
 
-    h2 { margin: 0; font-size: 20px; font-weight: 600; color: #333; }
-    p { margin: 4px 0 0; color: #666; font-size: 14px; }
+    mat-card-content {
+        padding: 24px;
+    }
+}
+
+@mixin modern-input {
+    ::ng-deep .mat-mdc-form-field-flex {
+        background-color: #f8f9fa !important;
+        border-radius: 12px !important;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+    }
+    ::ng-deep .mdc-notched-outline__leading,
+    ::ng-deep .mdc-notched-outline__notch,
+    ::ng-deep .mdc-notched-outline__trailing {
+        border: none !important; 
+    }
+    ::ng-deep .mdc-floating-label {
+        &.mdc-floating-label--float-above {
+            background-color: #ffffff;
+            padding: 0 6px;
+            margin-left: -4px;
+            z-index: 5;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #3f51b5 !important;
+        }
+    }
+    &.mat-focused ::ng-deep .mat-mdc-form-field-flex {
+        background-color: #ffffff !important;
+        border: 1px solid #3f51b5;
+        box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
+    }
+    &.mat-form-field-should-float ::ng-deep .mat-mdc-form-field-flex {
+        background-color: #ffffff !important;
+        border-color: #e0e0e0;
+    }
 }
 
 .form-row {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     align-items: flex-start;
+    margin-bottom: 20px;
+    .title-field {
+        flex: 1;
+        @include modern-input;
+        mat-icon { color: #757575; margin-right: 8px; }
+    }
+    .importance-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 56px;
+        padding: 0 24px;
+        border-radius: 16px;
+        border: 1px solid #eee;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+        color: #555;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 
-    .title-field { flex: 1; }
-    
-    .checkbox-wrapper {
-        margin-top: 10px;
-        background: #fff3e0;
-        padding: 10px 15px;
-        border-radius: 20px;
-        border: 1px solid #ffe0b2;
+        &:hover { background: #fafafa; transform: translateY(-1px); }
+
+        &.active {
+            background: #fff0f0;
+            border: 1px solid #ffcdd2;
+            color: #d32f2f;
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.15);
+        }
     }
 }
 
-.full-width { width: 100%; }
+.full-width.content-field {
+    width: 100%;
+    @include modern-input;
+
+    textarea {
+        padding: 5px 0;
+        line-height: 1.6;
+        color: #333;
+    }
+}
 
 .form-actions {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+
     .btn-post {
-        padding: 0 24px;
-        height: 45px;
-        border-radius: 25px;
-        font-size: 15px;
+        padding: 0 30px;
+        height: 48px;
+        border-radius: 24px;
+        font-size: 16px;
+        box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
     }
 }
 
-.section-title {
+.section-heading {
     font-size: 18px;
-    color: #444;
-    margin-bottom: 15px;
-    border-left: 4px solid #3f51b5;
+    color: #374151;
+    margin-bottom: 20px;
+    font-weight: 600;
     padding-left: 10px;
+    border-left: 4px solid $primary-color;
 }
 
 .news-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
 .news-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
     background: white;
-    padding: 15px 20px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    transition: all 0.2s;
+    border-radius: $radius;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        border-color: #3f51b5;
+        transform: translateY(-3px);
+        box-shadow: $card-hover-shadow;
     }
 
-    .news-icon {
-        width: 40px;
-        height: 40px;
-        background: #f5f5f5;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #757575;
+    &.important-card {
+        background: #fffafa;
+        border: 1px solid #ffcdd2;
+        
+        .news-title { color: #c62828 !important; }
+    }
 
-        &.important {
-            background: #ffebee;
-            color: #d32f2f;
+    .card-icon-col {
+        .news-icon {
+            width: 48px; height: 48px;
+            background: #f3f4f6;
+            color: #6b7280;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+
+            &.important-icon {
+                background: #ffebee;
+                color: #d32f2f;
+            }
         }
     }
 
-    .news-content {
+    .card-content-col {
         flex: 1;
         
         .news-header {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+
+            .news-title { font-size: 16px; font-weight: 700; color: #111827; }
             
-            .news-title { font-weight: 600; font-size: 16px; color: #333; }
-            .news-date { font-size: 12px; color: #999; }
+            .badge {
+                font-size: 11px;
+                background: #d32f2f;
+                color: white;
+                padding: 2px 8px;
+                border-radius: 10px;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
         }
 
         .news-desc {
-            margin: 0;
+            color: #4b5563;
             font-size: 14px;
-            color: #555;
-            line-height: 1.4;
+            line-height: 1.5;
+            margin-bottom: 8px;
         }
+
+        .news-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #9ca3af;
+            mat-icon { font-size: 14px; width: 14px; height: 14px; }
+        }
+    }
+
+    .card-action-col {
+        button { opacity: 0.5; transition: opacity 0.2s; }
+        button:hover { opacity: 1; background: #fee2e2; }
     }
 }
 
 .empty-state {
     text-align: center;
-    color: #999;
-    padding: 20px;
-    font-style: italic;
+    padding: 40px;
+    color: #9ca3af;
+    
+    .empty-icon {
+        width: 80px; height: 80px;
+        background: #f3f4f6;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        display: flex; align-items: center; justify-content: center;
+        mat-icon { font-size: 40px; width: 40px; height: 40px; color: #d1d5db; }
+    }
 }

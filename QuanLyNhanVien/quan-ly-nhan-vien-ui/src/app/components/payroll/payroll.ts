@@ -44,13 +44,18 @@ export class PayrollComponent implements OnInit {
       this.loadMyPayslips();
     }
   }
+
   loadMonthlyPayroll() {
     this.payrollService.getMonthlyPayroll(this.selectedMonth, this.selectedYear).subscribe({
       next: (data) => {
         this.dataSource.data = data;
-        setTimeout(() => this.dataSource.paginator = this.paginator);
+        if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
+        }
       },
-      error: () => console.log('Chưa có dữ liệu lương tháng này')
+      error: () => {
+          this.dataSource.data = [];
+      }
     });
   }
 
@@ -78,9 +83,12 @@ export class PayrollComponent implements OnInit {
   loadMyPayslips() {
     this.payrollService.getMyPayslips().subscribe(data => {
       this.dataSource.data = data;
-      setTimeout(() => this.dataSource.paginator = this.paginator);
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+    }
     });
   }
+
   onExport() {
     this.payrollService.exportPayroll(this.selectedMonth, this.selectedYear).subscribe({
       next: (blob) => {

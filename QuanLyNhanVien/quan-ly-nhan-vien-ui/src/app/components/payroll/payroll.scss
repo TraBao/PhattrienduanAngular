@@ -1,50 +1,226 @@
+$bg-color: #f3f4f6;
+$primary-color: #3f51b5;
+$border-color: #e5e7eb;
+
 .payroll-container {
-    padding-top: 20px;
+    padding: 30px;
+    background-color: $bg-color;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
 }
 
-.header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
+.page-header {
+    margin-bottom: 24px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
 
-    h2 { margin: 0; }
-}
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 20px;
+    }
 
-.filter-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    .small-field {
-        width: 120px;
-        margin-bottom: -1.25em;
+    .title-section {
+        h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+            display: block;
+        }
     }
 }
 
-.text-money {
-    color: #2e7d32;
-    font-weight: bold;
+.control-panel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .filter-field {
+            width: 130px;
+            font-size: 14px;
+            margin: 0;
+            ::ng-deep .mat-mdc-text-field-wrapper {
+                height: 42px !important; 
+                padding: 0 12px !important;
+            }
+            ::ng-deep .mat-mdc-form-field-flex {
+                height: 100%;
+                align-items: center !important;
+                background-color: #fff !important;
+                border-radius: 8px !important;
+                border: 1px solid #d1d5db;
+            }
+            ::ng-deep .mat-mdc-form-field-infix {
+                padding: 8px 0 !important;
+                min-height: unset !important;
+                border-top: 0 !important;
+                width: auto !important;
+            }
+            ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+                display: none !important;
+            }
+            ::ng-deep .mdc-line-ripple,
+            ::ng-deep .mdc-notched-outline { display: none; }
+        }
+    }
+
+    .action-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        button {
+            height: 42px !important;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            
+            &.btn-calc {
+                background-color: $primary-color;
+                color: white;
+                box-shadow: 0 4px 10px rgba(63, 81, 181, 0.2);
+            }
+            &.btn-export {
+                border: 1px solid #d1d5db;
+                color: #374151;
+                background: white;
+            }
+
+            mat-icon {
+                margin: 0;
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}
+.table-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 0;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table.payroll-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th.mat-header-cell {
+        background: #fafafa;
+        color: #6b7280;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        padding: 16px 24px;
+        border-bottom: 1px solid $border-color;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    td.mat-cell {
+        padding: 16px 24px;
+        border-bottom: 1px solid $border-color;
+        vertical-align: middle;
+        font-size: 14px;
+        color: #374151;
+    }
+
+    tr.mat-row {
+        transition: background-color 0.2s;
+        &:hover { background-color: #f9fafb; }
+        &:last-child td.mat-cell { border-bottom: none; }
+    }
+}
+
+.emp-name { font-weight: 600; color: #111827; }
+.text-muted { color: #6b7280; }
+.basic-salary { font-family: 'Roboto Mono', monospace; color: #4b5563; }
+
+.work-badge {
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.final-amount {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    color: #059669;
     font-size: 15px;
 }
 
 .status-badge {
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
     font-weight: 600;
+    
+    .status-icon { font-size: 16px; width: 16px; height: 16px; }
 
     &.pending {
-        background-color: #fff3e0;
-        color: #ef6c00;
-        border: 1px solid #ffe0b2;
+        background-color: #fff7ed;
+        color: #c2410c;
+        border: 1px solid #ffedd5;
     }
+    
     &.paid {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-        border: 1px solid #a5d6a7;
+        background-color: #ecfdf5;
+        color: #047857;
+        border: 1px solid #d1fae5;
     }
 }
-table { width: 100%; }
+
+.btn-confirm {
+    border-color: $primary-color;
+    color: $primary-color;
+    border-radius: 8px;
+    font-size: 13px;
+    height: 36px;
+    line-height: 36px;
+
+    &:hover { background: rgba(63, 81, 181, 0.05); }
+}
+
+.no-data-cell {
+    text-align: center;
+    padding: 60px !important;
+    color: #9ca3af;
+    
+    mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 10px; opacity: 0.5; }
+    span { display: block; }
+}
+
+mat-paginator { border-top: 1px solid $border-color; }
+.text-center { text-align: center; }

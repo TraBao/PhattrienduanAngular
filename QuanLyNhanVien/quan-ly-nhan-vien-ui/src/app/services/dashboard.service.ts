@@ -13,4 +13,7 @@
     getStats(): Observable<any> {
         return this.http.get(`${this.apiUrl}/stats`);
     }
+    getSalaryGrowth(year: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/salary-growth?year=${year}`);
+}
 }

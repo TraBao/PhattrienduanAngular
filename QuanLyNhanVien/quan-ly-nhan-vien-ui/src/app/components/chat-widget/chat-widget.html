@@ -19,7 +19,7 @@
             <mat-label>Chọn phòng chat</mat-label>
             <mat-select [value]="selectedDeptId" (selectionChange)="onAdminChangeDept($event)">
                 <mat-option *ngFor="let dept of departments" [value]="dept.id">
-                    {{ dept.name}}
+                    {{dept.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

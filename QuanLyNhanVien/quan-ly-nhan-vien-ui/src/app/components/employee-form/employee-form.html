@@ -1,79 +1,96 @@
 <div class="form-wrapper">
+    <div class="page-header">
+        <button mat-icon-button routerLink="/employees" class="back-btn" matTooltip="Quay lại danh sách">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2 class="title">{{ employeeId ? 'Cập nhật Nhân viên' : 'Thêm mới Nhân viên' }}</h2>
+    </div>
+
     <mat-card class="form-card">
-        <div class="card-header">
-            <button mat-icon-button routerLink="/" matTooltip="Quay lại danh sách">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <h2 class="title">{{ employeeId ? 'Cập nhật thông tin' : 'Thêm mới nhân viên' }}</h2>
-        </div>
-        
-        <mat-card-content>
-            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-                
-                <div class="form-grid">
-                    <div class="form-section">
-                        <h3 class="section-label">Thông tin cá nhân</h3>
-                        <mat-form-field appearance="outline" class="full-width">
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            
+            <div class="form-layout">
+                <div class="form-col left-col">
+                    <div class="section-header">
+                        <div class="icon-bg"><mat-icon>person</mat-icon></div>
+                        <h3>Thông tin cá nhân</h3>
+                    </div>
+
+                    <div class="row-dual">
+                        <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Họ (Last Name)</mat-label>
-                            <mat-icon matPrefix>badge</mat-icon>
-                            <input matInput formControlName="lastName" placeholder="Nguyễn" required>
-                            <mat-error *ngIf="employeeForm.get('lastName')?.hasError('required')">Vui lòng nhập họ</mat-error>
+                            <input matInput formControlName="lastName" required placeholder="Nguyễn">
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="full-width">
+
+                        <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Tên (First Name)</mat-label>
-                            <mat-icon matPrefix>person</mat-icon>
-                            <input matInput formControlName="firstName" placeholder="Văn A" required>
-                            <mat-error *ngIf="employeeForm.get('firstName')?.hasError('required')">Vui lòng nhập tên</mat-error>
+                            <input matInput formControlName="firstName" required placeholder="Văn A">
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Email</mat-label>
-                            <mat-icon matPrefix>email</mat-icon>
-                            <input matInput formControlName="email" placeholder="email@example.com" type="email" required>
-                            <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">Email là bắt buộc</mat-error>
-                            <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">Email không hợp lệ</mat-error>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Email liên hệ</mat-label>
+                        <mat-icon matPrefix class="prefix-icon">email</mat-icon>
+                        <input matInput formControlName="email" type="email" required placeholder="name@example.com">
+                        <mat-error *ngIf="employeeForm.get('email')?.invalid">Email không hợp lệ</mat-error>
+                    </mat-form-field>
+
+                    <div class="row-dual">
+                        <mat-form-field appearance="outline" class="soft-input full-width">
+                            <mat-label>Số điện thoại</mat-label>
+                            <mat-icon matPrefix class="prefix-icon">phone</mat-icon>
+                            <input matInput formControlName="phone" required placeholder="09xxxxxxx">
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="full-width">
+
+                        <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Ngày sinh</mat-label>
-                            <mat-icon matPrefix>cake</mat-icon>
                             <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required (click)="picker.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
-                            <mat-error *ngIf="employeeForm.get('dateOfBirth')?.hasError('required')">Chọn ngày sinh</mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-section">
-                        <h3 class="section-label">Công việc & Lương thưởng</h3>
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Phòng Ban</mat-label>
-                            <mat-icon matPrefix>apartment</mat-icon>
-                            <mat-select formControlName="departmentId" required placeholder="Chọn phòng ban">
-                                <mat-option *ngFor="let dept of departments" [value]="dept.id">
-                                    {{ dept.name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="employeeForm.get('departmentId')?.hasError('required')">Vui lòng chọn phòng ban</mat-error>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Mức lương (VND)</mat-label>
-                            <mat-icon matPrefix>attach_money</mat-icon>
-                            <input matInput type="number" formControlName="salary" placeholder="Ví dụ: 10000000" required>
-                            <mat-hint align="end">Nhập số liền không dấu chấm</mat-hint>
-                            <mat-error *ngIf="employeeForm.get('salary')?.hasError('required')">Nhập mức lương</mat-error>
-                        </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Địa chỉ thường trú</mat-label>
+                        <mat-icon matPrefix class="prefix-icon">home</mat-icon>
+                        <input matInput formControlName="address" placeholder="Nhập địa chỉ đầy đủ">
+                    </mat-form-field>
+                </div>
+                <div class="form-col right-col">
+                    <div class="section-header">
+                        <div class="icon-bg work"><mat-icon>work</mat-icon></div>
+                        <h3>Công việc & Lương</h3>
                     </div>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Phòng Ban</mat-label>
+                        <mat-select formControlName="departmentId" required>
+                            <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                                {{ dept.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width salary-field">
+                        <mat-label>Mức lương (VND)</mat-label>
+                            <span matSuffix class="money-prefix">₫</span>
+                        <input matInput type="number" formControlName="salary" required>
+                        <mat-hint>Nhập số liền, không dấu chấm</mat-hint>
+                    </mat-form-field>
                 </div>
-                <div class="form-actions">
-                    <a mat-button routerLink="/" class="btn-cancel">Hủy bỏ</a>
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid" class="btn-save">
-                        <mat-icon>save</mat-icon>
-                        {{ employeeId ? 'Lưu thay đổi' : 'Tạo nhân viên' }}
-                    </button>
-                </div>
-            </form>
-            <div *ngIf="employeeId" class="mt-4">
-                <mat-divider></mat-divider>
+            </div>
+            <div *ngIf="employeeId" class="docs-wrapper">
+                <h4 class="docs-title"><mat-icon>folder_open</mat-icon> Hồ sơ & Tài liệu đính kèm</h4>
                 <app-employee-docs [employeeId]="employeeId"></app-employee-docs>
             </div>
-        </mat-card-content>
+
+            <div class="form-actions">
+                <a mat-button routerLink="/employees" class="btn-cancel">Hủy bỏ</a>
+                <button mat-flat-button color="primary" type="submit" [disabled]="!employeeForm.valid" class="btn-save">
+                    <mat-icon>save</mat-icon>
+                    {{ employeeId ? 'Lưu Thông Tin' : 'Tạo Hồ Sơ' }}
+                </button>
+            </div>
+        </form>
     </mat-card>
 </div>

@@ -1,10 +1,10 @@
-    <mat-toolbar color="primary" class="app-header">
+<mat-toolbar color="primary" class="app-header">
     <div class="branding" routerLink="/">
         <mat-icon class="app-icon">admin_panel_settings</mat-icon>
         <span class="app-title">HR Manager</span>
     </div>
 
-    <div class="nav-links">
+    <div class="nav-links hidden-mobile">
         <a mat-button routerLink="/admin-dashboard" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
             <mat-icon>dashboard</mat-icon> Tổng quan
         </a>
@@ -14,47 +14,66 @@
         <a mat-button routerLink="/announcements" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
             <mat-icon>campaign</mat-icon> Đăng thông báo
         </a>
-        <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon>people</mat-icon>
-            <span class="nav-label">Nhân viên</span>
+        <a mat-button routerLink="/employees" routerLinkActive="active-link">
+            <mat-icon>people</mat-icon> <span class="nav-label">Nhân viên</span>
         </a>
-        
-        <a mat-button routerLink="/profile" routerLinkActive="active-link">
+        <a mat-button routerLink="/my-profile" routerLinkActive="active-link">
             <mat-icon>person</mat-icon> Hồ sơ cá nhân
         </a>
-        
         <a mat-button routerLink="/users" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
-            <mat-icon>manage_accounts</mat-icon>
-            <span class="nav-label">Tài khoản</span>
+            <mat-icon>manage_accounts</mat-icon> <span class="nav-label">Tài khoản</span>
         </a>
         <a mat-button routerLink="/departments" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
             <mat-icon>apartment</mat-icon> Phòng ban
         </a>
-        
         <a mat-button routerLink="/payroll" routerLinkActive="active-link">
             <mat-icon>payments</mat-icon> Lương thưởng
         </a>
-        
         <a mat-button routerLink="/leaves" routerLinkActive="active-link">
             <mat-icon>date_range</mat-icon> Nghỉ phép
         </a>
     </div>
 
     <span class="spacer"></span>
-    
-    <button mat-icon-button (click)="themeService.toggleTheme()" matTooltip="Đổi giao diện Sáng/Tối">
-        <mat-icon>{{ themeService.isDarkTheme() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    <button mat-icon-button class="policy-btn" (click)="openPolicyDialog()" matTooltip="Quy định công ty">
+        <mat-icon>menu_book</mat-icon>
     </button>
+    <button mat-icon-button class="notify-btn" [matMenuTriggerFor]="notifyMenu">
+        <mat-icon [class.has-new]="unreadCount > 0">notifications</mat-icon>
+        <span *ngIf="unreadCount > 0" class="badge-dot">{{ unreadCount }}</span>
+    </button>
+    <mat-menu #notifyMenu="matMenu" class="notify-menu-panel" xPosition="before">
+        <div class="menu-header">
+            <h3>Hộp thư thông báo</h3>
+            <button mat-button color="primary" (click)="markAllAsRead()" *ngIf="unreadCount > 0">Đọc tất cả</button>
+        </div>
 
+        <div class="notify-list">
+            <button mat-menu-item *ngFor="let item of notifications" class="notify-item" [class.unread]="!item.read">
+                <div class="item-icon" [ngClass]="item.type">
+                    <mat-icon *ngIf="item.type === 'salary'">payments</mat-icon>
+                    <mat-icon *ngIf="item.type === 'leave'">event_available</mat-icon>
+                    <mat-icon *ngIf="item.type === 'news'">campaign</mat-icon>
+                </div>
+                <div class="item-content">
+                    <span class="item-title">{{ item.title }}</span>
+                    <span class="item-desc">{{ item.message }}</span>
+                    <span class="item-time">{{ item.time }}</span>
+                </div>
+            </button>
+            
+            <div *ngIf="notifications.length === 0" class="empty-notify">
+                <p>Không có thông báo mới.</p>
+            </div>
+        </div>
+    </mat-menu>
+
+    <!-- USER MENU -->
     <ng-container *ngIf="currentUser$ | async as user; else loginButton">
         <div class="user-profile-menu">
             <span class="welcome-text hidden-mobile">
-                <ng-container *ngIf="user.roles.includes('Admin'); else userRoleInfo">
-                    Admin
-                </ng-container>
-                <ng-template #userRoleInfo>
-                    {{ (user.email || '').split('@')[0] }}
-                </ng-template>
+                <ng-container *ngIf="user.roles.includes('Admin'); else userRoleInfo">Admin</ng-container>
+                <ng-template #userRoleInfo>{{ (user.email || '').split('@')[0] }}</ng-template>
             </span>
             
             <button mat-icon-button [matMenuTriggerFor]="userMenu">
@@ -80,10 +99,13 @@
             <mat-icon>login</mat-icon> Đăng Nhập
         </a>
     </ng-template>
-    </mat-toolbar>
+</mat-toolbar>
 
-    <div class="container">
+<div class="container">
     <router-outlet></router-outlet>
-    </div>
-<app-chat-widget *ngIf="currentUser$ | async"></app-chat-widget>
+</div>
+
+<div class="chat-wrapper" *ngIf="currentUser$ | async">
+    <app-chat-widget></app-chat-widget>
+</div>
 <app-ai-widget></app-ai-widget>

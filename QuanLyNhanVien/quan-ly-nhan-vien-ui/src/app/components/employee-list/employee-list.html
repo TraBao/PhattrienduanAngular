@@ -15,7 +15,11 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <button mat-raised-button color="primary" routerLink="/employees/create" class="btn-add">
+                <button mat-raised-button 
+                        color="primary" 
+                        class="btn-add" 
+                        [disabled]="!isAdmin" 
+                        [routerLink]="isAdmin ? '/employees/create' : null">
                     <mat-icon>add</mat-icon> Thêm nhân viên
                 </button>
             </div>
@@ -26,21 +30,21 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
                     <td mat-cell *matCellDef="let element"> #{{element.id}} </td>
                 </ng-container>
-                    <ng-container matColumnDef="avatar">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <ng-container *ngIf="element.avatarUrl; else defaultAvatar">
-                                <img [src]="getFullUrl(element.avatarUrl)" 
-                                    class="avatar-img-table"
-                                    style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0;">
-                            </ng-container>
-                            <ng-template #defaultAvatar>
-                                <div class="avatar-circle" [style.background-color]="'#3f51b5'">
-                                    {{ element.firstName ? element.firstName.charAt(0).toUpperCase() : '?' }}
-                                </div>
-                            </ng-template>
-                        </td>
-                    </ng-container>
+                <ng-container matColumnDef="avatar">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="element.avatarUrl; else defaultAvatar">
+                            <img [src]="getFullUrl(element.avatarUrl)" 
+                                class="avatar-img-table"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0;">
+                        </ng-container>
+                        <ng-template #defaultAvatar>
+                            <div class="avatar-circle" [style.background-color]="'#3f51b5'">
+                                {{ element.firstName ? element.firstName.charAt(0).toUpperCase() : '?' }}
+                            </div>
+                        </ng-template>
+                    </td>
+                </ng-container>
                 <ng-container matColumnDef="firstName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên </th>
                     <td mat-cell *matCellDef="let element" class="font-bold"> {{element.firstName}} </td>
@@ -59,21 +63,21 @@
                         {{element.salary | currency:'VND':'symbol':'1.0-0'}} 
                     </td>
                 </ng-container>
-                    <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 120px;"> Thao tác </th>
-                        <td mat-cell *matCellDef="let element"> 
-                            <div class="actions-cell">
-                                <ng-container *ngIf="isAdmin">
-                                    <button mat-icon-button color="primary" [routerLink]="['/employees/edit', element.id]" matTooltip="Sửa">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-                                    <button mat-icon-button color="warn" (click)="onDelete(element.id)" matTooltip="Xóa">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                </ng-container>
-                            </div>
-                        </td>
-                    </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 120px;"> Thao tác </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <div class="actions-cell">
+                            <ng-container *ngIf="isAdmin">
+                                <button mat-icon-button color="primary" [routerLink]="['/employees/edit', element.id]" matTooltip="Sửa">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="onDelete(element.id)" matTooltip="Xóa">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </td>
+                </ng-container>
                 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

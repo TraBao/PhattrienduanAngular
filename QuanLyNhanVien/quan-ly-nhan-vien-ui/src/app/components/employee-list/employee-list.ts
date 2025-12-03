@@ -45,6 +45,8 @@ export class EmployeeList implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    this.setupCustomFilter();
+
     this.loadEmployees();
     this.userSub = this.userService.currentUser$.subscribe(user => {
       this.isAdmin = user ? user.roles.includes('Admin') : false;
@@ -65,23 +67,46 @@ export class EmployeeList implements OnInit, OnDestroy, AfterViewInit {
         next: (data) => {
           console.log('Dữ liệu nhân viên:', data);
           this.dataSource.data = data;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
+          }
+          if (this.sort) {
+            this.dataSource.sort = this.sort;
+          }
         },
         error: (err) => console.error('Lỗi tải data:', err)
     });
   }
+  setupCustomFilter() {
+    this.dataSource.filterPredicate = (data: Employee, filter: string) => {
+      const id = data.id.toString();
+      const name = this.removeAccents(data.firstName + ' ' + data.lastName).toLowerCase();
+      const email = data.email.toLowerCase();
+      const salary = data.salary ? data.salary.toString() : '';
+      return id.includes(filter) ||
+            name.includes(filter) ||
+            email.includes(filter) ||
+            salary.includes(filter);
+    };
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // Bỏ dấu từ khóa tìm kiếm trước khi lọc
+    this.dataSource.filter = this.removeAccents(filterValue.trim().toLowerCase());
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
+  removeAccents(str: string): string {
+    return str.normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+  }
   getFullUrl(url: string | undefined): string {
     if (!url) return '';
-    if (url.startsWith('http')) return url; 
+    if (url.startsWith('http')) return url;
     return `${this.baseUrl}${url}`;
   }
 

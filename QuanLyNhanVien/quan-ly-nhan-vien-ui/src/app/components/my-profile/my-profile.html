@@ -1,56 +1,71 @@
-<div class="profile-container" *ngIf="employee; else noData">
-    <mat-card class="profile-card">
-        <div class="profile-header-section">
-            <div class="avatar-wrapper">
-                <img *ngIf="avatarDisplay; else textAvatar" [src]="avatarDisplay" class="avatar-img">
-                
-                <ng-template #textAvatar>
-                    <div class="avatar-placeholder">
-                        {{ employee.firstName.charAt(0) }}
-                    </div>
-                </ng-template>
-                <button mat-mini-fab color="primary" class="upload-btn" (click)="fileInput.click()" matTooltip="Đổi ảnh đại diện">
-                    <mat-icon>camera_alt</mat-icon>
-                </button>
-                <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept="image/*">
+<div class="profile-page-wrapper" *ngIf="employee; else noData">
+    <div class="main-profile-card">
+        <div class="cover-photo"></div>
+        
+        <div class="profile-content">
+            <div class="avatar-section">
+                <div class="avatar-wrapper">
+                    <img *ngIf="avatarDisplay; else textAvatar" [src]="avatarDisplay" class="avatar-img">
+                    <ng-template #textAvatar>
+                        <div class="avatar-placeholder">
+                            {{ employee.firstName.charAt(0) }}
+                        </div>
+                    </ng-template>
+                    
+                    <button mat-icon-button class="upload-btn" (click)="fileInput.click()" matTooltip="Đổi ảnh đại diện">
+                        <mat-icon>camera_alt</mat-icon>
+                    </button>
+                    <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*">
+                </div>
+            </div>
+            <div class="text-center user-identity">
+                <h2 class="user-name">{{ employee.lastName }} {{ employee.firstName }}</h2>
+                <span class="user-role">{{ employee.jobTitle || 'Nhân viên chính thức' }}</span>
+                <p class="user-email"><mat-icon>email</mat-icon> {{ employee.email }}</p>
             </div>
 
-            <div class="header-info">
-                <h2 class="profile-name">{{ employee.lastName }} {{ employee.firstName }}</h2>
-                <p class="profile-email">{{ employee.email }}</p>
+            <mat-divider></mat-divider>
+            <div class="info-grid">
+                <div class="info-box">
+                    <span class="label">Mã nhân viên</span>
+                    <strong class="value">#{{ employee.id }}</strong>
+                </div>
+                <div class="info-box">
+                    <span class="label">Phòng ban</span>
+                    <strong class="value">Phòng {{ employee.departmentId }}</strong>
+                </div>
+                <div class="info-box">
+                    <span class="label">Ngày sinh</span>
+                    <strong class="value">{{ employee.dateOfBirth | date:'dd/MM/yyyy' }}</strong>
+                </div>
+                <div class="info-box">
+                    <span class="label">Số điện thoại</span>
+                    <strong class="value">{{ employee.phone || 'Chưa cập nhật' }}</strong>
+                </div>
+                <div class="info-box full-width">
+                    <span class="label">Địa chỉ</span>
+                    <strong class="value">{{ employee.address || 'Chưa cập nhật' }}</strong>
+                </div>
             </div>
         </div>
-
-        <mat-divider></mat-divider>
-
-        <mat-card-content class="mt-4">
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="label">Phòng ban ID:</span>
-                    <span class="value">{{ employee.departmentId }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">Ngày sinh:</span>
-                    <span class="value">{{ employee.dateOfBirth | date:'dd/MM/yyyy' }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">Mức lương:</span>
-                    <span class="value highlight">*** (Bảo mật)</span>
-                </div>
-            </div>
-
-            <mat-divider class="my-4"></mat-divider>
-
-            <h3>Hồ sơ & Bằng cấp của tôi</h3>
+    </div>
+    <div class="docs-section">
+        <div class="section-header">
+            <mat-icon>folder_shared</mat-icon> Hồ sơ & Bằng cấp
+        </div>
+        
+        <div class="docs-container">
             <app-employee-docs [employeeId]="employee.id"></app-employee-docs>
-
-        </mat-card-content>
-    </mat-card>
+        </div>
+    </div>
 </div>
-
 <ng-template #noData>
-    <div class="p-4 text-center">
-        <h3>Tài khoản này chưa được liên kết với hồ sơ nhân viên nào.</h3>
-        <p>Vui lòng liên hệ Admin để tạo hồ sơ nhân viên cho email: {{ employee?.email }}</p>
+    <div class="empty-state-wrapper">
+        <mat-card class="empty-card">
+            <div class="empty-icon"><mat-icon>person_off</mat-icon></div>
+            <h3>Chưa liên kết hồ sơ</h3>
+            <p>Tài khoản này chưa được liên kết với dữ liệu nhân sự.</p>
+            <p class="sub-text">Vui lòng liên hệ Admin để tạo hồ sơ cho: <strong>{{ employee?.email || 'email này' }}</strong></p>
+        </mat-card>
     </div>
 </ng-template>

@@ -28,7 +28,10 @@ export class AdminAnnouncementsComponent implements OnInit {
   }
 
   createAnnouncement() {
-    if (!this.title || !this.content) return;
+    if (!this.title.trim() || !this.content.trim()) {
+        this.snackBar.open('Vui lòng nhập đầy đủ tiêu đề và nội dung!', 'Đóng', { duration: 2000, panelClass: 'error-snackbar' });
+        return;
+    }
 
     const newNews = {
         title: this.title,
@@ -36,12 +39,18 @@ export class AdminAnnouncementsComponent implements OnInit {
         isImportant: this.isImportant
     };
 
-    this.announcementService.create(newNews).subscribe(() => {
-        this.snackBar.open('Đăng thông báo thành công!', 'Đóng', { duration: 3000 });
-        this.title = '';
-        this.content = '';
-        this.isImportant = false;
-        this.loadAnnouncements();
+    this.announcementService.create(newNews).subscribe({
+        next: () => {
+            this.snackBar.open('Đăng thông báo thành công!', 'OK', { duration: 3000, panelClass: 'success-snackbar' });
+            this.title = '';
+            this.content = '';
+            this.isImportant = false;
+            this.loadAnnouncements();
+        },
+        error: (err) => {
+            console.error(err);
+            this.snackBar.open('Lỗi khi đăng tin!', 'Đóng', { duration: 3000 });
+        }
     });
   }
 
@@ -54,7 +63,7 @@ export class AdminAnnouncementsComponent implements OnInit {
   }
 
   deleteNews(id: number) {
-      if(confirm('Bạn có chắc muốn xóa tin này?')) {
+      if(confirm('Bạn có chắc muốn xóa thông báo này không?')) {
           this.announcementService.delete(id).subscribe(() => {
               this.loadAnnouncements();
               this.snackBar.open('Đã xóa tin.', 'Đóng', { duration: 2000 });

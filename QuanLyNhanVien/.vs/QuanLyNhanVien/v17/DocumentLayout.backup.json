@@ -204,7 +204,7 @@
               "RelativeDocumentMoniker": "QuanLyNhanVien.Api\\Controllers\\AiController.cs",
               "ToolTip": "C:\\Users\\Admin\\OneDrive\\Desktop\\Ph\u00E1t tri\u1EC3n d\u1EF1 \u00E1n Angular\\QuanLyNhanVien\\QuanLyNhanVien.Api\\Controllers\\AiController.cs",
               "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\AiController.cs",
-              "ViewState": "AgIAADYAAAAA0MzMzMz8vxQAAABmAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-29T10:20:14.193Z",
               "EditorCaption": ""
@@ -219,8 +219,7 @@
               "RelativeToolTip": "QuanLyNhanVien.Api\\Models\\AiDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T10:19:40.946Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T10:19:40.946Z"
             },
             {
               "$type": "Document",
@@ -232,8 +231,7 @@
               "RelativeToolTip": "QuanLyNhanVien.Api\\Program.cs",
               "ViewState": "AgIAAAkAAAAAMzMzMzMhwBoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T11:36:24.423Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T11:36:24.423Z"
             },
             {
               "$type": "Document",
@@ -281,8 +279,7 @@
               "RelativeToolTip": "QuanLyNhanVien.Api\\Hubs\\ChatHub.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAuwCAAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-25T05:17:21.961Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-25T05:17:21.961Z"
             },
             {
               "$type": "Document",
@@ -294,8 +291,7 @@
               "RelativeToolTip": "QuanLyNhanVien.Api\\Controllers\\ChatController.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAgwBkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T09:04:35.899Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-26T09:04:35.899Z"
             },
             {
               "$type": "Document",

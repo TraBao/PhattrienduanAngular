@@ -3,8 +3,11 @@ export interface Employee {
     firstName: string;
     lastName: string;
     email: string;
-    dateOfBirth: string;
-    salary: number;
     departmentId: number;
+    dateOfBirth: Date | string;
+    salary: number;
     avatarUrl?: string;
+    jobTitle?: string;
+    phone?: string;
+    address?: string;
 }

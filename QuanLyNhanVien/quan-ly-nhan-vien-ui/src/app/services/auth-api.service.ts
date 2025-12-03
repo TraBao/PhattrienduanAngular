@@ -45,6 +45,6 @@ export class AuthApiService {
     const roleClaim = payload[MICROSOFT_ROLE_CLAIM] || payload.role; 
     const roles = roleClaim ? (Array.isArray(roleClaim) ? roleClaim : [roleClaim]) : [];
 
-    return { email, roles, token };
+    return {id: 0,username: email, email, roles, token };
 }
 }

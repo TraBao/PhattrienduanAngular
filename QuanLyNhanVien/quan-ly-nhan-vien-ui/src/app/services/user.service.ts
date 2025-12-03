@@ -111,9 +111,11 @@ export class UserService {
                     roles = [roleClaim];
                 }
                 const user: User = { 
-                    email: email, 
-                    roles: roles, 
-                    token: token 
+                    id: 0,
+                    username: email,
+                    email: email,
+                    roles: roles,
+                    token: token
                 };
                 this.currentUserSubject.next(user);
             } else {

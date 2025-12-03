@@ -1,45 +1,55 @@
 <div class="dashboard-container">
-    <h2>Tổng quan Hệ thống</h2>
+    <div class="page-header">
+        <h2>Tổng quan Hệ thống</h2>
+        <span class="subtitle">Chào mừng trở lại, Administrator!</span>
+    </div>
     <div class="stats-grid">
-        <mat-card class="stat-card blue">
+        <mat-card class="stat-card card-blue">
             <mat-card-content>
+                <div class="stat-text">
+                    <p class="label">Tổng nhân viên</p>
+                    <h3 class="counter">{{ stats.totalEmployees }}</h3>
+                </div>
                 <div class="icon-box">
                     <mat-icon>people</mat-icon>
                 </div>
-                <div class="stat-info">
-                    <h3>{{ stats.totalEmployees }}</h3>
-                    <p>Tổng nhân viên</p>
-                </div>
             </mat-card-content>
         </mat-card>
-        <mat-card class="stat-card green">
+
+        <mat-card class="stat-card card-green">
             <mat-card-content>
+                <div class="stat-text">
+                    <p class="label">Quỹ lương tháng này</p>
+                    <h3 class="counter">{{ stats.totalSalary | number }} đ</h3>
+                </div>
                 <div class="icon-box">
                     <mat-icon>payments</mat-icon>
                 </div>
-                <div class="stat-info">
-                    <h3>{{ stats.totalSalary | number }} đ</h3>
-                    <p>Quỹ lương tháng này</p>
-                </div>
             </mat-card-content>
         </mat-card>
-        <mat-card class="stat-card orange">
+
+        <mat-card class="stat-card card-orange">
             <mat-card-content>
-                <div class="icon-box">
-                    <mat-icon>notifications</mat-icon>
+                <div class="stat-text">
+                    <p class="label">Đơn chờ duyệt</p>
+                    <h3 class="counter">{{ stats.pendingLeaves }}</h3>
                 </div>
-                <div class="stat-info">
-                    <h3>{{ stats.pendingLeaves }}</h3>
-                    <p>Đơn chờ duyệt</p>
+                <div class="icon-box">
+                    <mat-icon>notifications_active</mat-icon>
+                    <span class="badge" *ngIf="stats.pendingLeaves > 0"></span>
                 </div>
             </mat-card-content>
         </mat-card>
     </div>
-    <div class="charts-section mt-4">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>Phân bổ nhân sự theo phòng ban</mat-card-title>
-            </mat-card-header>
+    <div class="charts-grid-row">
+        <mat-card class="chart-card">
+            <div class="card-header-custom">
+                <div class="header-left">
+                    <mat-icon class="chart-icon">pie_chart</mat-icon>
+                    <mat-card-title>Phân bổ nhân sự</mat-card-title>
+                </div>
+            </div>
+            
             <mat-card-content class="chart-content">
                 <div class="chart-wrapper" *ngIf="chartLoaded">
                     <canvas baseChart
@@ -48,8 +58,27 @@
                             [options]="pieChartOptions">
                     </canvas>
                 </div>
-                <div *ngIf="!chartLoaded" class="loading-text">Đang tải biểu đồ...</div>
             </mat-card-content>
         </mat-card>
+        <mat-card class="chart-card">
+            <div class="card-header-custom">
+                <div class="header-left">
+                    <mat-icon class="chart-icon bar-icon">bar_chart</mat-icon>
+                    <mat-card-title>Biến động chi phí lương</mat-card-title>
+                </div>
+                <span class="year-badge">{{ currentYear }}</span>
+            </div>
+            
+            <mat-card-content class="chart-content">
+                <div class="chart-wrapper">
+                    <canvas baseChart
+                            [data]="barChartData"
+                            [type]="barChartType"
+                            [options]="barChartOptions">
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
     </div>
 </div>

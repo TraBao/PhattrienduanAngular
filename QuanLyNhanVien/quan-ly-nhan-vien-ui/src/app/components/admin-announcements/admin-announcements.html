@@ -1,64 +1,74 @@
-<div class="announcement-container">
-    <mat-card class="create-card">
-        <div class="card-header">
-            <div class="icon-box">
+<div class="page-container">
+    <div class="page-header">
+        <h2>Quản lý Thông báo</h2>
+        <p class="subtitle">Gửi thông tin cập nhật đến toàn thể nhân viên</p>
+    </div>
+    <mat-card class="editor-card">
+        <div class="card-title-box">
+            <div class="icon-bg">
                 <mat-icon>campaign</mat-icon>
             </div>
-            <div>
-                <h2>Tạo Thông Báo Mới</h2>
-                <p>Gửi thông tin cập nhật đến toàn thể nhân viên</p>
-            </div>
+            <span>Soạn tin mới</span>
         </div>
+
         <mat-card-content>
             <form (ngSubmit)="createAnnouncement()">
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="title-field">
                         <mat-label>Tiêu đề thông báo</mat-label>
-                        <mat-icon matPrefix>label</mat-icon>
-                        <input matInput [(ngModel)]="title" name="title" placeholder="Ví dụ: Lịch nghỉ lễ..." required>
+                        <input matInput [(ngModel)]="title" name="title" placeholder="Ví dụ: Lịch nghỉ lễ 30/4..." required>
+                        <mat-icon matSuffix>edit</mat-icon>
                     </mat-form-field>
-                    <div class="checkbox-wrapper">
-                        <mat-checkbox [(ngModel)]="isImportant" name="isImportant" color="warn">
-                            Tin quan trọng!
-                        </mat-checkbox>
+                    <div class="importance-toggle" [class.active]="isImportant" (click)="isImportant = !isImportant">
+                        <mat-icon>{{ isImportant ? 'notifications_active' : 'notifications_none' }}</mat-icon>
+                        <span>{{ isImportant ? 'Tin Quan Trọng!' : 'Tin thường' }}</span>
                     </div>
                 </div>
-                <mat-form-field appearance="outline" class="full-width">
+                <mat-form-field appearance="outline" class="full-width content-field">
                     <mat-label>Nội dung chi tiết</mat-label>
-                    <textarea matInput [(ngModel)]="content" name="content" rows="6" placeholder="Nhập nội dung..." required></textarea>
+                    <textarea matInput [(ngModel)]="content" name="content" rows="6" placeholder="Nhập nội dung thông báo vào đây..." required></textarea>
                 </mat-form-field>
+
                 <div class="form-actions">
-                    <button mat-raised-button color="primary" type="submit" class="btn-post">
-                        <mat-icon>send</mat-icon> Đăng thông báo
+                    <button mat-raised-button color="primary" type="submit" class="btn-post" [disabled]="!title || !content">
+                        <mat-icon>send</mat-icon> Đăng ngay
                     </button>
                 </div>
             </form>
         </mat-card-content>
     </mat-card>
     <div class="history-section">
-        <h3 class="section-title">Tin đã đăng gần đây</h3>
+        <h3 class="section-heading">Tin đã đăng gần đây</h3>
         
         <div class="news-list">
-            <div *ngFor="let news of announcements" class="news-card">
-                <div class="news-icon" [class.important]="news.isImportant">
-                    <mat-icon>{{ news.isImportant ? 'notifications_active' : 'article' }}</mat-icon>
+            <div *ngFor="let news of announcements" class="news-card" [class.important-card]="news.isImportant">
+                <div class="card-icon-col">
+                    <div class="news-icon" [class.important-icon]="news.isImportant">
+                        <mat-icon>{{ news.isImportant ? 'priority_high' : 'article' }}</mat-icon>
+                    </div>
                 </div>
-                
-                <div class="news-content">
+                <div class="card-content-col">
                     <div class="news-header">
                         <span class="news-title">{{ news.title }}</span>
-                        <span class="news-date">{{ news.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                        <span class="badge" *ngIf="news.isImportant">Quan trọng</span>
                     </div>
                     <p class="news-desc">{{ news.content }}</p>
+                    <span class="news-date">
+                        <mat-icon>access_time</mat-icon> {{ news.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                    </span>
                 </div>
-                <button mat-icon-button color="warn" (click)="deleteNews(news.id)" matTooltip="Xóa tin này">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
+                <div class="card-action-col">
+                    <button mat-icon-button color="warn" (click)="deleteNews(news.id)" matTooltip="Xóa tin này">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
             </div>
             <div *ngIf="announcements.length === 0" class="empty-state">
+                <div class="empty-icon">
+                    <mat-icon>inbox</mat-icon>
+                </div>
                 <p>Chưa có thông báo nào được đăng.</p>
             </div>
         </div>
     </div>
-
 </div>

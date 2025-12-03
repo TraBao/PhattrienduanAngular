@@ -10,7 +10,7 @@ namespace QuanLyNhanVien.Api.Controllers
     [ApiController]
     public class AiController : ControllerBase
     {
-        private const string ApiKey = "AIzaSyCEfNT8t0fkjQuuPrOqYSwBk2wR3KoklT8";
+        private const string ApiKey = "AIzaSyCcNOXBwsOoayo3WyeVAu7xaiRvt5OoEAs";
         private const string ApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
         [HttpPost("ask")]

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { EmployeeService, NewEmployee } from '../../services/employee'; 
+import { EmployeeService, NewEmployee } from '../../services/employee';
 import { Employee } from '../../models/employee.model';
 import { MaterialModule } from '../../material-module';
 import { Department } from '../../models/department.model';
@@ -28,7 +28,7 @@ export class EmployeeForm implements OnInit {
   employeeForm: any;
   employeeId: number | null = null;
   departments: Department[] = [];
-  
+
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -40,7 +40,9 @@ export class EmployeeForm implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      dateOfBirth: ['', Validators.required], 
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
+      address: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
       salary: ['', [Validators.required, Validators.min(0)]],
       departmentId: ['', Validators.required]
     });
@@ -50,16 +52,20 @@ export class EmployeeForm implements OnInit {
     this.employeeService.getDepartments().subscribe(data => {
       this.departments = data;
     });
+
     this.route.paramMap.subscribe(params => {
       const idString = params.get('id');
       this.employeeForm.reset();
+      
       if (idString && +idString > 0) {
         this.employeeId = +idString;
         this.loadEmployeeData(this.employeeId);
       } else {
         this.employeeId = null;
         this.employeeForm.patchValue({
-              firstName: '', lastName: '', email: '', dateOfBirth: '', salary: '', departmentId: ''
+          firstName: '', lastName: '', email: '',
+          phone: '', address: '',
+          dateOfBirth: '', salary: '', departmentId: ''
         });
       }
     });
@@ -69,90 +75,85 @@ export class EmployeeForm implements OnInit {
     this.employeeService.getEmployee(id).subscribe({
       next: (employee) => {
         let dateOfBirthValue = employee.dateOfBirth ? new Date(employee.dateOfBirth) : null;
+        
         this.employeeForm.patchValue({
           ...employee,
           dateOfBirth: dateOfBirthValue
-        }); 
+        });
       },
       error: (err) => {
-        console.error('Lỗi khi tải dữ liệu nhân viên:', err);
+        console.error('Lỗi tải dữ liệu nhân viên:', err);
         this.router.navigate(['/']);
       }
     });
   }
+
   handleServerError = (err: any): void => {
     if (err.status === 400 && err.error && err.error.errors) {
-        const serverErrors = err.error.errors;
-        
-        for (const key in serverErrors) {
-            if (serverErrors.hasOwnProperty(key)) {
-                const formControlName = key.charAt(0).toLowerCase() + key.slice(1);
-                
-                const control = this.employeeForm.get(formControlName);
-                if (control) {
-                      control.setErrors({ 'server': serverErrors[key][0] }); 
-                }
-            }
+      const serverErrors = err.error.errors;
+      for (const key in serverErrors) {
+        if (serverErrors.hasOwnProperty(key)) {
+          const formControlName = key.charAt(0).toLowerCase() + key.slice(1);
+          const control = this.employeeForm.get(formControlName);
+          if (control) {
+            control.setErrors({ 'server': serverErrors[key][0] });
+          }
         }
-        this.snackBar.open('Lỗi: Vui lòng kiểm tra lại dữ liệu trên form.', 'Đóng', {
-            duration: 5000, 
-            panelClass: ['error-snackbar']
-        });
-
+      }
+      this.snackBar.open('Vui lòng kiểm tra lại thông tin trên form.', 'Đóng', {
+        duration: 5000, panelClass: ['error-snackbar']
+      });
     } else {
-        this.snackBar.open('Lỗi: Không thể thực hiện thao tác. Vui lòng thử lại.', 'Đóng', {
-            duration: 5000, 
-            panelClass: ['error-snackbar']
-        });
-        console.error('API Error:', err);
+      this.snackBar.open('Có lỗi xảy ra, vui lòng thử lại.', 'Đóng', {
+        duration: 5000, panelClass: ['error-snackbar']
+      });
+      console.error('API Error:', err);
     }
   };
 
   onSubmit(): void {
     if (this.employeeForm.valid) {
-        type EmployeeDataToSave = Omit<Employee, 'id'>; 
-        const formData = this.employeeForm.value as any; 
-        let formattedDateOfBirth: string = ''; 
-        if (formData.dateOfBirth) {
-            const date = new Date(formData.dateOfBirth); 
-            formattedDateOfBirth = date.toISOString().split('T')[0]; 
-        }
-        let employeeToSave: EmployeeDataToSave = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            dateOfBirth: formattedDateOfBirth, 
-            salary: Number(formData.salary), 
-            departmentId: Number(formData.departmentId) 
-        };
-        
-        if (this.employeeId) {
-            const employeeToUpdate: Employee = {
-                ...employeeToSave,
-                id: this.employeeId
-            } as Employee;
+      const formData = this.employeeForm.value;
+      let formattedDateOfBirth = '';
+      if (formData.dateOfBirth) {
+        const date = new Date(formData.dateOfBirth);
+        formattedDateOfBirth = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+                                .toISOString()
+                                .split('T')[0];
+      }
+      const employeeData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        dateOfBirth: formattedDateOfBirth,
+        salary: Number(formData.salary),
+        departmentId: Number(formData.departmentId)
+      };
 
-            this.employeeService.updateEmployee(employeeToUpdate).subscribe({
-                next: () => {
-                    this.snackBar.open(`Cập nhật nhân viên ID ${this.employeeId} thành công!`, 'Đóng', {
-                        duration: 3000, panelClass: ['success-snackbar']
-                    });
-                    this.router.navigate(['/']);
-                },
-                error: this.handleServerError
+      if (this.employeeId) {
+        const updatePayload = { ...employeeData, id: this.employeeId };
+        this.employeeService.updateEmployee(updatePayload).subscribe({
+          next: () => {
+            this.snackBar.open('Cập nhật thành công!', 'OK', {
+              duration: 3000, panelClass: ['success-snackbar']
             });
-
-        } else {
-            this.employeeService.createEmployee(employeeToSave).subscribe({
-                next: (response) => {
-                    this.snackBar.open(`Tạo nhân viên thành công!`, 'Đóng', {
-                        duration: 3000, panelClass: ['success-snackbar']
-                    });
-                    this.router.navigate(['/']);
-                },
-                error: this.handleServerError
+            this.router.navigate(['/employees']);
+          },
+          error: this.handleServerError
+        });
+      } else {
+        this.employeeService.createEmployee(employeeData).subscribe({
+          next: () => {
+            this.snackBar.open('Tạo mới thành công!', 'OK', {
+              duration: 3000, panelClass: ['success-snackbar']
             });
-        }
+            this.router.navigate(['/employees']);
+          },
+          error: this.handleServerError
+        });
+      }
     }
   }
 }

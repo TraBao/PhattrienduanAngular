@@ -1,90 +1,128 @@
-<div class="dashboard-container">
-    <mat-card class="attendance-card">
-        <div class="card-content">
-            <div class="time-section">
-                <h3>Hôm nay là: {{ currentTime | date:'EEEE, dd/MM/yyyy' }}</h3>
-                <div class="digital-clock">
-                    {{ currentTime | date:'HH:mm:ss' }}
-                </div>
-            </div>
+<div class="user-dash-container">
+    <div class="welcome-text">
+        <h2>👋 Xin chào, chúc bạn ngày làm việc hiệu quả!</h2>
+    </div>
 
-            <div class="action-section">
-                <button *ngIf="!todayRecord"
-                        mat-raised-button
-                        class="btn-checkin"
-                        (click)="onCheckIn()">
-                    <mat-icon>login</mat-icon> CHECK-IN
-                </button>
-                <div *ngIf="todayRecord && !todayRecord.checkOutTime" class="working-status">
-                    <p>Bạn đã đến lúc: <strong>{{ todayRecord.checkInTime | date:'HH:mm' }}</strong></p>
-                    <button mat-raised-button
-                            class="btn-checkout"
-                            (click)="onCheckOut()">
-                        <mat-icon>logout</mat-icon> CHECK-OUT
-                    </button>
+    <div class="main-grid">
+        <div class="left-col">
+            <mat-card class="attendance-card">
+                <div class="card-content">
+                    <div class="time-section">
+                        <span class="date-badge">{{ currentTime | date:'EEEE, dd/MM/yyyy' }}</span>
+                        <div class="digital-clock">
+                            {{ currentTime | date:'HH:mm:ss' }}
+                        </div>
+                        <div class="status-indicators">
+                            <span class="status-tag working" *ngIf="todayRecord && !todayRecord.checkOutTime">
+                                <mat-icon>work_history</mat-icon> Đang làm việc
+                            </span>
+                            <span class="status-tag lunch" *ngIf="isLunchBreak">
+                                <mat-icon>restaurant</mat-icon> Giờ nghỉ trưa
+                            </span>
+                        </div>
+                    </div>
+        
+                    <div class="action-section">
+                        <button *ngIf="!todayRecord"
+                                mat-raised-button
+                                class="btn-checkin"
+                                (click)="onCheckIn()">
+                            <mat-icon>login</mat-icon> CHECK-IN NGAY
+                        </button>
+                        <div *ngIf="todayRecord && !todayRecord.checkOutTime" class="working-panel">
+                            <div class="info-row">
+                                <div class="info-item">
+                                    <span class="label">Giờ vào:</span>
+                                    <strong class="value">{{ todayRecord.checkInTime | date:'HH:mm' }}</strong>
+                                    <span class="late-badge" *ngIf="isLateCheck(todayRecord.checkInTime)">MUỘN</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Tiến độ:</span>
+                                    <div class="progress-wrap">
+                                        <mat-progress-bar mode="determinate" [value]="workProgress"></mat-progress-bar>
+                                        <small>{{ workHoursNow | number:'1.1-1' }} / 8h</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button mat-flat-button class="btn-checkout" (click)="onCheckOut()">
+                                <mat-icon>logout</mat-icon> CHECK-OUT
+                            </button>
+                        </div>
+                        <div *ngIf="todayRecord && todayRecord.checkOutTime" class="done-status">
+                            <div class="success-icon"><mat-icon>task_alt</mat-icon></div>
+                            <h3>Tuyệt vời! Bạn đã hoàn thành ngày làm việc.</h3>
+                            <p>Tổng giờ: <b>{{ todayRecord.totalHours }}h</b></p>
+                        </div>
+                    </div>
                 </div>
-                <div *ngIf="todayRecord && todayRecord.checkOutTime" class="done-status">
-                    <mat-icon class="done-icon">task_alt</mat-icon>
-                    <h3>Đã hoàn thành công việc hôm nay!</h3>
-                    <p>Tổng giờ làm: <b>{{ todayRecord.totalHours }} giờ</b></p>
+            </mat-card>
+            <div class="history-section mt-4">
+                <h3 class="section-title">Lịch sử chấm công</h3>
+                <div class="table-card">
+                    <table mat-table [dataSource]="historySource">
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef> Ngày </th>
+                            <td mat-cell *matCellDef="let row"> {{row.date | date:'dd/MM/yyyy'}} </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="checkIn">
+                            <th mat-header-cell *matHeaderCellDef> Giờ đến </th>
+                            <td mat-cell *matCellDef="let row"> 
+                                <span class="time-pill green" [class.red-bg]="isLateCheck(row.checkInTime)">
+                                    {{row.checkInTime | date:'HH:mm'}}
+                                </span>
+                            </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="checkOut">
+                            <th mat-header-cell *matHeaderCellDef> Giờ về </th>
+                            <td mat-cell *matCellDef="let row"> 
+                                <span class="time-pill grey">
+                                    {{ row.checkOutTime ? (row.checkOutTime | date:'HH:mm') : '--:--' }} 
+                                </span>
+                            </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="totalHours">
+                            <th mat-header-cell *matHeaderCellDef> Tổng cộng </th>
+                            <td mat-cell *matCellDef="let row"> 
+                                <span class="hours-badge" *ngIf="row.totalHours">{{ row.totalHours }}h</span>
+                            </td>
+                        </ng-container>
+            
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
                 </div>
             </div>
         </div>
-    </mat-card>
-    <mat-card class="news-card mt-4">
-        <mat-card-header>
-            <mat-card-title>
-                <mat-icon class="align-middle">campaign</mat-icon> Thông báo từ công ty
-            </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="news-list">
-                <div *ngFor="let news of announcements" class="news-row">
-                    <div class="news-icon">
-                        <mat-icon [class.red-icon]="news.isImportant">article</mat-icon>
+        <div class="right-col">
+            <mat-card class="news-card">
+                <mat-card-header>
+                    <mat-card-title>
+                        <mat-icon class="align-middle">campaign</mat-icon> Thông báo mới
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="news-list">
+                        <div *ngFor="let news of announcements" class="news-row">
+                            <div class="news-icon" [class.important-bg]="news.isImportant">
+                                <mat-icon [class.red-icon]="news.isImportant">{{ news.isImportant ? 'priority_high' : 'article' }}</mat-icon>
+                            </div>
+                            <div class="news-content">
+                                <h4 [class.important]="news.isImportant">{{ news.title }}</h4>
+                                <p>{{ news.content }}</p>
+                                <small class="text-muted">{{ news.createdAt | date:'dd/MM HH:mm' }}</small>
+                            </div>
+                        </div>
+                        <div *ngIf="announcements.length === 0" class="empty-state">
+                            Không có thông báo mới.
+                        </div>
                     </div>
-                    <div class="news-content">
-                        <h4 [class.important]="news.isImportant">{{ news.title }}</h4>
-                        <p>{{ news.content }}</p>
-                        <small class="text-muted">{{ news.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
-                    </div>
-                </div>
-                <p *ngIf="announcements.length === 0" class="text-center text-muted p-3">
-                    Hiện không có thông báo mới nào.
-                </p>
-            </div>
-        </mat-card-content>
-    </mat-card>
-    <h3 class="mt-4">Lịch sử chấm công</h3>
-    <div class="table-responsive">
-        <table mat-table [dataSource]="historySource" class="mat-elevation-z2">
-            <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef> Ngày </th>
-                <td mat-cell *matCellDef="let row"> {{row.date | date:'dd/MM/yyyy'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="checkIn">
-                <th mat-header-cell *matHeaderCellDef> Giờ đến </th>
-                <td mat-cell *matCellDef="let row" class="text-green"> {{row.checkInTime | date:'HH:mm'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="checkOut">
-                <th mat-header-cell *matHeaderCellDef> Giờ về </th>
-                <td mat-cell *matCellDef="let row" class="text-red"> 
-                    {{ row.checkOutTime ? (row.checkOutTime | date:'HH:mm') : '--:--' }} 
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="totalHours">
-                <th mat-header-cell *matHeaderCellDef> Tổng giờ </th>
-                <td mat-cell *matCellDef="let row"> 
-                    <span class="hours-badge" *ngIf="row.totalHours">{{ row.totalHours }}h</span>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
 </div>

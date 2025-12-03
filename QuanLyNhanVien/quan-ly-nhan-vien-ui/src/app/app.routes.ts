@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'employees/create', component: EmployeeForm, canActivate: [AuthGuard] },
     { path: 'employees/edit/:id', component: EmployeeForm, canActivate: [AuthGuard] },
-    { path: 'profile', component: MyProfileComponent, canActivate: [AuthGuard] },
+    { path: 'my-profile', component: MyProfileComponent, canActivate: [AuthGuard] },
     { path: 'payroll', component: PayrollComponent, canActivate: [AuthGuard] },
     { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
     { path: 'announcements', component: AdminAnnouncementsComponent, canActivate: [AuthGuard] },

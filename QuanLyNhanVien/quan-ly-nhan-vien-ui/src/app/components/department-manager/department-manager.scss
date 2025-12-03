@@ -1,48 +1,231 @@
-.dept-container {
-    padding: 20px;
-    max-width: 1100px;
-    margin: 0 auto;
+$bg-color: #f3f4f6;
+$primary-color: #3f51b5;
+$border-color: #e5e7eb;
 
-    h2 { color: #3f51b5; margin-bottom: 20px; font-weight: 500; }
+.dept-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+.page-header {
+    margin-bottom: 30px;
+    .title-box {
+        h2 { 
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827; 
+        }
+        .subtitle { 
+            font-size: 14px; 
+            color: #6b7280;
+            margin-top: 4px;
+            display: block;
+        }
+    }
 }
 
 .content-wrapper {
     display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 24px;
+    grid-template-columns: 380px 1fr;
+    gap: 30px;
     align-items: start;
 }
+
 .form-card {
-    padding: 20px;
-    border-radius: 12px;
-    
+    padding: 0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
+    background: white;
+    &.sticky-card {
+        position: sticky;
+        top: 20px;
+    }
+
     .card-header {
-        margin-bottom: 15px;
-        h3 { margin: 0; font-size: 18px; }
+        padding: 24px;
+        background: #fafafa;
+        border-bottom: 1px solid #f3f4f6;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+
+        .header-icon {
+            width: 48px; height: 48px;
+            background: #e8eaf6;
+            color: $primary-color;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            mat-icon { font-size: 28px; width: 28px; height: 28px; }
+        }
+
+        h3 { margin: 0; font-size: 18px; font-weight: 600; color: #333; }
+        .card-desc { margin: 2px 0 0; font-size: 13px; color: #666; }
+    }
+
+    form {
+        padding: 24px;
     }
 }
 
-.full-width { width: 100%; margin-bottom: 10px; }
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+
+    ::ng-deep .mat-mdc-form-field-flex {
+        background-color: #f8f9fa !important;
+        border-radius: 12px !important;
+        border: 1px solid transparent;
+        padding: 0 12px;
+    }
+
+    ::ng-deep .mdc-line-ripple,
+    ::ng-deep .mdc-notched-outline { display: none; }
+    ::ng-deep .mdc-floating-label--float-above {
+        background: white;
+        padding: 0 4px;
+        z-index: 5;
+    }
+
+    &.mat-focused ::ng-deep .mat-mdc-form-field-flex {
+        background-color: white !important;
+        border-color: $primary-color;
+        box-shadow: 0 4px 12px rgba(63, 81, 181, 0.1);
+    }
+
+    mat-icon { color: #9ca3af; margin-right: 8px; }
+}
+
 .actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 12px;
     margin-top: 10px;
+
+    .btn-cancel { border-radius: 8px; }
+    
+    .btn-submit {
+        height: 44px;
+        padding: 0 24px;
+        border-radius: 10px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(63, 81, 181, 0.25);
+    }
 }
 .list-card {
-    padding: 0;
-    border-radius: 12px;
+    padding: 0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02) !important;
     overflow: hidden;
+
+    .list-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid $border-color;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 { margin: 0; font-size: 16px; font-weight: 600; color: #374151; }
+        
+        .badge {
+            background: #e0e7ff;
+            color: $primary-color;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    }
 }
 
-.full-width-table { width: 100%; }
+.table-responsive { overflow-x: auto; }
 
-.bold-text { font-weight: 600; color: #333; }
-.desc-text { color: #666; font-size: 13px; }
-.text-right { text-align: right; }
+table {
+    width: 100%;
+    
+    th.mat-header-cell {
+        background: #fafafa;
+        color: #6b7280;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        padding: 16px 24px;
+        border-bottom: 1px solid $border-color;
+    }
 
-.no-data { padding: 20px; text-align: center; color: #999; }
+    td.mat-cell {
+        padding: 16px 24px;
+        border-bottom: 1px solid #f3f4f6;
+        vertical-align: middle;
+        color: #374151;
+    }
 
-@media (max-width: 768px) {
+    tr.mat-row:hover { background: #f9fafb; }
+}
+.id-badge {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    background: #f3f4f6;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #6b7280;
+}
+.dept-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+}
+
+.desc-text {
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    button {
+        width: 32px; height: 32px;
+        line-height: 32px;
+        border-radius: 8px;
+        padding: 0;
+        
+        &.mat-primary {
+            color: $primary-color;
+            background: rgba(63, 81, 181, 0.1);
+            &:hover { background: rgba(63, 81, 181, 0.2); }
+        }
+
+        &.mat-warn {
+            color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+            &:hover { background: rgba(220, 38, 38, 0.2); }
+        }
+        
+        mat-icon { font-size: 18px; width: 18px; height: 18px; line-height: 18px; }
+    }
+}
+
+.no-data {
+    text-align: center;
+    padding: 60px;
+    color: #9ca3af;
+    
+    mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 10px; opacity: 0.5; }
+    p { margin: 0; font-size: 15px; }
+}
+
+@media (max-width: 900px) {
     .content-wrapper { grid-template-columns: 1fr; }
+    
+    .form-card.sticky-card { position: static; }
 }
