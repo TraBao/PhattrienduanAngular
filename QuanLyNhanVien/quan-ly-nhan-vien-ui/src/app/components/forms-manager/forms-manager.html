@@ -1,0 +1,43 @@
+<div class="forms-container">
+    <div class="header-section">
+        <div>
+            <h2>Kho Biểu Mẫu</h2>
+            <p>Tải xuống các biểu mẫu hành chính nhân sự</p>
+        </div>
+        <button mat-raised-button color="primary" *ngIf="canManageDocuments" (click)="fileInput.click()">
+            <mat-icon>cloud_upload</mat-icon> Tải mẫu mới
+        </button>
+        <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none" 
+                accept=".doc,.docx,.xls,.xlsx,.pdf">
+    </div>
+
+    <div class="files-grid">
+        <div class="file-card" *ngFor="let t of templates">
+            <div class="file-icon" [ngClass]="getFileIconClass(t.fileType)">
+                <mat-icon *ngIf="t.fileType?.includes('doc')">description</mat-icon>
+                <mat-icon *ngIf="t.fileType?.includes('xls')">table_view</mat-icon>
+                <mat-icon *ngIf="t.fileType?.includes('pdf')">picture_as_pdf</mat-icon>
+                <mat-icon *ngIf="!t.fileType">insert_drive_file</mat-icon>
+            </div>
+            
+            <div class="file-info">
+                <div class="file-title" [matTooltip]="t.title">{{ t.title }}</div>
+                <div class="file-meta">{{ t.uploadedDate | date:'dd/MM/yyyy' }} • {{ (t.fileSize / 1024).toFixed(0) }} KB</div>
+            </div>
+
+            <div class="file-actions">
+                <a mat-icon-button color="primary" [href]="getDownloadUrl(t.filePath)" target="_blank" matTooltip="Tải xuống">
+                    <mat-icon>download</mat-icon>
+                </a>
+                <button mat-icon-button color="warn" *ngIf="canManageDocuments" (click)="deleteTemplate(t.id)" matTooltip="Xóa">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="templates.length === 0" class="empty-state">
+        <mat-icon>folder_open</mat-icon>
+        <p>Chưa có biểu mẫu nào.</p>
+    </div>
+</div>

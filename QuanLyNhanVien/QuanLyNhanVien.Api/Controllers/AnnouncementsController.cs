@@ -17,6 +17,7 @@ namespace QuanLyNhanVien.Api.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAnnouncements()
         {
@@ -26,24 +27,42 @@ namespace QuanLyNhanVien.Api.Controllers
                                     .ToListAsync());
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] Announcement model)
         {
+            if (!IsAdmin() && !HasPermission("MANAGE_ANNOUNCEMENTS"))
+            {
+                return Forbid();
+            }
+
             model.CreatedAt = DateTime.Now;
             _context.Announcements.Add(model);
             await _context.SaveChangesAsync();
             return Ok(model);
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (!IsAdmin() && !HasPermission("MANAGE_ANNOUNCEMENTS"))
+            {
+                return Forbid();
+            }
+
             var item = await _context.Announcements.FindAsync(id);
             if (item == null) return NotFound();
 
             _context.Announcements.Remove(item);
             await _context.SaveChangesAsync();
             return Ok(new { Message = "Đã xóa tin." });
+        }
+
+        private bool IsAdmin()
+        {
+            return User.IsInRole("Admin");
+        }
+
+        private bool HasPermission(string permissionCode)
+        {
+            return User.HasClaim(c => c.Type == "permissions" && c.Value.Contains(permissionCode));
         }
     }
 }

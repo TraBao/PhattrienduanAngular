@@ -10,4 +10,7 @@ export interface Employee {
     jobTitle?: string;
     phone?: string;
     address?: string;
+    bankName?: string;
+    bankAccountNumber?: string;
+    bankAccountName?: string;
 }

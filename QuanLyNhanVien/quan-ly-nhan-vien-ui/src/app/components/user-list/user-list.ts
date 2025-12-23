@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { PermissionDialogComponent } from '../permission-dialog/permission-dialog';
 
 @Component({
   selector: 'app-user-list',
@@ -16,8 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user-list.scss']
 })
 export class UserListComponent implements OnInit, AfterViewInit {
-  
-  displayedColumns: string[] = ['email', 'roles', 'actions'];
+  displayedColumns: string[] = ['email', 'roles', 'permissions', 'actions'];
   dataSource: MatTableDataSource<UserInfo> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -28,13 +28,16 @@ export class UserListComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {}
+
   ngOnInit(): void {
     this.loadUsers();
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
   loadUsers() {
     this.userService.getAllUsers().subscribe({
       next: (users) => {
@@ -45,13 +48,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error(err);
-        this.snackBar.open('Lỗi kết nối: Không thể tải danh sách tài khoản.', 'Đóng', { 
-            duration: 3000, 
-            panelClass: ['error-snackbar'] 
+        this.snackBar.open('Lỗi kết nối: Không thể tải danh sách tài khoản.', 'Đóng', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
         });
       }
     });
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -60,6 +64,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
   toggleRole(user: UserInfo) {
     const isCurrentlyAdmin = user.roles.includes('Admin');
     const newRoles = isCurrentlyAdmin ? ['User'] : ['Admin', 'User'];
@@ -83,5 +88,37 @@ export class UserListComponent implements OnInit, AfterViewInit {
             }
         });
     }
+  }
+  openPermissionDialog(user: UserInfo) {
+    if (user.roles.includes('Admin')) {
+        this.snackBar.open('Tài khoản Admin đã có toàn quyền truy cập.', 'Đóng', { duration: 2000 });
+        return;
+    }
+
+    const dialogRef = this.dialog.open(PermissionDialogComponent, {
+        width: '450px',
+        disableClose: true,
+        data: { 
+            email: user.email,
+            permissions: user.permissions
+        }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+            this.userService.updatePermissions(user.id, result).subscribe({
+                next: () => {
+                    this.snackBar.open('Cập nhật quyền hạn thành công!', 'Đóng', { 
+                        duration: 3000, panelClass: ['success-snackbar'] 
+                    });
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBar.open('Lỗi: Không thể lưu quyền hạn.', 'Đóng', { panelClass: ['error-snackbar'] });
+                }
+            });
+        }
+    });
   }
 }

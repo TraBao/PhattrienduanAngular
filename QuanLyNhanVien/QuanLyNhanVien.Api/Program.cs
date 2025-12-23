@@ -1,19 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuanLyNhanVien.Api.Data;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
-using System.Threading.Tasks;
+using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Hubs;
+using QuanLyNhanVien.Api.Models;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
@@ -24,7 +28,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,10 +68,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("http://localhost:4200", "http://localhost:8080")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowCredentials()
+                  .SetIsOriginAllowedToAllowWildcardSubdomains();
         });
 });
 
@@ -83,7 +87,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
@@ -104,7 +107,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseCors("AllowAngularApp");
@@ -114,16 +119,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapFallbackToFile("index.html");
 
 app.Run();
 
 static async Task CreateRolesAndAdmin(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     string[] roleNames = { "Admin", "User" };
     foreach (var roleName in roleNames)
@@ -141,12 +144,19 @@ static async Task CreateRolesAndAdmin(IServiceProvider serviceProvider)
 
     if (adminUser == null)
     {
-        var newAdmin = new IdentityUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+        var newAdmin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
         var result = await userManager.CreateAsync(newAdmin, adminPassword);
 
         if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(newAdmin, "Admin");
         }
+    }
+}
+public class EmailBasedUserIdProvider : IUserIdProvider
+{
+    public string? GetUserId(HubConnectionContext connection)
+    {
+        return connection.User?.Identity?.Name;
     }
 }

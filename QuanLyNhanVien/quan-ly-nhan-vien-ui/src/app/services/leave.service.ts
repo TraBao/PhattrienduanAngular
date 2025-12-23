@@ -7,21 +7,24 @@
     providedIn: 'root'
     })
     export class LeaveService {
-    private apiUrl = 'http://localhost:5195/api/LeaveRequests'; 
+    private apiUrl = 'http://localhost:8080/api/LeaveRequests';
 
     constructor(private http: HttpClient) { }
     getMyLeaves(): Observable<LeaveRequest[]> {
         return this.http.get<LeaveRequest[]>(`${this.apiUrl}/my-leaves`);
     }
-    createRequest(data: CreateLeaveDto): Observable<any> {
+    getAllLeaves(status: string = '', page: number = 1, pageSize: number = 10): Observable<any> {
+        return this.http.get(`${this.apiUrl}/all?status=${status}&page=${page}&pageSize=${pageSize}`);
+    }
+
+    createRequest(data: any): Observable<any> {
         return this.http.post(this.apiUrl, data);
     }
-    getAllLeaves(): Observable<LeaveRequest[]> {
-        return this.http.get<LeaveRequest[]>(`${this.apiUrl}/all`);
-    }
-    updateStatus(data: UpdateLeaveStatusDto): Observable<any> {
+
+    updateStatus(data: { requestId: number, status: string, adminComment: string }): Observable<any> {
         return this.http.post(`${this.apiUrl}/update-status`, data);
     }
+
     deleteRequest(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AiWidget } from './ai-widget';
+import { AiWidgetComponent } from './ai-widget';
 
 describe('AiWidget', () => {
-  let component: AiWidget;
-  let fixture: ComponentFixture<AiWidget>;
+  let component: AiWidgetComponent;
+  let fixture: ComponentFixture<AiWidgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AiWidget]
+      imports: [AiWidgetComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AiWidget);
+    fixture = TestBed.createComponent(AiWidgetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

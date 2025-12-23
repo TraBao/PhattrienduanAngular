@@ -40,9 +40,9 @@ export class RegisterComponent implements OnInit {
 
       this.authApiService.register(request).subscribe({
         next: (res) => {
-          this.snackBar.open('Đăng ký thành công! Vui lòng đăng nhập.', 'Đóng', { 
-            duration: 3000, 
-            panelClass: ['success-snackbar'] 
+          this.snackBar.open('Đăng ký thành công! Vui lòng đăng nhập.', 'Đóng', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
           });
           this.router.navigate(['/login']);
         },

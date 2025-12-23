@@ -6,7 +6,7 @@ import { DOCUMENT } from '@angular/common';
     })
     export class ThemeService {
     private renderer: Renderer2;
-    private currentTheme: string = 'light-theme'; // Default theme
+    private currentTheme: string = 'light-theme';
 
     constructor(
         rendererFactory: RendererFactory2,
@@ -25,14 +25,13 @@ import { DOCUMENT } from '@angular/common';
         this.setTheme(newTheme);
     }
     private setTheme(newTheme: string): void {
-        this.renderer.removeClass(this.document.body, this.currentTheme); 
-        this.renderer.addClass(this.document.body, newTheme); 
+        this.renderer.removeClass(this.document.body, this.currentTheme);
+        this.renderer.addClass(this.document.body, newTheme);
         
         this.currentTheme = newTheme;
         localStorage.setItem('theme', newTheme);
     }
 
-    // 4. Kiểm tra trạng thái hiện tại
     isDarkTheme(): boolean {
         return this.currentTheme === 'dark-theme';
     }

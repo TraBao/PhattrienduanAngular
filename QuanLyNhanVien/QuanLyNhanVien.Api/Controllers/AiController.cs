@@ -2,16 +2,26 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AiController : ControllerBase
     {
-        private const string ApiKey = "AIzaSyCcNOXBwsOoayo3WyeVAu7xaiRvt5OoEAs";
+        private readonly AppDbContext _context;
+        private const string ApiKey = "AIzaSyAgkSxWnbex_unAxDkF96FUU4uQ90ebBdA";
         private const string ApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+
+        public AiController(AppDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpPost("ask")]
         public async Task<IActionResult> AskAi([FromBody] AiRequest request)
@@ -19,56 +29,61 @@ namespace QuanLyNhanVien.Api.Controllers
             try
             {
                 if (string.IsNullOrEmpty(request.Prompt)) return BadRequest("Vui lòng nhập câu hỏi.");
+                var totalEmployees = await _context.Employees.CountAsync();
+                var pendingLeaves = await _context.LeaveRequests.CountAsync(l => l.Status == "Pending");
+                var todayLates = await _context.Attendances
+                    .CountAsync(a => a.Date == DateTime.Today && a.Status.Contains("Late"));
+                var totalSalary = await _context.Payrolls
+                    .Where(p => p.Month == DateTime.Now.Month && p.Year == DateTime.Now.Year)
+                    .SumAsync(p => p.NetSalary);
+
+                string systemData = $@"
+                    DỮ LIỆU HỆ THỐNG THỜI GIAN THỰC:
+                    - Tổng số nhân viên: {totalEmployees}
+                    - Đơn nghỉ phép đang chờ duyệt: {pendingLeaves}
+                    - Số người đi muộn hôm nay: {todayLates}
+                    - Tổng quỹ lương tháng {DateTime.Now.Month}: {totalSalary:N0} VNĐ
+                ";
+
                 string companyContext = @"
-            BẠN LÀ TRỢ LÝ ẢO CỦA HỆ THỐNG QUẢN LÝ NHÂN SỰ (HRM).
-            Hãy trả lời dựa trên các quy định sau:
-            - Giờ làm việc: 8:00 sáng đến 17:00 chiều (Thứ 2 đến Thứ 6).
-            - Quy định đi muộn: Check-in sau 8:15 bị tính là đi muộn.
-            - Chính sách nghỉ phép: Nhân viên chính thức có 12 ngày phép/năm.
-            - Lương thưởng: Lương được chi trả vào ngày 5 hàng tháng qua chuyển khoản.
-            - Bảo hiểm: Công ty đóng full BHXH cho nhân viên ký HĐLĐ trên 6 tháng.
-            
-            LƯU Ý: Trả lời ngắn gọn, thân thiện, xưng hô là 'mình' hoặc 'hệ thống'.
-        ";
-                string userContext = $"Người đang hỏi bạn là: {request.UserName ?? "Ẩn danh"} - Chức vụ: {request.Role ?? "Nhân viên"}";
+                    BẠN LÀ TRỢ LÝ ẢO HRM THÔNG MINH.
+                    Quy định: Làm từ 8h-17h. Đi muộn sau 8h15. 12 ngày phép/năm.
+                    Lương trả ngày 5 hàng tháng.
+                ";
+
                 string finalPrompt = $@"
-            {companyContext}
-            {userContext}
-            --------------------------------
-            Câu hỏi: {request.Prompt}
-        ";
+                    {companyContext}
+                    {systemData}
+                    Người hỏi: {request.UserName} (Quyền: {request.Role})
+                    Câu hỏi: {request.Prompt}
+                    Lưu ý: Nếu người hỏi là Admin, hãy cho phép họ biết các số liệu hệ thống. Nếu là Nhân viên, chỉ trả lời quy định chung.
+                ";
 
                 using var client = new HttpClient();
-                var payload = new
-                {
-                    contents = new[]
-                    {
-                new { parts = new[] { new { text = finalPrompt } } }
-            }
-                };
-
+                var payload = new { contents = new[] { new { parts = new[] { new { text = finalPrompt } } } } };
                 var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
                 var response = await client.PostAsync($"{ApiUrl}?key={ApiKey}", jsonContent);
                 var responseString = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"Status: {response.StatusCode}");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"Error: {responseString}");
-                    return StatusCode((int)response.StatusCode, responseString);
-                }
+                if (!response.IsSuccessStatusCode) return StatusCode((int)response.StatusCode, responseString);
 
                 var jsonNode = JsonNode.Parse(responseString);
                 string aiAnswer = jsonNode?["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
 
-                return Ok(new AiResponse { Answer = aiAnswer ?? "AI không trả lời được." });
+                return Ok(new { Answer = aiAnswer ?? "Mình đang suy nghĩ, bạn hỏi lại nhé!" });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"SERVER ERROR: {ex.Message}");
                 return StatusCode(500, ex.Message);
             }
         }
+    }
+
+    public class AiRequest
+    {
+        public string Prompt { get; set; } = "";
+        public string? UserName { get; set; }
+        public string? Role { get; set; }
     }
 }

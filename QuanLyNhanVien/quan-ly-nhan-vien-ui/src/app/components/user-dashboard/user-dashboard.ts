@@ -19,12 +19,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class UserDashboardComponent implements OnInit, OnDestroy {
   todayRecord: Attendance | null = null;
   historySource = new MatTableDataSource<Attendance>();
-  displayedColumns: string[] = ['date', 'checkIn', 'checkOut', 'totalHours'];
+  displayedColumns: string[] = ['date', 'checkIn', 'checkOut', 'totalHours', 'status'];
   
   currentTime: Date = new Date();
   private timer: any;
   announcements: Announcement[] = [];
-  workHoursNow: number = 0; 
+  workHoursNow: number = 0;
   workProgress: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -118,15 +118,36 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     if (h === 13 && m <= 30) return true;
     return false;
   }
-  calculateWorkProgress(checkInTimeStr: any) {
+    calculateWorkProgress(checkInTimeStr: any) {
       if(!checkInTimeStr) return;
+      
       const start = new Date(checkInTimeStr).getTime();
       const now = this.currentTime.getTime();
-      const diffMs = now - start;
+      let diffMs = now - start;
+      const currentH = this.currentTime.getHours();
+      const currentM = this.currentTime.getMinutes();
+      if (currentH > 13 || (currentH === 13 && currentM > 30)) {
+          diffMs -= (1.5 * 60 * 60 * 1000); 
+      }
+
       const hours = diffMs / (1000 * 60 * 60);
-      
       this.workHoursNow = hours > 0 ? hours : 0;
       this.workProgress = (this.workHoursNow / 8) * 100;
       if(this.workProgress > 100) this.workProgress = 100;
+  }
+  getStatusLabel(status: string): string {
+    if (!status) return 'Đúng giờ';
+    if (status === 'OnTime') return 'Đúng giờ';
+    if (status === 'Late') return 'Đi muộn';
+    if (status === 'EarlyLeave') return 'Về sớm';
+    if (status.includes('Late') && status.includes('EarlyLeave')) return 'Muộn & Về sớm';
+    return 'Vi phạm';
+  }
+  getStatusClass(status: string): string {
+      if (!status) return 'status-success';
+      if (status === 'OnTime') return 'status-success';
+      if (status === 'Late') return 'status-warning';
+      if (status === 'EarlyLeave') return 'status-info';
+      return 'status-danger';
   }
 }

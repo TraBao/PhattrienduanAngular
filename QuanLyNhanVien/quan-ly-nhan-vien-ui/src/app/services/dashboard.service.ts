@@ -1,12 +1,12 @@
-    import { Injectable } from '@angular/core';
-    import { HttpClient } from '@angular/common/http';
-    import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
     @Injectable({
     providedIn: 'root'
     })
     export class DashboardService {
-    private apiUrl = 'http://localhost:5195/api/Dashboard';
+    private apiUrl = 'http://localhost:8080/api/Dashboard';
 
     constructor(private http: HttpClient) { }
 
@@ -14,6 +14,6 @@
         return this.http.get(`${this.apiUrl}/stats`);
     }
     getSalaryGrowth(year: number): Observable<number[]> {
-    return this.http.get<number[]>(`${this.apiUrl}/salary-growth?year=${year}`);
-}
-}
+        return this.http.get<number[]>(`${this.apiUrl}/salary-growth/${year}`);
+    }
+    }

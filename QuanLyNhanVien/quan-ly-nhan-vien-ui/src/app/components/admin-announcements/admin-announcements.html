@@ -3,14 +3,13 @@
         <h2>Quản lý Thông báo</h2>
         <p class="subtitle">Gửi thông tin cập nhật đến toàn thể nhân viên</p>
     </div>
-    <mat-card class="editor-card">
+    <mat-card class="editor-card" *ngIf="canManageAnnouncements">
         <div class="card-title-box">
             <div class="icon-bg">
                 <mat-icon>campaign</mat-icon>
             </div>
             <span>Soạn tin mới</span>
         </div>
-
         <mat-card-content>
             <form (ngSubmit)="createAnnouncement()">
                 <div class="form-row">
@@ -28,7 +27,6 @@
                     <mat-label>Nội dung chi tiết</mat-label>
                     <textarea matInput [(ngModel)]="content" name="content" rows="6" placeholder="Nhập nội dung thông báo vào đây..." required></textarea>
                 </mat-form-field>
-
                 <div class="form-actions">
                     <button mat-raised-button color="primary" type="submit" class="btn-post" [disabled]="!title || !content">
                         <mat-icon>send</mat-icon> Đăng ngay
@@ -58,7 +56,7 @@
                     </span>
                 </div>
                 <div class="card-action-col">
-                    <button mat-icon-button color="warn" (click)="deleteNews(news.id)" matTooltip="Xóa tin này">
+                    <button mat-icon-button color="warn" *ngIf="canManageAnnouncements" (click)="deleteNews(news.id)" matTooltip="Xóa tin này">
                         <mat-icon>delete_outline</mat-icon>
                     </button>
                 </div>

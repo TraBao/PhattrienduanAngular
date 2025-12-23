@@ -1,10 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '../../material-module';
+import { MaterialModule } from '../../material-module'; 
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { ChatService } from '../../services/chat.service';
+import { MatSelectModule } from '@angular/material/select';
+import { ChatService, MessageType } from '../../services/chat.service';
 import { UserService } from '../../services/user.service';
 import { EmployeeService } from '../../services/employee';
 import { DepartmentService } from '../../services/department.service';
@@ -16,29 +16,31 @@ import { Subscription } from 'rxjs';
   imports: [
     CommonModule, 
     FormsModule, 
-    MaterialModule, 
-    MatTooltipModule, 
+    MaterialModule,
+    MatTooltipModule,
     MatSelectModule
   ],
   templateUrl: './chat-widget.html',
   styleUrls: ['./chat-widget.scss']
 })
-export class ChatWidgetComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatWidgetComponent implements OnInit, OnDestroy {
   isOpen = false;
   txtMessage = '';
   messages: any[] = [];
-  currentUser = '';
-  
-  activeTab: 'global' | 'dept' = 'global';
-  currentViewingDeptId: string | null = null;
-  selectedDeptId: number | null = null;
-  
-  myDeptName: string = '';
-  isAdmin: boolean = false;
-  departments: any[] = [];
-  
-  private chatSub!: Subscription;
+  currentUserEmail = ''; 
+  currentUserId = '';
+  isAdmin = false;
 
+  activeTab: 'global' | 'dept' | 'private' = 'global';
+  currentViewingDeptId: string | null = null;
+  departments: any[] = [];
+  myDeptName: string = '';
+  employees: any[] = [];
+  filteredEmployees: any[] = [];
+  searchQuery: string = '';
+  selectedUserChat: any = null;
+
+  private subs = new Subscription();
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
   constructor(
@@ -50,201 +52,260 @@ export class ChatWidgetComponent implements OnInit, AfterViewChecked, OnDestroy 
 
   ngOnInit(): void {
     this.identifyUser();
-    
-    this.chatSub = this.chatService.messageReceived.subscribe((msg: any) => {
-      if (msg) {
-        this.handleIncomingMessage(msg);
-      }
+    this.chatService.startConnection().then(() => {
+        if (this.activeTab === 'global') {
+            this.chatService.joinGeneralChat();
+        }
     });
+    this.subs.add(this.chatService.messageReceived.subscribe(msg => {
+        if (msg) this.handleIncomingMessage(msg);
+    }));
+    this.subs.add(this.chatService.reactionReceived.subscribe(react => {
+        if (react) this.handleIncomingReaction(react);
+    }));
   }
 
   ngOnDestroy(): void {
-    if (this.chatSub) this.chatSub.unsubscribe();
+    this.subs.unsubscribe();
   }
-
-  identifyUser() {
-    const u = this.userService.getCurrentUserValue();
-    if (u && u.email) {
-        this.currentUser = u.email;
-        this.isAdmin = u.roles.includes('Admin');
-        this.initData();
-        return;
-    }
+  identifyUser(): void {
     const token = localStorage.getItem('jwtToken');
     if (token) {
-        const decoded = this.parseJwt(token);
-        if (decoded) {
-            console.log('🔍 Decoded Token:', decoded);
-            this.currentUser = decoded['email'] || 
-                                decoded['unique_name'] || 
-                                decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || 
-                                decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
-                                decoded['sub'];
-            const roleClaim = decoded['role'] || decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-            this.isAdmin = Array.isArray(roleClaim) ? roleClaim.includes('Admin') : roleClaim === 'Admin';
-            
-            console.log('✅ Identified User:', this.currentUser);
-            
-            if (this.currentUser) {
-                this.initData();
-            }
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('🔍 Token Payload Raw:', payload);
+        let foundEmail = '';
+        if (payload.email) foundEmail = payload.email;
+        else if (payload.Email) foundEmail = payload.Email;
+        else if (payload.unique_name) foundEmail = payload.unique_name;
+        else if (payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']) {
+            foundEmail = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
         }
-    }
-  }
-
-  initData() {
-    if (this.activeTab === 'global') {
-        this.loadHistory(null);
-    }
-
-    if (this.isAdmin) {
-        this.loadAllDepartments();
-    } else {
-        this.loadMyDepartment();
-    }
-  }
-
-  loadAllDepartments() {
-    this.deptService.getAll().subscribe(data => {
-        this.departments = data || [];
-        if (this.departments.length > 0) {
-            this.selectedDeptId = this.departments[0].id;
-            this.currentViewingDeptId = `Dept_${this.departments[0].id}`;
-            this.myDeptName = this.departments[0].name;
-            if (this.activeTab === 'dept') {
-                this.chatService.joinGroup(this.currentViewingDeptId);
-                this.loadHistory(this.currentViewingDeptId);
-            }
+        else if (payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']) {
+            foundEmail = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
         }
-    });
-  }
+        else if (payload.sub && payload.sub.includes('@')) {
+            foundEmail = payload.sub;
+        }
 
-  onAdminChangeDept(event: MatSelectChange) {
-      const deptId = event.value;
-      this.selectedDeptId = deptId;
-      
-      const dept = this.departments.find(d => d.id === deptId);
-      if (dept) {
-          const groupId = `Dept_${dept.id}`;
-          this.currentViewingDeptId = groupId;
-          this.myDeptName = dept.name;
-          
-          this.chatService.joinGroup(groupId);
-          this.loadHistory(groupId);
+        this.currentUserEmail = foundEmail;
+        const role = payload.role || payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
+        
+        console.log(`✅ Đã nhận diện: ${this.currentUserEmail} (Admin: ${this.isAdmin})`);
+
+        if (this.currentUserEmail) this.initData();
+      } catch (e) {
+        console.error('Lỗi đọc token:', e);
       }
+    }
   }
 
-  loadMyDepartment() {
-    this.employeeService.getMyProfile().subscribe({
-        next: (emp) => {
-            if (emp && emp.departmentId) {
-                const groupId = `Dept_${emp.departmentId}`;
-                this.currentViewingDeptId = groupId;
-                this.myDeptName = 'Phòng ban của tôi';
-                
-                // User thường thì join luôn
-                this.chatService.joinGroup(groupId);
-            }
-        },
-        error: () => console.log('Không lấy được thông tin nhân viên')
-    });
+  initData(): void {
+    this.loadEmployees();
+    this.loadAllDepartments();
+    this.switchTab('global');
   }
-
-  switchTab(tab: 'global' | 'dept') {
-      this.activeTab = tab;
-      
-      if (tab === 'dept') {
-          if (this.currentViewingDeptId) {
-              this.chatService.joinGroup(this.currentViewingDeptId);
-              this.loadHistory(this.currentViewingDeptId);
-          } else if (this.isAdmin && this.selectedDeptId) {
-              this.onAdminChangeDept({ value: this.selectedDeptId } as MatSelectChange);
-          }
-      } else {
-          this.loadHistory(null);
-      }
-  }
-
-  loadHistory(receiver: string | null) {
+  switchTab(tab: 'global' | 'dept' | 'private') {
+    this.activeTab = tab;
     this.messages = [];
-    this.chatService.getChatHistory(receiver).subscribe(data => {
-        this.messages = data || [];
-        setTimeout(() => this.scrollToBottom(), 200);
+    this.currentViewingDeptId = null;
+    this.selectedUserChat = null;
+
+    if (tab === 'global') {
+        this.chatService.joinGeneralChat();
+        this.loadHistory(null, MessageType.General);
+    } 
+    else if (tab === 'dept') {
+        if (!this.isAdmin) {
+            this.loadMyDepartment();
+        } else {
+            this.loadAllDepartments();
+        }
+    }
+  }
+  loadAllDepartments(): void {
+    this.deptService.getAll().subscribe({
+      next: (res: any) => {
+        console.log('🏢 Departments API Response:', res);
+        let data = [];
+        if (Array.isArray(res)) {
+            data = res;
+        } else if (res && Array.isArray(res.data)) {
+            data = res.data;
+        } else if (res && Array.isArray(res.result)) {
+            data = res.result;
+        }
+
+        this.departments = data;
+        
+        if (this.departments.length === 0) {
+            console.warn('⚠️ Không tìm thấy phòng ban nào trong DB.');
+        }
+      },
+      error: (err) => console.error('❌ Lỗi load phòng ban:', err)
     });
   }
 
-  handleIncomingMessage(msg: any) {
-      const isGlobalMsg = !msg.receiver; 
-      const isDeptMsg = msg.receiver === this.currentViewingDeptId;
+  loadEmployees(): void {
+    this.employeeService.getEmployees('', 1, 1000).subscribe({
+      next: (res: any) => {
+        console.log('👥 API Nhân viên trả về:', res);
 
-      if ((this.activeTab === 'global' && isGlobalMsg) || 
-          (this.activeTab === 'dept' && isDeptMsg)) {
-          
-          const exists = this.messages.some(m => 
-              m.user === msg.user && 
-              m.message === msg.message && 
-              Math.abs(new Date(m.time).getTime() - new Date(msg.time).getTime()) < 1000
-          );
-
-          if (!exists) {
-              this.messages.push(msg);
-              setTimeout(() => this.scrollToBottom(), 100);
-          }
-      }
+        let dataArray = [];
+        if (Array.isArray(res)) {
+            dataArray = res;
+        } 
+        else if (typeof res === 'object') {
+            if (Array.isArray(res.data)) dataArray = res.data;
+            else if (Array.isArray(res.Data)) dataArray = res.Data;
+            else if (Array.isArray(res.items)) dataArray = res.items;
+            else if (Array.isArray(res.result)) dataArray = res.result;
+            else if (Array.isArray(res.users)) dataArray = res.users;
+            else if (Array.isArray(res.employees)) dataArray = res.employees; 
+        }
+        this.employees = dataArray.filter((e: any) => {
+            const eMail = e.email || e.Email;
+            return eMail && this.currentUserEmail && 
+                    eMail.toLowerCase() !== this.currentUserEmail.toLowerCase();
+        });
+        
+        this.filteredEmployees = [...this.employees];
+        console.log(`✅ Đã load được ${this.filteredEmployees.length} đồng nghiệp.`);
+      },
+      error: (err) => console.error('❌ Lỗi API Nhân viên:', err)
+    });
   }
 
-  sendMessage() {
+loadMyDepartment(): void {
+    this.employeeService.getMyProfile().subscribe((emp: any) => {
+        const deptId = emp.departmentId || emp.DepartmentId;
+        const deptName = emp.departmentName || emp.DepartmentName || 'Phòng của tôi';
+
+        if (deptId) {
+            this.selectDeptChannel({ id: deptId, name: deptName });
+        }
+    });
+  }
+
+  selectDeptChannel(dept: any): void {
+      this.currentViewingDeptId = dept.id.toString();
+      this.myDeptName = dept.name;
+      this.chatService.joinDepartmentChat(this.currentViewingDeptId);
+      this.loadHistory(this.currentViewingDeptId, MessageType.Department);
+  }
+
+  selectUserToChat(emp: any): void {
+      this.selectedUserChat = emp;
+      this.loadHistory(emp.email, MessageType.Private);
+  }
+  loadHistory(receiverId: string | null, type: MessageType): void {
+    this.chatService.getChatHistory(receiverId, type).subscribe(data => {
+        const history = data || [];
+        this.messages = history.map((m: any) => {
+            if (m.isMe === undefined) {
+                m.isMe = this.checkIsMe(m.user || m.SenderEmail);
+            }
+            return m;
+        });
+
+        setTimeout(() => this.scrollToBottom(), 100);
+    });
+  }
+
+  handleIncomingMessage(msg: any): void {
+        const type = msg.type;
+        const receiver = msg.receiver;
+        const sender = msg.user;
+
+        if (msg.isMe === undefined) {
+            msg.isMe = this.checkIsMe(sender);
+        }
+
+        let shouldAdd = false;
+        if (this.activeTab === 'global' && type === MessageType.General) {
+            shouldAdd = true;
+        } 
+        else if (this.activeTab === 'dept' && type === MessageType.Department && receiver == this.currentViewingDeptId) {
+            shouldAdd = true;
+        } 
+        else if (this.activeTab === 'private' && type === MessageType.Private) {
+             const isFromContact = this.selectedUserChat && sender === this.selectedUserChat.email;
+             const isFromMeToContact = this.selectedUserChat && sender === this.currentUserEmail && receiver === this.selectedUserChat.email;
+             
+             if (isFromContact || isFromMeToContact) shouldAdd = true;
+        }
+
+        if (shouldAdd) {
+            this.messages.push(msg);
+            setTimeout(() => this.scrollToBottom(), 50);
+        }
+    }
+  checkIsMe(senderEmail: string): boolean {
+      if (!senderEmail || !this.currentUserEmail) return false;
+      return senderEmail.toLowerCase() === this.currentUserEmail.toLowerCase();
+  }
+
+  sendMessage(): void {
     if (!this.txtMessage.trim()) return;
-    if (!this.currentUser) {
-        this.identifyUser();
-    }
 
-    if (!this.currentUser) {
-        alert('Lỗi: Không xác định được người dùng. Vui lòng đăng nhập lại.');
-        return;
-    }
-
-    let receiver: string | null = null;
+    let type = MessageType.General;
+    let receiverId: string | null = null;
 
     if (this.activeTab === 'dept') {
-        if (!this.currentViewingDeptId) {
-            alert(this.isAdmin ? 'Vui lòng chọn phòng ban.' : 'Bạn chưa thuộc phòng ban nào.');
-            return;
-        }
-        receiver = this.currentViewingDeptId;
+        type = MessageType.Department;
+        receiverId = this.currentViewingDeptId;
+    } else if (this.activeTab === 'private') {
+        type = MessageType.Private;
+        receiverId = this.selectedUserChat?.email;
     }
 
-    this.chatService.sendMessage(this.currentUser, this.txtMessage, receiver);
-    this.txtMessage = ''; 
+    this.chatService.sendMessage(this.txtMessage, receiverId, type)
+        .then(() => {
+            this.txtMessage = '';
+        });
+  }
+  sendReaction(messageId: number, emoji: string): void {
+      this.chatService.sendReaction(messageId, emoji);
   }
 
-  isMyMessage(senderEmail: string): boolean {
-      return senderEmail?.toLowerCase() === this.currentUser?.toLowerCase();
-  }
-
-  parseJwt(token: string) {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    } catch (e) { return null; }
+  handleIncomingReaction(react: any): void {
+      const msg = this.messages.find(m => m.id === react.messageId);
+      if (msg) msg.reactions = react.emoji;
   }
 
   toggleChat() { 
-      this.isOpen = !this.isOpen; 
-      if (this.isOpen) setTimeout(() => this.scrollToBottom(), 200); 
+    this.isOpen = !this.isOpen; 
+    if (this.isOpen) {
+        setTimeout(() => this.scrollToBottom(), 300); 
+    }
   }
 
-  ngAfterViewChecked() {}
+  shouldShowMessages(): boolean {
+    if (this.activeTab === 'global') return true;
+    if (this.activeTab === 'dept' && this.currentViewingDeptId) return true;
+    if (this.activeTab === 'private' && this.selectedUserChat) return true;
+    return false;
+  }
 
-  scrollToBottom(): void { 
+  scrollToBottom(): void {
       try { 
           if (this.scrollContainer) {
               this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight; 
           }
       } catch(err) { } 
+  }
+
+  filterEmployees(): void {
+    const q = this.searchQuery.toLowerCase().trim();
+    if (!q) {
+      this.filteredEmployees = [...this.employees];
+      return;
+    }
+    this.filteredEmployees = this.employees.filter(e => 
+      (e.firstName && e.firstName.toLowerCase().includes(q)) || 
+      (e.lastName && e.lastName.toLowerCase().includes(q)) || 
+      (e.email && e.email.toLowerCase().includes(q))
+    );
   }
 }

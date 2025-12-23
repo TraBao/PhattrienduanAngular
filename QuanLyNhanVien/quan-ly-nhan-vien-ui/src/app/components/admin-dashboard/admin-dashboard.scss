@@ -194,6 +194,28 @@ $orange-light: #fffbeb;
         }
     }
 }
+
+.attendance-card {
+    border-radius: 15px !important;
+    .att-body {
+        display: flex; justify-content: space-around; padding: 20px 0;
+        .att-item {
+            text-align: center;
+            .att-label { display: block; color: #64748b; font-size: 14px; margin-bottom: 5px; }
+            .att-value { font-size: 28px; font-weight: 800;
+                &.success { color: #2e7d32; }
+                &.warning { color: #ed6c02; }
+                &.danger { color: #d32f2f; }
+            }
+        }
+        .att-divider { width: 1px; background: #e2e8f0; }
+    }
+}
+.badge-dot {
+    position: absolute; top: 10px; right: 10px;
+    height: 10px; width: 10px; background-color: #ff5252;
+    border-radius: 50%; border: 2px solid white;
+}
 @media (max-width: 768px) {
     .charts-grid-row {
         grid-template-columns: 1fr;

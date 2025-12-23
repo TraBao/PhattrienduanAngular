@@ -12,5 +12,6 @@
     <WebStackScaffolding_DbContextTypeFullName>QuanLyNhanVien.Api.Data.AppDbContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
+    <NameOfLastUsedPublishProfile>C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

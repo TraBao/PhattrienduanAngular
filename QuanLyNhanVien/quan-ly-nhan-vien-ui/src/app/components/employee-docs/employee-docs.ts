@@ -91,7 +91,6 @@ export class EmployeeDocsComponent implements OnInit, OnChanges {
     }
   }
 
-  // Tiện ích: Đổi bytes sang KB/MB
   formatSize(bytes: number): string {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;

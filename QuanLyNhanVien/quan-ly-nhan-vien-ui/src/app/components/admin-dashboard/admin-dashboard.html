@@ -8,77 +8,82 @@
             <mat-card-content>
                 <div class="stat-text">
                     <p class="label">Tổng nhân viên</p>
-                    <h3 class="counter">{{ stats.totalEmployees }}</h3>
+                    <h3 class="counter">{{ stats.totalEmployees || 0 }}</h3>
                 </div>
-                <div class="icon-box">
-                    <mat-icon>people</mat-icon>
-                </div>
+                <div class="icon-box"><mat-icon>people</mat-icon></div>
             </mat-card-content>
         </mat-card>
 
         <mat-card class="stat-card card-green">
             <mat-card-content>
                 <div class="stat-text">
-                    <p class="label">Quỹ lương tháng này</p>
+                    <p class="label">Quỹ lương tháng {{ currentMonth }}</p>
                     <h3 class="counter">{{ stats.totalSalary | number }} đ</h3>
                 </div>
-                <div class="icon-box">
-                    <mat-icon>payments</mat-icon>
-                </div>
+                <div class="icon-box"><mat-icon>payments</mat-icon></div>
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card card-orange">
+        <mat-card class="stat-card card-orange" [routerLink]="'/leaves'" style="cursor: pointer;">
             <mat-card-content>
                 <div class="stat-text">
-                    <p class="label">Đơn chờ duyệt</p>
-                    <h3 class="counter">{{ stats.pendingLeaves }}</h3>
+                    <p class="label">Đơn nghỉ chờ duyệt</p>
+                    <h3 class="counter">{{ stats.pendingLeaves || 0 }}</h3>
                 </div>
                 <div class="icon-box">
                     <mat-icon>notifications_active</mat-icon>
-                    <span class="badge" *ngIf="stats.pendingLeaves > 0"></span>
+                    <span class="badge-dot" *ngIf="stats.pendingLeaves > 0"></span>
                 </div>
             </mat-card-content>
         </mat-card>
     </div>
-    <div class="charts-grid-row">
-        <mat-card class="chart-card">
-            <div class="card-header-custom">
-                <div class="header-left">
-                    <mat-icon class="chart-icon">pie_chart</mat-icon>
-                    <mat-card-title>Phân bổ nhân sự</mat-card-title>
+
+    <!-- HÀNG 2: THEO DÕI CHẤM CÔNG HÔM NAY (TÍNH THỰC TẾ CAO) -->
+    <div class="attendance-summary mt-4">
+        <mat-card class="attendance-card">
+            <div class="att-header">
+                <h3><mat-icon>assignment_turned_in</mat-icon> Tình hình nhân sự hôm nay</h3>
+                <span class="date-now">{{ today | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="att-body">
+                <div class="att-item">
+                    <span class="att-label">Đã có mặt</span>
+                    <span class="att-value success">{{ stats.attendanceToday?.present }}</span>
+                </div>
+                <div class="att-divider"></div>
+                <div class="att-item">
+                    <span class="att-label">Đi muộn</span>
+                    <span class="att-value warning">{{ stats.attendanceToday?.late }}</span>
+                </div>
+                <div class="att-divider"></div>
+                <div class="att-item">
+                    <span class="att-label">Vắng mặt</span>
+                    <span class="att-value danger">{{ stats.attendanceToday?.absent }}</span>
                 </div>
             </div>
-            
+        </mat-card>
+    </div>
+    <div class="charts-grid-row mt-4">
+        <mat-card class="chart-card">
+            <mat-card-header>
+                <mat-card-title><mat-icon>pie_chart</mat-icon> Phân bổ nhân sự</mat-card-title>
+            </mat-card-header>
             <mat-card-content class="chart-content">
                 <div class="chart-wrapper" *ngIf="chartLoaded">
-                    <canvas baseChart
-                            [data]="pieChartData"
-                            [type]="pieChartType"
-                            [options]="pieChartOptions">
-                    </canvas>
-                </div>
-            </mat-card-content>
-        </mat-card>
-        <mat-card class="chart-card">
-            <div class="card-header-custom">
-                <div class="header-left">
-                    <mat-icon class="chart-icon bar-icon">bar_chart</mat-icon>
-                    <mat-card-title>Biến động chi phí lương</mat-card-title>
-                </div>
-                <span class="year-badge">{{ currentYear }}</span>
-            </div>
-            
-            <mat-card-content class="chart-content">
-                <div class="chart-wrapper">
-                    <canvas baseChart
-                            [data]="barChartData"
-                            [type]="barChartType"
-                            [options]="barChartOptions">
-                    </canvas>
+                    <canvas baseChart [data]="pieChartData" [type]="'pie'" [options]="pieChartOptions"></canvas>
                 </div>
             </mat-card-content>
         </mat-card>
 
+        <mat-card class="chart-card">
+            <mat-card-header>
+                <mat-card-title><mat-icon>bar_chart</mat-icon> Biến động chi phí lương {{ currentYear }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="chart-content">
+                <div class="chart-wrapper" *ngIf="chartLoaded">
+                    <canvas baseChart [data]="barChartData" [type]="'bar'"></canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

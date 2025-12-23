@@ -7,6 +7,7 @@ namespace QuanLyNhanVien.Api.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Reason { get; set; }
+        public string LeaveType { get; set; } = "Annual";
     }
     public class UpdateLeaveStatusDto
     {

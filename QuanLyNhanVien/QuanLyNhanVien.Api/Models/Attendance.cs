@@ -17,5 +17,11 @@ namespace QuanLyNhanVien.Api.Models
         public DateTime? CheckOutTime { get; set; }
 
         public double? TotalHours { get; set; }
+
+        public string Status { get; set; } = "OnTime";
+
+        public string? IpAddress { get; set; }
+
+        public string? Note { get; set; }
     }
 }

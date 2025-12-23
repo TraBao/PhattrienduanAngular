@@ -20,11 +20,17 @@
                         <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Họ (Last Name)</mat-label>
                             <input matInput formControlName="lastName" required placeholder="Nguyễn">
+                            <mat-error *ngIf="employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched">
+                                Họ không được để trống.
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Tên (First Name)</mat-label>
                             <input matInput formControlName="firstName" required placeholder="Văn A">
+                            <mat-error *ngIf="employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched">
+                                Tên không được để trống.
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -32,7 +38,15 @@
                         <mat-label>Email liên hệ</mat-label>
                         <mat-icon matPrefix class="prefix-icon">email</mat-icon>
                         <input matInput formControlName="email" type="email" required placeholder="name@example.com">
-                        <mat-error *ngIf="employeeForm.get('email')?.invalid">Email không hợp lệ</mat-error>
+                        <mat-error *ngIf="employeeForm.get('email')?.hasError('required') && employeeForm.get('email')?.touched">
+                            Email không được để trống.
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('email')?.hasError('email') && employeeForm.get('email')?.touched">
+                            Email không đúng định dạng.
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('email')?.hasError('server')">
+                            {{ employeeForm.get('email')?.errors?.['server'] }}
+                        </mat-error>
                     </mat-form-field>
 
                     <div class="row-dual">
@@ -40,6 +54,12 @@
                             <mat-label>Số điện thoại</mat-label>
                             <mat-icon matPrefix class="prefix-icon">phone</mat-icon>
                             <input matInput formControlName="phone" required placeholder="09xxxxxxx">
+                            <mat-error *ngIf="employeeForm.get('phone')?.hasError('required') && employeeForm.get('phone')?.touched">
+                                SĐT không được để trống.
+                            </mat-error>
+                            <mat-error *ngIf="employeeForm.get('phone')?.hasError('pattern') && employeeForm.get('phone')?.touched">
+                                SĐT không đúng định dạng.
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="soft-input full-width">
@@ -47,6 +67,9 @@
                             <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required (click)="picker.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="employeeForm.get('dateOfBirth')?.invalid && employeeForm.get('dateOfBirth')?.touched">
+                                Ngày sinh không được để trống.
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -54,6 +77,9 @@
                         <mat-label>Địa chỉ thường trú</mat-label>
                         <mat-icon matPrefix class="prefix-icon">home</mat-icon>
                         <input matInput formControlName="address" placeholder="Nhập địa chỉ đầy đủ">
+                        <mat-error *ngIf="employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched">
+                            Địa chỉ không được để trống.
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="form-col right-col">
@@ -69,6 +95,9 @@
                                 {{ dept.name }}
                             </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="employeeForm.get('departmentId')?.invalid && employeeForm.get('departmentId')?.touched">
+                            Phòng ban không được để trống.
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="soft-input full-width salary-field">
@@ -76,17 +105,27 @@
                             <span matSuffix class="money-prefix">₫</span>
                         <input matInput type="number" formControlName="salary" required>
                         <mat-hint>Nhập số liền, không dấu chấm</mat-hint>
+                        <mat-error *ngIf="employeeForm.get('salary')?.hasError('required') && employeeForm.get('salary')?.touched">
+                            Mức lương không được để trống.
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('salary')?.hasError('min') && employeeForm.get('salary')?.touched">
+                            Mức lương phải là số dương.
+                        </mat-error>
                     </mat-form-field>
                 </div>
             </div>
-            <div *ngIf="employeeId" class="docs-wrapper">
+            <div *ngIf="employeeId && canEdit" class="docs-wrapper">
                 <h4 class="docs-title"><mat-icon>folder_open</mat-icon> Hồ sơ & Tài liệu đính kèm</h4>
                 <app-employee-docs [employeeId]="employeeId"></app-employee-docs>
             </div>
 
             <div class="form-actions">
                 <a mat-button routerLink="/employees" class="btn-cancel">Hủy bỏ</a>
-                <button mat-flat-button color="primary" type="submit" [disabled]="!employeeForm.valid" class="btn-save">
+                <button mat-flat-button 
+                        color="primary" 
+                        type="submit" 
+                        [disabled]="!employeeForm.valid || !canEdit" 
+                        class="btn-save">
                     <mat-icon>save</mat-icon>
                     {{ employeeId ? 'Lưu Thông Tin' : 'Tạo Hồ Sơ' }}
                 </button>

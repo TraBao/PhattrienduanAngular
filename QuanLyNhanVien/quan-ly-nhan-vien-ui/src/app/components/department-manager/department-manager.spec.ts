@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DepartmentManager } from './department-manager';
+import { DepartmentManagerComponent } from './department-manager';
 
 describe('DepartmentManager', () => {
-  let component: DepartmentManager;
-  let fixture: ComponentFixture<DepartmentManager>;
+  let component: DepartmentManagerComponent;
+  let fixture: ComponentFixture<DepartmentManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DepartmentManager]
+      imports: [DepartmentManagerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DepartmentManager);
+    fixture = TestBed.createComponent(DepartmentManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

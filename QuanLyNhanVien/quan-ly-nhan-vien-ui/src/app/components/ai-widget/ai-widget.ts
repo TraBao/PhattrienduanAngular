@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material-module';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from '../../services/user.service'; 
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-ai-widget',
@@ -17,7 +17,7 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
   userInput = '';
   isLoading = false;
   messages: { sender: 'ai' | 'user', text: string }[] = [
-    { sender: 'ai', text: 'Xin chào! Tôi là AI Hỗ trợ nhân sự. Bạn cần giúp gì về chính sách, hợp đồng hay quy định?' }
+    { sender: 'ai', text: 'Xin chào! Mình là Trợ lý ảo HRM. Mình có thể giúp bạn xem thống kê nhân sự, tra cứu quy định hoặc tính toán lương. Bạn cần giúp gì không?' }
   ];
 
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
@@ -29,6 +29,7 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
   private dragOffset = { x: 0, y: 0 };
   private mouseMoveListener: any;
   private mouseUpListener: any;
+  private readonly apiUrl = 'http://localhost:8080/api/Ai/ask';
 
   constructor(
     private http: HttpClient,
@@ -37,12 +38,11 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
 
   ngOnInit() {
     this.btnPosition = { 
-        x: window.innerWidth - 80, 
-        y: window.innerHeight - 150 
+        x: window.innerWidth - 80,
+        y: window.innerHeight - 150
     };
     this.updateBoxPosition();
   }
-
   onBtnClick(event: MouseEvent) {
     const clickDuration = Date.now() - this.dragStartTime;
     if (clickDuration < 200 && !this.isDragging) {
@@ -57,7 +57,6 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
       setTimeout(() => this.scrollToBottom(), 100);
     }
   }
-
   updateBoxPosition() {
     let boxX = this.btnPosition.x - 350;
     let boxY = this.btnPosition.y - 480 + 60;
@@ -68,7 +67,6 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
     if (boxY < 20) {
         boxY = 20;
     }
-
     if (boxY + 480 > window.innerHeight) {
         boxY = window.innerHeight - 500;
     }
@@ -91,8 +89,8 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
 
   onBtnDragMove(event: MouseEvent) {
     this.isDragging = true;
-    
     event.preventDefault();
+
     let newX = event.clientX - this.dragOffset.x;
     let newY = event.clientY - this.dragOffset.y;
     newX = Math.max(10, Math.min(newX, window.innerWidth - 70));
@@ -109,13 +107,12 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
     window.removeEventListener('mouseup', this.mouseUpListener);
     setTimeout(() => {
         this.isDragging = false;
-    }, 0);
+    }, 50);
   }
   formatText(text: string): string {
     if (!text) return '';
     return text.replace(/\n/g, '<br>');
   }
-
   sendMessage() {
     if (!this.userInput.trim() || this.isLoading) return;
 
@@ -123,29 +120,30 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
     this.messages.push({ sender: 'user', text: question });
     this.userInput = '';
     this.isLoading = true;
-    this.scrollToBottom();
-    
     const currentUser = this.userService.getCurrentUserValue();
     const body = {
         prompt: question,
-        userName: currentUser?.email || 'Khách',
-        role: (currentUser?.roles?.includes('Admin')) ? 'Admin' : 'Nhân viên'
+        userName: currentUser?.username || 'Khách',
+        role: this.userService.isAdmin() ? 'Admin' : 'Nhân viên'
     };
-    
-    this.http.post<any>('http://localhost:5195/api/ai/ask', body)
+    this.http.post<any>(this.apiUrl, body)
       .subscribe({
         next: (res) => {
           this.messages.push({ sender: 'ai', text: res.answer });
           this.isLoading = false;
           this.scrollToBottom();
         },
-        error: () => {
-          this.messages.push({ sender: 'ai', text: 'Lỗi kết nối AI hoặc hết quota.' });
+        error: (err) => {
+          console.error("Lỗi AI:", err);
+          this.messages.push({
+            sender: 'ai',
+            text: 'Rất tiếc, mình không kết nối được với máy chủ AI (Cổng 8080). Bạn kiểm tra lại Backend nhé!' 
+          });
           this.isLoading = false;
+          this.scrollToBottom();
         }
       });
   }
-
   ngAfterViewChecked() {
     this.scrollToBottom();
   }

@@ -2,142 +2,91 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material-module';
 import { DashboardService } from '../../services/dashboard.service';
-import { DepartmentService } from '../../services/department.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartData, ChartType, ChartOptions } from 'chart.js';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { ChartData, ChartOptions } from 'chart.js';
+import { forkJoin } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, MaterialModule, BaseChartDirective, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    BaseChartDirective,
+    RouterModule
+  ],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.scss']
 })
 export class AdminDashboardComponent implements OnInit {
   currentYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth() + 1;
+  today = new Date();
   stats: any = {
     totalEmployees: 0,
     totalSalary: 0,
-    pendingLeaves: 0
+    pendingLeaves: 0,
+    attendanceToday: {
+        present: 0,
+        late: 0,
+        absent: 0
+    },
+    departmentStats: []
   };
   
-  public chartLoaded = false;
+  chartLoaded = false;
+  public pieChartData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: { 
-        position: 'right', 
-        labels: { usePointStyle: true, font: { family: "'Inter', sans-serif", size: 12 } } 
-      }
-    }
+    plugins: { legend: { position: 'bottom' } }
   };
-  public pieChartType: 'pie' = 'pie';
-  public pieChartData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
-  public barChartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: function(context: any) {
-            let label = context.dataset.label || '';
-            if (label) label += ': ';
-            // Format số tiền trong tooltip (Ví dụ: 15,000,000 đ)
-            if (context.parsed.y !== null) {
-              label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y);
-            }
-            return label;
-          }
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        border: { display: false },
-        grid: { color: '#f3f4f6' },
-        ticks: { 
-          font: { family: "'Inter', sans-serif", size: 11 },
-          callback: function(value: any) {
-            if (value >= 1000000000) return (value / 1000000000).toFixed(1) + ' Tỷ';
-            if (value >= 1000000) return (value / 1000000).toFixed(0) + ' Tr';
-            return value;
-          }
-        }
-      },
-      x: {
-        grid: { display: false },
-        ticks: { font: { family: "'Inter', sans-serif", size: 11 } }
-      }
-    }
-  };
-  public barChartType: 'bar' = 'bar';
   public barChartData: ChartData<'bar'> = {
     labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-    datasets: [{ data: [], label: 'Tổng lương', backgroundColor: '#3b82f6', borderRadius: 4, barThickness: 16 }]
+    datasets: [{
+        data: [],
+        label: 'Quỹ lương (VNĐ)',
+        backgroundColor: '#3f51b5',
+        borderRadius: 4
+    }]
   };
 
-  constructor(
-    private dashboardService: DashboardService,
-    private departmentService: DepartmentService
-  ) {}
+  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
-    this.loadDashboardData();
+    this.loadData();
   }
 
-  loadDashboardData() {
+  loadData() {
+    this.chartLoaded = false;
     forkJoin({
-      stats: this.dashboardService.getStats().pipe(catchError(() => of({}))),
-      departments: this.departmentService.getAll().pipe(catchError(() => of([]))),
-      salaryGrowth: this.dashboardService.getSalaryGrowth(this.currentYear).pipe(
-        catchError(() => {
-            console.warn('API salary-growth chưa có, đang dùng Mock Data');
-            return of(Array(12).fill(0).map(() => Math.floor(Math.random() * 50000000) + 20000000));
-        })
-      )
+      statsResponse: this.dashboardService.getStats(),
+      growth: this.dashboardService.getSalaryGrowth(this.currentYear)
     }).subscribe({
-      next: (result) => {
-        this.stats = result.stats;
-        const deptMap = new Map<number, string>();
-        if (Array.isArray(result.departments)) {
-            result.departments.forEach((d: any) => deptMap.set(d.id, d.name));
+      next: (res: any) => {
+        this.stats = res.statsResponse.stats ? res.statsResponse.stats : res.statsResponse;
+        
+        console.log("Dữ liệu stats nhận được:", this.stats);
+        if (this.stats && this.stats.departmentStats) {
+          this.pieChartData = {
+            labels: this.stats.departmentStats.map((d: any) => d.name || d.departmentId),
+            datasets: [{
+              data: this.stats.departmentStats.map((d: any) => d.count),
+              backgroundColor: ['#3b82f6', '#ec4899', '#f59e0b', '#10b981', '#6366f1']
+            }]
+          };
         }
 
-        const pieLabels: string[] = [];
-        const pieCounts: number[] = [];
-        if (this.stats.departmentStats) {
-          this.stats.departmentStats.forEach((d: any) => {
-            pieLabels.push(deptMap.get(d.departmentId) || `Phòng ${d.departmentId}`);
-            pieCounts.push(d.count);
-          });
-        }
-        
-        this.pieChartData = {
-            labels: pieLabels,
-            datasets: [{
-                data: pieCounts,
-                backgroundColor: ['#3b82f6', '#ec4899', '#f59e0b', '#10b981', '#6366f1'],
-                hoverOffset: 4,
-                borderWidth: 0
-            }]
-        };
-        this.barChartData.datasets[0].data = result.salaryGrowth; 
-        const currentMonthIdx = new Date().getMonth(); 
-        if(this.stats.totalSalary > 0) {
-            this.barChartData.datasets[0].data[currentMonthIdx] = this.stats.totalSalary;
+        if (res.growth) {
+          this.barChartData.datasets[0].data = res.growth;
         }
 
         this.chartLoaded = true;
       },
       error: (err) => {
-          console.error(err);
-          this.chartLoaded = true;
+        console.error("Lỗi tải Dashboard:", err);
+        this.chartLoaded = true;
       }
     });
   }

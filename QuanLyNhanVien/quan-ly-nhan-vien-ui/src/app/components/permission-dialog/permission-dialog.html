@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Phân quyền truy cập</h2>
+<div class="subtitle" style="padding: 0 24px; color: #666; font-size: 13px;">
+    Tài khoản: <b>{{ data.email }}</b>
+</div>
+
+<mat-dialog-content>
+    <div class="perm-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+        <mat-checkbox *ngFor="let p of availablePermissions"
+                        [checked]="isChecked(p.code)"
+                        (change)="togglePermission(p.code)"
+                        color="primary">
+            {{ p.name }}
+        </mat-checkbox>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Hủy</button>
+    <button mat-raised-button color="primary" (click)="save()">Lưu thay đổi</button>
+</mat-dialog-actions>

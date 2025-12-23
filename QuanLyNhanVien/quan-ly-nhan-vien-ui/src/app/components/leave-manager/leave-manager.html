@@ -3,7 +3,7 @@
         <div class="header-content">
             <div class="title-section">
                 <h2>Quản lý Nghỉ phép</h2>
-                <span class="subtitle">Theo dõi và phê duyệt đơn xin nghỉ</span>
+                <span class="subtitle">Theo dõi và phê duyệt đơn xin nghỉ nhân sự</span>
             </div>
             
             <button mat-flat-button color="primary" class="btn-create" (click)="showForm = !showForm" *ngIf="!showForm">
@@ -11,6 +11,7 @@
             </button>
         </div>
     </div>
+
     <div class="form-wrapper" *ngIf="showForm">
         <mat-card class="form-card">
             <div class="card-header">
@@ -19,12 +20,24 @@
                 </div>
                 <div>
                     <h3>Soạn đơn xin nghỉ phép</h3>
-                    <p class="card-desc">Vui lòng điền đầy đủ thông tin bên dưới</p>
+                    <p class="card-desc">Vui lòng chọn loại nghỉ và điền lý do chi tiết</p>
                 </div>
             </div>
 
             <mat-card-content>
                 <form [formGroup]="leaveForm" (ngSubmit)="onSubmitRequest()">
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="soft-input">
+                            <mat-label>Loại nghỉ phép</mat-label>
+                            <mat-select formControlName="leaveType">
+                                <mat-option value="Annual">Phép năm (Có lương)</mat-option>
+                                <mat-option value="Sick">Nghỉ ốm (Hưởng BHXH)</mat-option>
+                                <mat-option value="Unpaid">Nghỉ không lương</mat-option>
+                                <mat-option value="Marriage">Nghỉ việc riêng (Hiếu hỉ)</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
                     <div class="form-row">
                         <mat-form-field appearance="outline" class="soft-input">
                             <mat-label>Từ ngày</mat-label>
@@ -50,6 +63,9 @@
                     <mat-form-field appearance="outline" class="full-width soft-input">
                         <mat-label>Lý do nghỉ</mat-label>
                         <textarea matInput formControlName="reason" rows="4" placeholder="Nhập lý do chi tiết..."></textarea>
+                        <mat-error *ngIf="leaveForm.get('reason')?.hasError('minlength')">
+                            Lý do phải có ít nhất 2 ký tự!
+                        </mat-error>
                     </mat-form-field>
 
                     <div class="form-actions">
@@ -62,6 +78,7 @@
             </mat-card-content>
         </mat-card>
     </div>
+
     <mat-card class="list-card">
         <mat-tab-group animationDuration="300ms" mat-stretch-tabs="false" mat-align-tabs="start">
             <mat-tab>
@@ -78,7 +95,14 @@
                                     <span class="date-start">{{row.startDate | date:'dd/MM'}}</span>
                                     <mat-icon class="arrow-icon">arrow_right_alt</mat-icon>
                                     <span class="date-end">{{row.endDate | date:'dd/MM/yyyy'}}</span>
+                                    <span class="total-days-tag">({{row.totalDays}}n)</span>
                                 </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="leaveType">
+                            <th mat-header-cell *matHeaderCellDef> Loại nghỉ </th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="type-text">{{ getLeaveTypeLabel(row.leaveType) }}</span>
                             </td>
                         </ng-container>
 
@@ -90,8 +114,8 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
                             <td mat-cell *matCellDef="let row">
-                                <span class="status-badge" [ngClass]="row.status.toLowerCase()">
-                                    {{ row.status === 'Pending' ? 'Chờ duyệt' : (row.status === 'Approved' ? 'Đã duyệt' : 'Từ chối') }}
+                                <span class="status-badge" [ngClass]="getStatusClass(row.status)">
+                                    {{ getStatusLabel(row.status) }}
                                 </span>
                             </td>
                         </ng-container>
@@ -104,7 +128,6 @@
                                 </button>
                             </td>
                         </ng-container>
-
                         <tr mat-header-row *matHeaderRowDef="myDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: myDisplayedColumns;"></tr>
                         
@@ -118,32 +141,38 @@
                     <mat-paginator #paginatorMy [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
                 </div>
             </mat-tab>
-            <mat-tab *ngIf="isAdmin">
+            <mat-tab *ngIf="canApproveLeaves">
                 <ng-template mat-tab-label>
-                    <mat-icon class="tab-icon">admin_panel_settings</mat-icon> Phê duyệt (Admin)
+                    <mat-icon class="tab-icon">how_to_reg</mat-icon> Phê duyệt Đơn
                 </ng-template>
 
                 <div class="table-responsive">
                     <table mat-table [dataSource]="allLeavesSource" class="leave-table">
                         <ng-container matColumnDef="fullName">
                             <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
-                            <td mat-cell *matCellDef="let row"> 
+                            <td mat-cell *matCellDef="let row">
                                 <div class="user-info">
-                                    <div class="avatar-circle">{{row.fullName.charAt(0)}}</div>
-                                    <span class="user-name">{{row.fullName}}</span>
+                                    <div class="avatar-circle">{{ row.fullName?.charAt(0) || '?' }}</div>
+                                    <span class="user-name">{{ row.fullName }}</span>
                                 </div>
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="startDate">
                             <th mat-header-cell *matHeaderCellDef> Thời gian </th>
-                            <td mat-cell *matCellDef="let row"> 
+                            <td mat-cell *matCellDef="let row">
                                 <div class="date-range compact">
                                     <span>{{row.startDate | date:'dd/MM'}}</span>
                                     <mat-icon>arrow_right_alt</mat-icon>
                                     <span>{{row.endDate | date:'dd/MM'}}</span>
+                                    <small>({{row.totalDays}} ngày)</small>
                                 </div>
                             </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="leaveType">
+                            <th mat-header-cell *matHeaderCellDef> Loại </th>
+                            <td mat-cell *matCellDef="let row"> {{ getLeaveTypeLabel(row.leaveType) }} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="reason">
@@ -156,8 +185,8 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
                             <td mat-cell *matCellDef="let row">
-                                <span class="status-badge" [ngClass]="row.status.toLowerCase()">
-                                    {{ row.status }}
+                                <span class="status-badge" [ngClass]="getStatusClass(row.status)">
+                                    {{ getStatusLabel(row.status) }}
                                 </span>
                             </td>
                         </ng-container>
@@ -174,20 +203,13 @@
                                     </button>
                                 </div>
                                 <span *ngIf="row.status !== 'Pending'" class="processed-text">
-                                    <mat-icon>check_circle_outline</mat-icon> Đã xử lý
+                                    <mat-icon>check_circle_outline</mat-icon> Đã xong
                                 </span>
                             </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="adminDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: adminDisplayedColumns;"></tr>
-                        
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell no-data-cell" [attr.colspan]="adminDisplayedColumns.length">
-                                <mat-icon>inbox</mat-icon>
-                                <span>Không có đơn nào chờ duyệt.</span>
-                            </td>
-                        </tr>
                     </table>
                     <mat-paginator #paginatorAll [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
                 </div>

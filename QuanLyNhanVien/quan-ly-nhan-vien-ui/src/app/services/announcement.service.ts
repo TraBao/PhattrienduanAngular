@@ -14,7 +14,7 @@
     providedIn: 'root'
     })
     export class AnnouncementService {
-    private apiUrl = 'http://localhost:5195/api/Announcements';
+    private apiUrl = 'http://localhost:8080/api/Announcements';
 
     constructor(private http: HttpClient) { }
 

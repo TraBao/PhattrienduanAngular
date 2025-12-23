@@ -7,7 +7,7 @@
     providedIn: 'root'
     })
     export class DocumentService {
-    private apiUrl = 'http://localhost:5195/api/Documents';
+    private apiUrl = 'http://localhost:8080/api/Documents';
 
     constructor(private http: HttpClient) { }
     getDocuments(employeeId: number): Observable<EmployeeDocument[]> {

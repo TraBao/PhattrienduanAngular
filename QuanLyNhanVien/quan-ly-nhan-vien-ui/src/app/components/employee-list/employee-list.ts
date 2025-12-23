@@ -7,7 +7,7 @@ import { MaterialModule } from '../../material-module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { UserService } from '../../services/user.service';
@@ -16,98 +16,83 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    RouterModule,
-    MatSortModule
-  ],
+  imports: [CommonModule, MaterialModule, RouterModule, MatSortModule],
   templateUrl: './employee-list.html',
   styleUrls: ['./employee-list.scss']
 })
-export class EmployeeList implements OnInit, OnDestroy, AfterViewInit {
+export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   isAdmin: boolean = false;
-  dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
-
+  canManage: boolean = false; 
+  dataSource = new MatTableDataSource<Employee>();
   displayedColumns: string[] = ['id', 'avatar', 'firstName', 'lastName', 'email', 'salary', 'actions'];
+  totalItems = 0;
+  pageSize = 10;
+  currentPage = 1;
+  searchKey = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   private userSub: Subscription = new Subscription();
-  private baseUrl = 'http://localhost:5195';
+  private baseUrl = 'http://localhost:8080';
 
   constructor(
     private employeeService: EmployeeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private userService: UserService
+    public userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.setupCustomFilter();
-
-    this.loadEmployees();
-    this.userSub = this.userService.currentUser$.subscribe(user => {
-      this.isAdmin = user ? user.roles.includes('Admin') : false;
-    });
+        this.isAdmin = this.userService.isAdmin();
+        this.canManage = this.isAdmin || this.userService.hasPermission('MANAGE_EMPLOYEES');
+        this.loadEmployees();
   }
-
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-  }
-
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-  }
-
-  loadEmployees(): void {
-    this.employeeService.getEmployees().subscribe({
-        next: (data) => {
-          console.log('Dữ liệu nhân viên:', data);
-          this.dataSource.data = data;
-          if (this.paginator) {
-            this.dataSource.paginator = this.paginator;
-          }
-          if (this.sort) {
-            this.dataSource.sort = this.sort;
-          }
-        },
-        error: (err) => console.error('Lỗi tải data:', err)
-    });
-  }
-  setupCustomFilter() {
-    this.dataSource.filterPredicate = (data: Employee, filter: string) => {
-      const id = data.id.toString();
-      const name = this.removeAccents(data.firstName + ' ' + data.lastName).toLowerCase();
-      const email = data.email.toLowerCase();
-      const salary = data.salary ? data.salary.toString() : '';
-      return id.includes(filter) ||
-            name.includes(filter) ||
-            email.includes(filter) ||
-            salary.includes(filter);
+    this.dataSource.sortingDataAccessor = (item: Employee, property: string) => {
+      switch (property) {
+        case 'id': return item.id;
+        case 'firstName': return item.firstName;
+        case 'lastName': return item.lastName;
+        case 'email': return item.email;
+        case 'salary': return item.salary;
+        default: return (item as any)[property];
+      }
     };
   }
 
+  loadEmployees(): void {
+    this.employeeService.getEmployees(this.searchKey, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.dataSource.data = res.data;
+        this.totalItems = res.totalItems;
+        if (this.paginator) {
+          this.paginator.length = this.totalItems;
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi tải data:', err);
+        this.snackBar.open('Không thể tải danh sách nhân viên', 'Đóng', { duration: 3000 });
+      }
+    });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadEmployees();
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    // Bỏ dấu từ khóa tìm kiếm trước khi lọc
-    this.dataSource.filter = this.removeAccents(filterValue.trim().toLowerCase());
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-  removeAccents(str: string): string {
-    return str.normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    this.searchKey = filterValue.trim().toLowerCase();
+    this.currentPage = 1;
+    this.loadEmployees();
   }
   getFullUrl(url: string | undefined): string {
     if (!url) return '';
-    if (url.startsWith('http')) return url;
-    return `${this.baseUrl}${url}`;
+    return url.startsWith('http') ? url : `${this.baseUrl}${url}`;
   }
 
   onDelete(id: number): void {
@@ -115,7 +100,7 @@ export class EmployeeList implements OnInit, OnDestroy, AfterViewInit {
       width: '400px',
       data: {
           title: 'Xác nhận xóa',
-          message: `Bạn có chắc chắn muốn xóa nhân viên có ID: <b>${id}</b>?<br>Thao tác này không thể hoàn tác.` 
+          message: `Bạn có chắc chắn muốn xóa nhân viên ID: <b>${id}</b>?` 
       }
     });
 
@@ -123,14 +108,15 @@ export class EmployeeList implements OnInit, OnDestroy, AfterViewInit {
       if (result === true) {
         this.employeeService.deleteEmployee(id).subscribe({
           next: () => {
-            this.snackBar.open('Xóa thành công!', 'Đóng', { duration: 3000, panelClass: ['success-snackbar'] });
+            this.snackBar.open('Xóa thành công!', 'Đóng', { duration: 3000 });
             this.loadEmployees();
-          },
-          error: () => {
-              this.snackBar.open('Lỗi xóa nhân viên', 'Đóng', { duration: 3000, panelClass: ['error-snackbar'] });
           }
         });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
   }
 }

@@ -2,21 +2,19 @@
     <div class="page-header">
         <div class="header-content">
             <div class="title-section">
-                <h2>{{ isAdmin ? 'Quản lý Lương & Thưởng' : 'Phiếu lương cá nhân' }}</h2>
-                <span class="subtitle">Theo dõi và quản lý thu nhập hàng tháng</span>
+                <h2>{{ canManage ? 'Bảng Lương & Thưởng' : 'Phiếu lương cá nhân' }}</h2>
+                <span class="subtitle">Tháng {{selectedMonth}} năm {{selectedYear}}</span>
             </div>
             
-            <div class="control-panel" *ngIf="isAdmin">
+            <div class="control-panel" *ngIf="canManage">
                 <div class="filter-group">
-                    <mat-form-field appearance="outline" class="filter-field">
-                        <mat-label>Tháng</mat-label>
+                    <mat-form-field appearance="outline">
                         <mat-select [(ngModel)]="selectedMonth" (selectionChange)="loadMonthlyPayroll()">
                             <mat-option *ngFor="let m of months" [value]="m">Tháng {{m}}</mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="filter-field">
-                        <mat-label>Năm</mat-label>
+                    <mat-form-field appearance="outline">
                         <mat-select [(ngModel)]="selectedYear" (selectionChange)="loadMonthlyPayroll()">
                             <mat-option *ngFor="let y of years" [value]="y">{{y}}</mat-option>
                         </mat-select>
@@ -24,88 +22,172 @@
                 </div>
 
                 <div class="action-group">
-                    <button mat-flat-button color="primary" class="btn-calc" (click)="onCalculate()">
+                    <button mat-flat-button color="primary" (click)="onCalculate()">
                         <mat-icon>calculate</mat-icon> Tính lương
                     </button>
-                    <button mat-stroked-button class="btn-export" (click)="onExport()">
+                    <button mat-stroked-button (click)="onExport()">
                         <mat-icon>file_download</mat-icon> Excel
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="table-card">
         <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" class="payroll-table">
-                
-                <ng-container matColumnDef="employeeName">
-                    <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
-                    <td mat-cell *matCellDef="let row"> 
+                <ng-container matColumnDef="employeeName" sticky>
+                    <th mat-header-cell *matHeaderCellDef class="col-sticky-left"> Nhân viên </th>
+                    <td mat-cell *matCellDef="let row" class="col-sticky-left"> 
                         <span class="emp-name">{{row.employeeName}}</span> 
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="monthYear">
-                    <th mat-header-cell *matHeaderCellDef> Thời gian </th>
-                    <td mat-cell *matCellDef="let row" class="text-muted"> 
-                        Tháng {{row.month}}/{{row.year}} 
-                    </td>
+                    <th mat-header-cell *matHeaderCellDef> Kỳ lương </th>
+                    <td mat-cell *matCellDef="let row"> {{row.month}}/{{row.year}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="basicSalary">
-                    <th mat-header-cell *matHeaderCellDef> Lương cơ bản </th>
-                    <td mat-cell *matCellDef="let row"> 
-                        <span class="basic-salary">{{row.basicSalary | number}}</span>
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Lương cơ bản </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-income"> 
+                        {{row.basicSalary | number:'1.0-0':'vi'}}
                     </td>
                 </ng-container>
-
                 <ng-container matColumnDef="workDays">
-                    <th mat-header-cell *matHeaderCellDef> Công thực tế </th>
-                    <td mat-cell *matCellDef="let row"> 
-                        <span class="work-badge">{{row.totalWorkDays}} / 26</span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="finalSalary">
-                    <th mat-header-cell *matHeaderCellDef> THỰC NHẬN </th>
-                    <td mat-cell *matCellDef="let row"> 
-                        <span class="final-amount">{{row.finalSalary | number}} đ</span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
-                    <td mat-cell *matCellDef="let row">
-                        <span class="status-badge" [ngClass]="row.status.toLowerCase()">
-                            <mat-icon class="status-icon">{{ row.status === 'Paid' ? 'check_circle' : 'schedule' }}</mat-icon>
-                            {{ row.status === 'Paid' ? 'Đã thanh toán' : 'Chờ xử lý' }}
-                        </span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef class="text-center"> Thao tác </th>
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Ngày công </th>
                     <td mat-cell *matCellDef="let row" class="text-center">
-                        <button *ngIf="row.status === 'Pending'" 
-                                mat-stroked-button 
-                                class="btn-confirm"
-                                (click)="markPaid(row.id)">
-                            Xác nhận trả
-                        </button>
-                        <span *ngIf="row.status === 'Paid'" class="paid-date">
-                            {{row.paymentDate | date:'dd/MM'}}
+                        <span class="work-badge" matTooltip="Ngày làm thực tế + Nghỉ phép">
+                            {{row.actualWorkDays + row.paidLeaveDays}} / 26
                         </span>
                     </td>
                 </ng-container>
+                <ng-container matColumnDef="overtimeInput">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Tăng ca (h) </th>
+                    <td mat-cell *matCellDef="let row" class="text-right">
+                        <ng-container *ngIf="canManage && employeeInputForms[row.employeeId]; else viewOvertime">
+                            <mat-form-field appearance="outline" class="clean-input-field">
+                                <input matInput type="number" 
+                                       [formControl]="getFormControl(employeeInputForms[row.employeeId].get('overtimeHours'))" 
+                                       placeholder="0" min="0"/>
+                            </mat-form-field>
+                        </ng-container>
+                        <ng-template #viewOvertime>
+                            <span class="number-font text-muted" *ngIf="row.overtimePay > 0">{{row.overtimePay | number:'1.0-0':'vi'}}</span>
+                            <span class="text-muted" *ngIf="row.overtimePay === 0">-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="allowanceInput">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Phụ cấp </th>
+                    <td mat-cell *matCellDef="let row" class="text-right">
+                        <ng-container *ngIf="canManage && employeeInputForms[row.employeeId]; else viewAllowance">
+                            <mat-form-field appearance="outline" class="clean-input-field">
+                                <input matInput type="number" 
+                                       [formControl]="getFormControl(employeeInputForms[row.employeeId].get('allowancesAmount'))" 
+                                       placeholder="0" min="0"/>
+                            </mat-form-field>
+                        </ng-container>
+                        <ng-template #viewAllowance>
+                             <span class="number-font" *ngIf="row.allowances > 0">{{row.allowances | number:'1.0-0':'vi'}}</span>
+                             <span class="text-muted" *ngIf="row.allowances === 0">-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="bonusInput">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Thưởng </th>
+                    <td mat-cell *matCellDef="let row" class="text-right">
+                        <ng-container *ngIf="canManage && employeeInputForms[row.employeeId]; else viewBonus">
+                            <mat-form-field appearance="outline" class="clean-input-field">
+                                <input matInput type="number" 
+                                       [formControl]="getFormControl(employeeInputForms[row.employeeId].get('bonusesAmount'))" 
+                                       placeholder="0" min="0"/>
+                            </mat-form-field>
+                        </ng-container>
+                        <ng-template #viewBonus>
+                            <span class="number-font" *ngIf="row.bonuses > 0">{{row.bonuses | number:'1.0-0':'vi'}}</span>
+                            <span class="text-muted" *ngIf="row.bonuses === 0">-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="grossSalary">
+                    <th mat-header-cell *matHeaderCellDef class="text-right" style="background: #f0fdfa;"> Tổng Gross </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font" style="font-weight: 600;"> 
+                        {{row.grossSalary | number:'1.0-0':'vi'}} 
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="socialInsuranceDeduction">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> BHXH </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-deduction"> 
+                        {{row.socialInsuranceDeduction | number:'1.0-0':'vi'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="healthInsuranceDeduction">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> BHYT </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-deduction"> 
+                        {{row.healthInsuranceDeduction | number:'1.0-0':'vi'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="unemploymentInsuranceDeduction">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> BHTN </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-deduction"> 
+                        {{row.unemploymentInsuranceDeduction | number:'1.0-0':'vi'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="personalIncomeTaxDeduction">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Thuế TNCN </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-deduction"> 
+                        {{row.personalIncomeTaxDeduction > 0 ? (row.personalIncomeTaxDeduction | number:'1.0-0':'vi') : '-'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totalDeductions">
+                    <th mat-header-cell *matHeaderCellDef class="text-right"> Tổng trừ </th>
+                    <td mat-cell *matCellDef="let row" class="text-right number-font text-deduction" style="font-weight: 600;"> 
+                        {{row.totalDeductions | number:'1.0-0':'vi'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="netSalary" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef class="text-right col-sticky-right"> THỰC LĨNH </th>
+                    <td mat-cell *matCellDef="let row" class="text-right col-sticky-right"> 
+                        <span class="text-highlight number-font">{{row.netSalary | number:'1.0-0':'vi'}} đ</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> TT </th>
+                    <td mat-cell *matCellDef="let row" class="text-center">
+                        <span class="status-badge" [ngClass]="row.status.toLowerCase()">
+                            {{ row.status === 'Paid' ? 'Đã trả' : 'Chờ' }}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> # </th>
+                    <td mat-cell *matCellDef="let row" class="text-center">
+                        <div style="display: flex; gap: 4px; justify-content: center;">
+                            <button *ngIf="canManage && row.status !== 'Paid'" 
+                                    mat-icon-button color="primary" class="btn-icon-action" 
+                                    (click)="onSavePayrollDetails(row)" matTooltip="Lưu thay đổi">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                            <button *ngIf="row.status === 'Pending' && canManage"  
+                                    mat-icon-button color="accent" class="btn-icon-action"
+                                    (click)="openPaymentDialog(row)" 
+                                    matTooltip="Thanh toán & Xác nhận">
+                                <mat-icon>payments</mat-icon>
+                            </button>
+                            <mat-icon *ngIf="row.status === 'Paid'" 
+                                    style="color: #10b981; font-size: 18px; width: 18px; height: 18px;"
+                                    matTooltip="Đã khóa sổ">
+                                lock
+                            </mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
-                        <mat-icon>payments</mat-icon>
-                        <span>Chưa có dữ liệu lương cho tháng này.</span>
+                    <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length" style="padding: 40px;">
+                        <span style="color: #9ca3af;">Không có dữ liệu lương tháng này.</span>
                     </td>
                 </tr>
             </table>

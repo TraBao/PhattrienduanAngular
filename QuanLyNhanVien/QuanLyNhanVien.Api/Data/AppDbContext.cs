@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace QuanLyNhanVien.Api.Data
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser>
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -17,14 +17,60 @@ namespace QuanLyNhanVien.Api.Data
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<Message> Messages { get; set; }    
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Payroll> Payrolls { get; set; }
+        public DbSet<FormTemplate> FormTemplates { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Employee>()
                 .Property(e => e.Salary)
+                .HasColumnType("decimal(18, 2)");
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.BasicSalary)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.OvertimePay)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.Allowances)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.Bonuses)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.GrossSalary)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.SocialInsuranceDeduction)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.HealthInsuranceDeduction)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.UnemploymentInsuranceDeduction)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.PersonalIncomeTaxDeduction)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.TotalDeductions)
+                .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Payroll>()
+                .Property(p => p.NetSalary)
                 .HasColumnType("decimal(18, 2)");
 
             modelBuilder.Entity<Department>().HasData(
@@ -56,6 +102,5 @@ namespace QuanLyNhanVien.Api.Data
                 }
             );
         }
-
     }
 }

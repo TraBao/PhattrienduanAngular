@@ -26,5 +26,15 @@ namespace QuanLyNhanVien.Api.Models
         [ValidateNever]
         public Department Department { get; set; }
         public string? AvatarUrl { get; set; }
+        public decimal? PersonalDeduction { get; set; } = 11000000;
+        public int? NumberOfDependents { get; set; } = 0;
+        [StringLength(50)]
+        public string? BankName { get; set; }
+
+        [StringLength(50)]
+        public string? BankAccountNumber { get; set; }
+
+        [StringLength(100)]
+        public string? BankAccountName { get; set; }
     }
 }

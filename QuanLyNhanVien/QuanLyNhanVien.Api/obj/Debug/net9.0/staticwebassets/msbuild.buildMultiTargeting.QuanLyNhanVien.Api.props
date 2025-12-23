@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\QuanLyNhanVien.Api.props" />
-</Project>

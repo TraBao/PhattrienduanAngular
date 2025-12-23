@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService, NewEmployee } from '../../services/employee';
 import { Employee } from '../../models/employee.model';
@@ -9,6 +9,7 @@ import { Department } from '../../models/department.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeDocsComponent } from '../employee-docs/employee-docs';
 import { MatDividerModule } from '@angular/material/divider';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -24,17 +25,19 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './employee-form.html',
   styleUrls: ['./employee-form.scss']
 })
-export class EmployeeForm implements OnInit {
-  employeeForm: any;
+export class EmployeeFormComponent implements OnInit {
+  employeeForm: FormGroup;
   employeeId: number | null = null;
   departments: Department[] = [];
+  canEdit: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userService: UserService
   ) {
     this.employeeForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -49,6 +52,8 @@ export class EmployeeForm implements OnInit {
   }
 
   ngOnInit(): void {
+    this.canEdit = this.userService.isAdmin() || this.userService.hasPermission('MANAGE_EMPLOYEES');
+    
     this.employeeService.getDepartments().subscribe(data => {
       this.departments = data;
     });
@@ -67,8 +72,13 @@ export class EmployeeForm implements OnInit {
           phone: '', address: '',
           dateOfBirth: '', salary: '', departmentId: ''
         });
+        this.employeeForm.markAsUntouched();
+        this.employeeForm.markAsPristine();
       }
     });
+    if (!this.canEdit) {
+      this.employeeForm.disable();
+    }
   }
 
   loadEmployeeData(id: number): void {
@@ -80,15 +90,25 @@ export class EmployeeForm implements OnInit {
           ...employee,
           dateOfBirth: dateOfBirthValue
         });
+        if (!this.canEdit) {
+          this.employeeForm.disable();
+        }
       },
       error: (err) => {
         console.error('Lỗi tải dữ liệu nhân viên:', err);
-        this.router.navigate(['/']);
+        this.router.navigate(['/employees']);
       }
     });
   }
 
   handleServerError = (err: any): void => {
+    if (err.status === 403) {
+      this.snackBar.open('Bạn không có quyền thực hiện thao tác này.', 'Đóng', {
+        duration: 5000, panelClass: ['error-snackbar']
+      });
+      this.router.navigate(['/employees']);
+      return;
+    }
     if (err.status === 400 && err.error && err.error.errors) {
       const serverErrors = err.error.errors;
       for (const key in serverErrors) {
@@ -112,6 +132,11 @@ export class EmployeeForm implements OnInit {
   };
 
   onSubmit(): void {
+    if (!this.canEdit) {
+      this.snackBar.open('Bạn không có quyền sửa/tạo thông tin nhân viên.', 'Đóng', { duration: 3000 });
+      return;
+    }
+
     if (this.employeeForm.valid) {
       const formData = this.employeeForm.value;
       let formattedDateOfBirth = '';
@@ -154,6 +179,11 @@ export class EmployeeForm implements OnInit {
           error: this.handleServerError
         });
       }
+    } else {
+        this.snackBar.open('Vui lòng kiểm tra lại tất cả các trường bị lỗi trong form.', 'Đóng', {
+            duration: 5000, panelClass: ['error-snackbar']
+        });
+        this.employeeForm.markAllAsTouched();
     }
   }
 }

@@ -1,62 +1,88 @@
-<button class="chat-toggle-btn" (click)="toggleChat()" matTooltip="">
-    <mat-icon class="toggle-icon">{{ isOpen ? 'keyboard_arrow_down' : 'chat' }}</mat-icon>
+<button class="chat-toggle-btn" (click)="toggleChat()" *ngIf="!isOpen">
+    <mat-icon>chat</mat-icon>
 </button>
-
 <div class="chat-box" [class.open]="isOpen" (click)="$event.stopPropagation()">
     <div class="chat-tabs">
-        <div class="tab-item" [class.active]="activeTab === 'global'" (click)="switchTab('global')">
-            <mat-icon>public</mat-icon> Chung
-        </div>
-        <div class="tab-item" [class.active]="activeTab === 'dept'" (click)="switchTab('dept')">
-            <mat-icon>groups</mat-icon> Phòng ban
-        </div>
-        <div class="close-icon" (click)="toggleChat()">
+        <div class="tab-item" [class.active]="activeTab === 'global'" (click)="switchTab('global')">Chung</div>
+        <div class="tab-item" [class.active]="activeTab === 'dept'" (click)="switchTab('dept')">Phòng</div>
+        <div class="tab-item" [class.active]="activeTab === 'private'" (click)="switchTab('private')">Cá nhân</div>
+        
+        <div class="header-close" (click)="toggleChat()" matTooltip="Đóng">
             <mat-icon>close</mat-icon>
         </div>
     </div>
-    <div class="admin-dept-select" *ngIf="activeTab === 'dept' && isAdmin">
-        <mat-form-field appearance="outline" class="dept-select-field">
-            <mat-label>Chọn phòng chat</mat-label>
-            <mat-select [value]="selectedDeptId" (selectionChange)="onAdminChangeDept($event)">
-                <mat-option *ngFor="let dept of departments" [value]="dept.id">
-                    {{dept.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div class="chat-messages" #scrollContainer [class.has-admin-select]="activeTab === 'dept' && isAdmin">
-        <div *ngIf="messages.length === 0" class="empty-state">
-            <mat-icon class="empty-icon">forum</mat-icon>
-            <p *ngIf="activeTab === 'global'">Kênh thông báo chung toàn công ty.</p>
-            <p *ngIf="activeTab === 'dept'">
-                {{ isAdmin ? 'Vui lòng chọn phòng ban để xem chat.' : 'Chưa có tin nhắn nào.' }}
-            </p>
-        </div>
-        <div *ngFor="let msg of messages" class="message-wrapper"
-            [ngClass]="{'my-message': isMyMessage(msg.user), 'other-message': !isMyMessage(msg.user)}">
-            <span class="sender-name" *ngIf="!isMyMessage(msg.user)">
-                {{ msg.user.split('@')[0] }}
-            </span>
-            
-            <div class="bubble-container">
-                <div class="msg-bubble">
-                    {{ msg.message }}
+
+    <div class="chat-body" #scrollContainer>
+        <div class="list-container" *ngIf="activeTab === 'dept' && isAdmin && !currentViewingDeptId">
+            <div class="list-header">Chọn phòng ban</div>
+            <div class="item-list">
+                <div *ngFor="let d of departments" class="chat-item-card" (click)="selectDeptChannel(d)">
+                    <div class="icon-box"><mat-icon>groups</mat-icon></div>
+                    <span class="item-name">{{ d.name }}</span>
+                    <mat-icon class="chevron">chevron_right</mat-icon>
                 </div>
-                <span class="time-stamp">
-                    {{ msg.time | date:'HH:mm' }}
-                </span>
+            </div>
+            <div *ngIf="departments.length === 0" class="empty-state">Chưa có phòng ban nào.</div>
+        </div>
+        <div class="list-container" *ngIf="activeTab === 'private' && !selectedUserChat">
+            <div class="search-bar-wrap">
+                <mat-icon>search</mat-icon>
+                <input type="text" [(ngModel)]="searchQuery" (input)="filterEmployees()" placeholder="Tìm đồng nghiệp..." autofocus>
+            </div>
+            <div class="item-list">
+                <div *ngFor="let emp of filteredEmployees" class="chat-item-card user-card" (click)="selectUserToChat(emp)">
+                    <div class="avatar">{{ emp.firstName?.charAt(0) || 'U' }}</div>
+                    <div class="info">
+                        <span class="item-name">{{ emp.firstName }} {{ emp.lastName }}</span>
+                        <span class="item-sub">{{ emp.email }}</span>
+                    </div>
+                    <mat-icon class="chevron">chevron_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="messages-viewport" *ngIf="shouldShowMessages()">
+        <div class="conversation-header" *ngIf="(activeTab === 'private' && selectedUserChat) || (activeTab === 'dept' && currentViewingDeptId)">
+            <button class="back-btn" 
+                    *ngIf="activeTab === 'private' || (activeTab === 'dept' && isAdmin)"
+                    (click)="activeTab === 'dept' ? currentViewingDeptId = null : selectedUserChat = null; messages = []">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <span class="conv-title">
+                {{ activeTab === 'private' ? (selectedUserChat.firstName + ' ' + selectedUserChat.lastName) : myDeptName }}
+            </span>
+        </div>
+            <div *ngFor="let msg of messages" class="msg-row"
+                 [ngClass]="msg.isMe ? 'my-msg-row' : 'other-msg-row'">
+                <span class="sender-name" *ngIf="!msg.isMe">{{ msg.user?.split('@')[0] }}</span>
+                
+                <div class="bubble-wrap">
+                    <div class="bubble">
+                        {{ msg.message || msg.content }}
+                        <div class="reaction-badge" *ngIf="msg.reactions">
+                            {{ msg.reactions }}
+                        </div>
+                        <div class="quick-react" *ngIf="!msg.isMe">
+                            <span (click)="sendReaction(msg.id, '❤️')">❤️</span>
+                            <span (click)="sendReaction(msg.id, '👍')">👍</span>
+                            <span (click)="sendReaction(msg.id, '😆')">😆</span>
+                        </div>
+                    </div>
+                    <span class="timestamp">{{ (msg.time || msg.timestamp) | date:'HH:mm' }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="messages.length === 0" class="chat-empty">
+                <mat-icon class="large-icon">forum</mat-icon>
+                <p>Chưa có tin nhắn nào.</p>
             </div>
         </div>
     </div>
-    <div class="chat-input-area">
-        <input type="text" 
-            [(ngModel)]="txtMessage" 
-            (keyup.enter)="sendMessage()" 
-            placeholder="Nhập tin nhắn..." 
-            autocomplete="off">
-        
-        <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="!txtMessage.trim()">
-            <mat-icon>send</mat-icon>
-        </button>
+    <div class="chat-footer" *ngIf="shouldShowMessages()">
+        <div class="input-container">
+            <input type="text" [(ngModel)]="txtMessage" (keydown.enter)="sendMessage()" placeholder="Nhập tin nhắn..." autocomplete="off">
+            <button class="send-btn" (click)="sendMessage()" [disabled]="!txtMessage.trim()">
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
     </div>
 </div>

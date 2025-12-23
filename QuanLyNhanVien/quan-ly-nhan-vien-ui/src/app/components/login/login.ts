@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.userService.isLoggedIn()) {
-      this.redirectToDashboard(); 
+      this.redirectToDashboard();
     }
   }
 
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       
       this.authApiService.login(loginRequest).subscribe({
         next: () => {
-          this.redirectToDashboard(); 
+          this.redirectToDashboard();
         },
         error: (err) => {
           this.errorMessage = 'Email hoặc mật khẩu không đúng. Vui lòng thử lại.';
@@ -60,9 +60,9 @@ export class LoginComponent implements OnInit {
         if (user.roles.includes('Admin')) {
             this.router.navigate(['/']); 
         } else if (user.roles.includes('User')) {
-            this.router.navigate(['/user-dashboard']); 
+            this.router.navigate(['/user-dashboard']);
         } else {
-            this.router.navigate(['/user-dashboard']); 
+            this.router.navigate(['/user-dashboard']);
         }
     } else {
         this.router.navigate(['/']);

@@ -11,39 +11,60 @@ namespace QuanLyNhanVien.Api.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public DashboardController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public DashboardController(AppDbContext context) => _context = context;
 
         [HttpGet("stats")]
         public async Task<IActionResult> GetStats()
         {
+            var today = DateTime.Today;
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
             int totalEmployees = await _context.Employees.CountAsync();
-            int currentMonth = DateTime.Now.Month;
-            int currentYear = DateTime.Now.Year;
+            int pendingLeaves = await _context.LeaveRequests.CountAsync(l => l.Status == "Pending");
 
             decimal totalSalary = await _context.Payrolls
                 .Where(p => p.Month == currentMonth && p.Year == currentYear)
-                .SumAsync(p => p.FinalSalary);
-            int pendingLeaves = await _context.LeaveRequests
-                .CountAsync(l => l.Status == "Pending");
-            var departmentStats = await _context.Employees
-                .GroupBy(e => e.DepartmentId)
-                .Select(g => new
-                {
-                    DepartmentId = g.Key,
-                    Count = g.Count()
-                })
+                .SumAsync(p => p.NetSalary);
+
+            var todayAttendance = await _context.Attendances.Where(a => a.Date == today).ToListAsync();
+
+            var departmentStats = await _context.Departments
+                .Select(d => new { Name = d.Name, Count = d.Employees.Count() })
                 .ToListAsync();
             return Ok(new
             {
-                TotalEmployees = totalEmployees,
-                TotalSalary = totalSalary,
-                PendingLeaves = pendingLeaves,
-                DepartmentStats = departmentStats
+                stats = new
+                {
+                    TotalEmployees = totalEmployees,
+                    TotalSalary = totalSalary,
+                    PendingLeaves = pendingLeaves,
+                    AttendanceToday = new
+                    {
+                        Present = todayAttendance.Count,
+                        Late = todayAttendance.Count(a => a.Status != null && a.Status.Contains("Late")),
+                        Absent = totalEmployees - todayAttendance.Count
+                    },
+                    DepartmentStats = departmentStats
+                }
             });
+        }
+
+        [HttpGet("salary-growth/{year}")]
+        public async Task<IActionResult> GetSalaryGrowth(int year)
+        {
+            var monthlyData = await _context.Payrolls
+                .Where(p => p.Year == year)
+                .GroupBy(p => p.Month)
+                .Select(g => new { Month = g.Key, Total = g.Sum(p => p.NetSalary) })
+                .ToListAsync();
+
+            var result = new decimal[12];
+            foreach (var item in monthlyData)
+            {
+                if (item.Month >= 1 && item.Month <= 12) result[item.Month - 1] = item.Total;
+            }
+            return Ok(result);
         }
     }
 }

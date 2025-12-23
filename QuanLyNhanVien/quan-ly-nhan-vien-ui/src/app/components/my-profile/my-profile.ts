@@ -16,8 +16,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MyProfileComponent implements OnInit {
   employee: Employee | null = null;
-  avatarDisplay: string | null = null; 
-  private baseUrl = 'http://localhost:5195'; 
+  avatarDisplay: string | null = null;
+  private baseUrl = 'http://localhost:8080';
 
   constructor(
     private employeeService: EmployeeService,
@@ -33,8 +33,8 @@ export class MyProfileComponent implements OnInit {
       next: (data) => {
         this.employee = data;
         if (this.employee && this.employee.avatarUrl) {
-            this.avatarDisplay = this.employee.avatarUrl.startsWith('http') 
-              ? this.employee.avatarUrl 
+            this.avatarDisplay = this.employee.avatarUrl.startsWith('http')
+              ? this.employee.avatarUrl
               : `${this.baseUrl}${this.employee.avatarUrl}`;
         }
       },

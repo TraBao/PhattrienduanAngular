@@ -8,6 +8,8 @@ using System.Text;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
+using QuanLyNhanVien.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -15,10 +17,10 @@ namespace QuanLyNhanVien.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -31,8 +33,7 @@ namespace QuanLyNhanVien.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
@@ -57,10 +58,16 @@ namespace QuanLyNhanVien.Api.Controllers
                     new Claim(ClaimTypes.Name, user.Email!),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
+
                 foreach (var userRole in roles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
+                if (!string.IsNullOrEmpty(user.Permissions))
+                {
+                    authClaims.Add(new Claim("permissions", user.Permissions));
+                }
+
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 
                 var token = new JwtSecurityToken(
@@ -92,13 +99,16 @@ namespace QuanLyNhanVien.Api.Controllers
                 {
                     user.Id,
                     user.Email,
-                    Roles = roles
+                    Roles = roles,
+                    Permissions = user.Permissions // Trả về quyền để Admin thấy
                 });
             }
 
             return Ok(userList);
         }
+
         [HttpPost("assign-role")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole([FromBody] UserRoleDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -120,11 +130,29 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return Ok(new { Message = "Cập nhật quyền thành công!" });
         }
+        [HttpPut("{id}/permissions")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdatePermissions(string id, [FromBody] UpdatePermissionsDto model)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound(new { Message = "Không tìm thấy user." });
+
+            user.Permissions = model.Permissions;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded) return Ok(new { Message = "Cập nhật quyền thành công!" });
+
+            return BadRequest(new { Message = "Lỗi khi cập nhật quyền." });
+        }
     }
 
     public class UserRoleDto
     {
         public string Email { get; set; }
         public string[] Roles { get; set; }
+    }
+    public class UpdatePermissionsDto
+    {
+        public string Permissions { get; set; }
     }
 }

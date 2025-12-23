@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material-module';
 import { AnnouncementService } from '../../services/announcement.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin-announcements',
@@ -18,12 +19,16 @@ export class AdminAnnouncementsComponent implements OnInit {
   isImportant = false;
   announcements: any[] = [];
 
+  canManageAnnouncements: boolean = false;
+
   constructor(
     private announcementService: AnnouncementService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    this.canManageAnnouncements = this.userService.isAdmin() || this.userService.hasPermission('MANAGE_ANNOUNCEMENTS');
     this.loadAnnouncements();
   }
 
@@ -49,7 +54,8 @@ export class AdminAnnouncementsComponent implements OnInit {
         },
         error: (err) => {
             console.error(err);
-            this.snackBar.open('Lỗi khi đăng tin!', 'Đóng', { duration: 3000 });
+            const errorMessage = err.status === 403 ? 'Bạn không có quyền đăng thông báo!' : (err.error?.message || 'Lỗi khi đăng tin!');
+            this.snackBar.open(errorMessage, 'Đóng', { duration: 3000, panelClass: 'error-snackbar' });
         }
     });
   }
@@ -64,9 +70,16 @@ export class AdminAnnouncementsComponent implements OnInit {
 
   deleteNews(id: number) {
       if(confirm('Bạn có chắc muốn xóa thông báo này không?')) {
-          this.announcementService.delete(id).subscribe(() => {
-              this.loadAnnouncements();
-              this.snackBar.open('Đã xóa tin.', 'Đóng', { duration: 2000 });
+          this.announcementService.delete(id).subscribe({
+              next: () => {
+                  this.loadAnnouncements();
+                  this.snackBar.open('Đã xóa tin.', 'Đóng', { duration: 2000 });
+              },
+              error: (err) => {
+                  console.error(err);
+                   const errorMessage = err.status === 403 ? 'Bạn không có quyền xóa thông báo!' : (err.error?.message || 'Lỗi khi xóa tin!');
+                  this.snackBar.open(errorMessage, 'Đóng', { duration: 3000, panelClass: 'error-snackbar' });
+              }
           });
       }
   }
