@@ -1,0 +1,109 @@
+.activity-container {
+    padding: 24px;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 64px);
+    font-family: 'Inter', sans-serif;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .title-box {
+        h2 { margin: 0; font-size: 24px; font-weight: 700; color: #1f2937; }
+        .subtitle { margin: 4px 0 0; color: #6b7280; font-size: 14px; }
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 300px;
+        ::ng-deep .mat-mdc-text-field-wrapper {
+            background-color: white;
+            border-radius: 8px;
+        }
+    }
+}
+
+.table-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    
+    th.mat-header-cell {
+        background-color: #f9fafb;
+        color: #4b5563;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        padding: 16px;
+    }
+
+    td.mat-cell {
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #374151;
+        border-bottom: 1px solid #e5e7eb;
+    }
+}
+.time-cell {
+    color: #6b7280;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.user-info {
+    display: flex; align-items: center; gap: 8px;
+    .user-icon { font-size: 20px; width: 20px; height: 20px; color: #9ca3af; }
+    .username { font-weight: 500; color: #111827; }
+}
+
+.method-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 60px;
+    text-align: center;
+    &.create-badge { background-color: #dcfce7; color: #15803d; }
+    &.update-badge { background-color: #fef9c3; color: #a16207; }
+    &.delete-badge { background-color: #fee2e2; color: #b91c1c; }
+    &.view-badge   { background-color: #e0f2fe; color: #0369a1; }
+}
+
+.path-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.desc-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-data {
+    text-align: center; padding: 40px; color: #9ca3af;
+    mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 8px; }
+    p { margin: 0; font-size: 15px; }
+}

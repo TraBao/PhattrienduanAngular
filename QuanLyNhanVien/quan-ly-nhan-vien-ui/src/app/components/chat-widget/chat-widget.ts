@@ -146,25 +146,19 @@ export class ChatWidgetComponent implements OnInit, OnDestroy {
       error: (err) => console.error('❌ Lỗi load phòng ban:', err)
     });
   }
-
   loadEmployees(): void {
-    this.employeeService.getEmployees('', 1, 1000).subscribe({
+    this.employeeService.getEmployees('', 1, 1000).subscribe({ 
       next: (res: any) => {
         console.log('👥 API Nhân viên trả về:', res);
 
         let dataArray = [];
-        if (Array.isArray(res)) {
-            dataArray = res;
-        } 
-        else if (typeof res === 'object') {
-            if (Array.isArray(res.data)) dataArray = res.data;
-            else if (Array.isArray(res.Data)) dataArray = res.Data;
-            else if (Array.isArray(res.items)) dataArray = res.items;
-            else if (Array.isArray(res.result)) dataArray = res.result;
-            else if (Array.isArray(res.users)) dataArray = res.users;
-            else if (Array.isArray(res.employees)) dataArray = res.employees; 
+        if (res && Array.isArray(res.data)) {
+            dataArray = res.data;
         }
-        this.employees = dataArray.filter((e: any) => {
+        const extractedEmployees = dataArray.map((item: any) => {
+          return item.employee || item; 
+        });
+        this.employees = extractedEmployees.filter((e: any) => {
             const eMail = e.email || e.Email;
             return eMail && this.currentUserEmail && 
                     eMail.toLowerCase() !== this.currentUserEmail.toLowerCase();

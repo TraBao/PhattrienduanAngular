@@ -151,6 +151,15 @@ $border-color: #e5e7eb;
     }
     .btn-cancel { height: 48px; color: #6b7280; }
 }
+.section-header {
+    &.payment-header {
+        margin-top: 24px;
+    }
+    .icon-bg.payment {
+        background-color: #e0f2f1;
+        color: #00796b;
+    }
+}
 
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }

@@ -121,11 +121,14 @@ export class LeaveManagerComponent implements OnInit {
     });
   }
 
-  cancelRequest(id: number) {
-    if(confirm('Bạn có chắc chắn muốn xóa/hủy đơn xin nghỉ này?')) {
-        this.leaveService.deleteRequest(id).subscribe({
+  cancelRequest(id: number, status: string) {
+    const message = status === 'Approved'
+        ? 'Đơn này ĐÃ DUYỆT. Nếu hủy, lịch nghỉ sẽ bị xóa và bạn có thể Check-in đi làm lại. Bạn chắc chắn chứ?'
+        : 'Bạn có chắc chắn muốn rút lại đơn xin nghỉ này?';
+    if(confirm(message)) {
+        this.leaveService.cancelLeave(id).subscribe({
             next: () => {
-                this.snackBar.open('Đã hủy đơn thành công', 'Đóng', { duration: 2000 });
+                this.snackBar.open('Đã hủy đơn thành công!', 'Đóng', { duration: 3000, panelClass: 'success-snackbar' });
                 this.loadMyLeaves();
                 if(this.canApproveLeaves) this.loadAllLeaves();
             },

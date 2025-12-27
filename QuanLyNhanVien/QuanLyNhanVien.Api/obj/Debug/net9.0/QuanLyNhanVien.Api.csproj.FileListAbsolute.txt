@@ -279,10 +279,10 @@ C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\Qu
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\QuanLyNh.C3797998.Up2Date
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\QuanLyNhanVien.Api.dll
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\refint\QuanLyNhanVien.Api.dll
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\QuanLyNhanVien.Api.pdb
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\QuanLyNhanVien.Api.genruntimeconfig.cache
 C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\ref\QuanLyNhanVien.Api.dll
+C:\Users\Admin\OneDrive\Desktop\Phát triển dự án Angular\QuanLyNhanVien\QuanLyNhanVien.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

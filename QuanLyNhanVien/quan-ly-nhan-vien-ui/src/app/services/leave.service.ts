@@ -28,4 +28,7 @@
     deleteRequest(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }
-    }
+    cancelLeave(id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cancel/${id}`, {});
+}
+}

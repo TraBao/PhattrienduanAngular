@@ -21,7 +21,7 @@ namespace QuanLyNhanVien.Api.Data
         public DbSet<Payroll> Payrolls { get; set; }
         public DbSet<FormTemplate> FormTemplates { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-
+        public DbSet<SystemActivity> SystemActivities { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

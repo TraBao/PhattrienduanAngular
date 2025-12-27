@@ -49,7 +49,6 @@ export class FormsManagerComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    // 👇 KIỂM TRA QUYỀN TRƯỚC KHI THỰC HIỆN
     if (!this.canManageDocuments) {
         alert('Bạn không có quyền tải lên biểu mẫu!');
         return;

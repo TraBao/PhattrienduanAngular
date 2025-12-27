@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Models;
 using System.Security.Claims;
+using QuanLyNhanVien.Api.Filters;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -29,6 +30,7 @@ namespace QuanLyNhanVien.Api.Controllers
     {
         private readonly AppDbContext _context;
         public LeaveRequestsController(AppDbContext context) => _context = context;
+
         private string GetCurrentUserEmail()
         {
             return User.FindFirstValue(ClaimTypes.Name)
@@ -37,6 +39,7 @@ namespace QuanLyNhanVien.Api.Controllers
                 ?? User.FindFirstValue("sub")
                 ?? string.Empty;
         }
+
         [HttpGet("my-leaves")]
         public async Task<IActionResult> GetMyLeaves()
         {
@@ -64,7 +67,9 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return Ok(requests);
         }
+
         [HttpPost]
+        [LogActivity("Gửi yêu cầu nghỉ phép mới")]
         public async Task<IActionResult> CreateRequest([FromBody] CreateLeaveRequestDto dto)
         {
             var email = GetCurrentUserEmail();
@@ -79,7 +84,7 @@ namespace QuanLyNhanVien.Api.Controllers
                 EndDate = dto.EndDate,
                 Reason = dto.Reason,
                 LeaveType = dto.LeaveType,
-                Status = "Pending", // Mặc định chờ duyệt
+                Status = "Pending",
                 CreatedAt = DateTime.Now,
                 TotalDays = (dto.EndDate.Date - dto.StartDate.Date).TotalDays + 1
             };
@@ -87,6 +92,30 @@ namespace QuanLyNhanVien.Api.Controllers
             _context.LeaveRequests.Add(request);
             await _context.SaveChangesAsync();
             return Ok(new { Message = "Gửi đơn thành công!" });
+        }
+        [HttpPost("cancel/{id}")]
+        [LogActivity("Hủy đơn nghỉ phép")]
+        public async Task<IActionResult> CancelRequest(int id)
+        {
+            var request = await _context.LeaveRequests.Include(r => r.Employee).FirstOrDefaultAsync(r => r.Id == id);
+            if (request == null) return NotFound();
+
+            var currentUserEmail = GetCurrentUserEmail();
+            bool isAdmin = IsAdmin() || HasPermission("MANAGE_LEAVES");
+            bool isOwner = request.Employee?.Email?.ToLower() == currentUserEmail.ToLower();
+
+            if (!isOwner && !isAdmin)
+            {
+                return Forbid("Bạn không có quyền hủy đơn này.");
+            }
+            if (request.Status == "Cancelled")
+            {
+                return BadRequest(new { Message = "Đơn này đã bị hủy trước đó rồi." });
+            }
+
+            request.Status = "Cancelled";
+            await _context.SaveChangesAsync();
+            return Ok(new { Message = "Đã hủy đơn nghỉ phép." });
         }
         [HttpGet("all")]
         public async Task<IActionResult> GetAllRequests()
@@ -111,7 +140,9 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return Ok(requests);
         }
+
         [HttpPost("update-status")]
+        [LogActivity("Phê duyệt/Từ chối đơn nghỉ phép")]
         public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusDto dto)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_LEAVES")) return Forbid();
@@ -126,6 +157,7 @@ namespace QuanLyNhanVien.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [LogActivity("Xóa hoàn toàn đơn nghỉ phép")]
         public async Task<IActionResult> DeleteRequest(int id)
         {
             var record = await _context.LeaveRequests.Include(r => r.Employee).FirstOrDefaultAsync(r => r.Id == id);
@@ -142,8 +174,9 @@ namespace QuanLyNhanVien.Api.Controllers
 
             _context.LeaveRequests.Remove(record);
             await _context.SaveChangesAsync();
-            return Ok(new { Message = "Đã xóa đơn." });
+            return Ok(new { Message = "Đã xóa đơn vĩnh viễn." });
         }
+
         private bool IsAdmin() => User.IsInRole("Admin");
         private bool HasPermission(string p) => User.HasClaim(c => c.Type == "permissions" && c.Value.Contains(p));
     }

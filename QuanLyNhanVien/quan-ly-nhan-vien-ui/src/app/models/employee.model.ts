@@ -8,9 +8,11 @@ export interface Employee {
     salary: number;
     avatarUrl?: string;
     jobTitle?: string;
-    phone?: string;
+    phoneNumber?: string;
     address?: string;
     bankName?: string;
     bankAccountNumber?: string;
     bankAccountName?: string;
+    isLocked?: boolean;
+    userId?: string;
 }

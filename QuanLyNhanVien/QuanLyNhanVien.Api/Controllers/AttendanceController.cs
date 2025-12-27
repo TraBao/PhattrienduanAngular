@@ -38,6 +38,21 @@ namespace QuanLyNhanVien.Api.Controllers
             var today = DateTime.Today;
             if (await _context.Attendances.AnyAsync(a => a.UserId == userId && a.Date == today))
                 return BadRequest(new { Message = "Bạn đã Check-in hôm nay rồi!" });
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == userId);
+            if (employee != null)
+            {
+                var isOnLeave = await _context.LeaveRequests.AnyAsync(l =>
+                    l.EmployeeId == employee.Id &&
+                    l.Status == "Approved" &&
+                    l.StartDate.Date <= today &&
+                    l.EndDate.Date >= today
+                );
+
+                if (isOnLeave)
+                {
+                    return BadRequest(new { Message = "Bạn đang trong kỳ nghỉ phép đã duyệt. Vui lòng hủy đơn nếu muốn đi làm." });
+                }
+            }
             string status = "OnTime";
             if (now.TimeOfDay > new TimeSpan(8, 15, 0)) status = "Late";
 

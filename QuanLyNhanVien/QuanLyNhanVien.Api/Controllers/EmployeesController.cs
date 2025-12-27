@@ -4,6 +4,8 @@ using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using QuanLyNhanVien.Api.Filters;
+using Microsoft.AspNetCore.Identity;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -13,11 +15,14 @@ namespace QuanLyNhanVien.Api.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EmployeesController(AppDbContext context)
+        public EmployeesController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
         [HttpGet]
         public async Task<ActionResult> GetEmployees([FromQuery] string? search, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
@@ -30,15 +35,31 @@ namespace QuanLyNhanVien.Api.Controllers
             }
 
             var totalItems = await query.CountAsync();
+
             var employees = await query
                 .OrderByDescending(e => e.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+            var resultData = new List<object>();
+
+            foreach (var emp in employees)
+            {
+                var user = await _userManager.FindByEmailAsync(emp.Email);
+                bool isLocked = user != null && await _userManager.IsLockedOutAsync(user);
+                string userId = user != null ? user.Id : "";
+                resultData.Add(new
+                {
+                    Employee = emp,
+                    IsLocked = isLocked,
+                    UserId = userId
+                });
+            }
+
             return Ok(new
             {
                 TotalItems = totalItems,
-                Data = employees,
+                Data = resultData,
                 Page = page,
                 PageSize = pageSize
             });
@@ -51,7 +72,9 @@ namespace QuanLyNhanVien.Api.Controllers
             if (employee == null) return NotFound(new { Message = "Không tìm thấy nhân viên" });
             return Ok(employee);
         }
+
         [HttpPost]
+        [LogActivity("Thêm mới hồ sơ nhân viên")]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_EMPLOYEES")) return Forbid();
@@ -65,7 +88,9 @@ namespace QuanLyNhanVien.Api.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
+
         [HttpPut("{id}")]
+        [LogActivity("Cập nhật thông tin nhân viên")]
         public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_EMPLOYEES")) return Forbid();
@@ -83,7 +108,9 @@ namespace QuanLyNhanVien.Api.Controllers
             }
             return NoContent();
         }
+
         [HttpDelete("{id}")]
+        [LogActivity("Xóa nhân viên khỏi hệ thống")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_EMPLOYEES")) return Forbid();
@@ -101,6 +128,7 @@ namespace QuanLyNhanVien.Api.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpGet("me")]
         public async Task<IActionResult> GetMyProfile()
         {
@@ -119,7 +147,9 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return Ok(employee);
         }
+
         [HttpPost("upload-avatar")]
+        [LogActivity("Cập nhật ảnh đại diện nhân viên")]
         public async Task<IActionResult> UploadAvatar([FromForm] int employeeId, IFormFile file)
         {
             if (file == null || file.Length == 0) return BadRequest("Vui lòng chọn file ảnh hợp lệ.");
@@ -168,6 +198,7 @@ namespace QuanLyNhanVien.Api.Controllers
                 return StatusCode(500, $"Lỗi hệ thống khi xử lý ảnh: {ex.Message}");
             }
         }
+
         private bool EmployeeExists(int id) => _context.Employees.Any(e => e.Id == id);
 
         private bool IsAdmin() => User.IsInRole("Admin");

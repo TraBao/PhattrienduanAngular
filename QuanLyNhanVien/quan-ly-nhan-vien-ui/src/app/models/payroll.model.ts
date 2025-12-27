@@ -23,4 +23,7 @@ export interface Payroll {
     createdAt: string;
     paymentDate?: string;
     employee?: Employee;
+    bankName?: string;
+    bankAccountNumber?: string;
+    bankAccountName?: string;
 }

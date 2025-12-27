@@ -1,15 +1,14 @@
 <mat-toolbar color="primary" class="app-header">
-    <div class="branding" routerLink="/">
+    <div class="branding" [routerLink]="isCurrentUserAdmin() ? '/admin-dashboard' : '/'">
         <mat-icon class="app-icon">admin_panel_settings</mat-icon>
         <span class="app-title">HR Manager</span>
     </div>
-
     <div class="nav-links">
-        <a mat-button routerLink="/admin-dashboard" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
-            <mat-icon>dashboard</mat-icon> Tổng quan
-        </a>
-        <a mat-button routerLink="/dashboard" routerLinkActive="active-link" *ngIf="!isCurrentUserAdmin()">
-            <mat-icon>dashboard</mat-icon> Bảng tin
+        <a mat-button 
+           [routerLink]="isCurrentUserAdmin() ? '/admin-dashboard' : '/dashboard'" 
+           routerLinkActive="active-link">
+            <mat-icon>dashboard</mat-icon> 
+            {{ isCurrentUserAdmin() ? 'Tổng quan' : 'Bảng tin' }}
         </a>
         <a mat-button routerLink="/announcements" routerLinkActive="active-link" 
            *ngIf="hasPerm('MANAGE_ANNOUNCEMENTS')">
@@ -19,11 +18,11 @@
            *ngIf="hasPerm('MANAGE_EMPLOYEES')">
             <mat-icon>people</mat-icon> Nhân viên
         </a>
-        <a mat-button routerLink="/my-profile" routerLinkActive="active-link">
-            <mat-icon>person</mat-icon> Hồ sơ
-        </a>
         <a mat-button routerLink="/users" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
             <mat-icon>manage_accounts</mat-icon> Tài khoản
+        </a>
+        <a mat-button routerLink="/activity-log" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
+            <mat-icon>history</mat-icon> Lịch sử
         </a>
         <a mat-button routerLink="/departments" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
             <mat-icon>apartment</mat-icon> Phòng ban
@@ -37,6 +36,9 @@
         </a>
         <a mat-button routerLink="/forms" routerLinkActive="active-link">
             <mat-icon>topic</mat-icon> Biểu mẫu
+        </a>
+        <a mat-button routerLink="/my-profile" routerLinkActive="active-link">
+            <mat-icon>person</mat-icon> Hồ sơ
         </a>
     </div>
 

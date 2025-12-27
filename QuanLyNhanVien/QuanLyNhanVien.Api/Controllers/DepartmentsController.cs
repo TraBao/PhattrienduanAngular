@@ -17,6 +17,7 @@ namespace QuanLyNhanVien.Api.Controllers
             _context = context;
         }
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
             return await _context.Departments.ToListAsync();
@@ -85,13 +86,10 @@ namespace QuanLyNhanVien.Api.Controllers
             {
                 return BadRequest(new { Message = "Không thể xóa phòng ban này vì đang có nhân viên." });
             }
-
             _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
-
         private bool DepartmentExists(int id)
         {
             return _context.Departments.Any(e => e.Id == id);

@@ -17,7 +17,7 @@ import { ChatService } from './services/chat.service';
 import { ChatWidgetComponent } from './components/chat-widget/chat-widget';
 import { AiWidgetComponent } from './components/ai-widget/ai-widget';
 import { PolicyDialogComponent } from './components/policy-dialog/policy-dialog.component'; 
-import { User } from './models/auth/user.model';
+import { User } from './models/user.model';
 import { Notification, NotificationService } from './services/notification.service';
 
 @Component({

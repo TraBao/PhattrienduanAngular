@@ -9,41 +9,55 @@
             <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
                 <mat-icon matPrefix>search</mat-icon>
                 <mat-label>Tìm tài khoản...</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Email..." #input>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Nhập email..." #input>
             </mat-form-field>
         </div>
+
         <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="email">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Tài khoản (Email) </th>
                     <td mat-cell *matCellDef="let row"> 
                         <div class="user-info">
-                            <div class="avatar-placeholder">{{ row.email.charAt(0).toUpperCase() }}</div>
-                            <span class="email-text">{{row.email}}</span>
+                            <div class="avatar-placeholder" [class.locked]="isLocked(row)">
+                                {{ row.email.charAt(0).toUpperCase() }}
+                            </div>
+                            <div class="email-wrapper">
+                                <span class="email-text">{{row.email}}</span>
+                                <span *ngIf="isLocked(row)" class="locked-tag">
+                                    <mat-icon>lock</mat-icon> Đã khóa
+                                </span>
+                            </div>
                         </div>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="roles">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vai trò (Role) </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vai trò </th>
                     <td mat-cell *matCellDef="let row">
-                        <div class="role-chips">
-                            <span class="role-badge admin" *ngIf="row.roles.includes('Admin')">Admin</span>
-                            <span class="role-badge user" *ngIf="!row.roles.includes('Admin')">Nhân viên</span>
-                        </div>
+                        <mat-form-field appearance="fill" class="role-select-field">
+                            <mat-select [value]="row.roles[0]"
+                                        (selectionChange)="openRoleDialog(row, [$event.value])"
+                                        placeholder="Chọn vai trò"
+                                        [disabled]="row.email === currentUserEmail"
+                                        [matTooltip]="row.email === currentUserEmail ? 'Không thể thay đổi quyền của chính bạn' : ''">
+                                <mat-option value="Admin">Quản trị viên (Admin)</mat-option>
+                                <mat-option value="User">Nhân viên</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="permissions">
                     <th mat-header-cell *matHeaderCellDef> Quyền chi tiết </th>
                     <td mat-cell *matCellDef="let row">
-                        <span *ngIf="row.roles.includes('Admin')" style="color: #4caf50; font-weight: 500; font-size: 12px;">
-                            <mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;">verified</mat-icon> Toàn quyền hệ thống
+                        <span *ngIf="row.roles.includes('Admin')" class="perm-full">
+                            <mat-icon>verified</mat-icon> Toàn quyền hệ thống
                         </span>
-                        <div *ngIf="!row.roles.includes('Admin') && row.permissions" style="display: flex; flex-wrap: wrap; gap: 4px;">
+                        <div *ngIf="!row.roles.includes('Admin') && row.permissions" class="perm-tags-wrapper">
                             <span class="perm-tag" *ngFor="let p of row.permissions.split(',')">
-                                {{ p.split('_')[1] || p }}
+                                {{ p.split('_')[1] || p | lowercase }}
                             </span>
                         </div>
-                        <span *ngIf="!row.roles.includes('Admin') && !row.permissions" style="color: #999; font-style: italic; font-size: 12px;">
+                        <span *ngIf="!row.roles.includes('Admin') && !row.permissions" class="perm-none">
                             Chưa được cấp quyền
                         </span>
                     </td>
@@ -51,28 +65,21 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Thao tác </th>
                     <td mat-cell *matCellDef="let row" class="text-center">
-                        <div style="display: flex; justify-content: center; gap: 8px;">
-                            <button *ngIf="row.roles.includes('Admin')"
-                                    mat-icon-button
-                                    color="warn"
-                                    (click)="toggleRole(row)"
-                                    matTooltip="Gỡ quyền quản trị">
-                                <mat-icon>remove_moderator</mat-icon>
-                            </button>
-                            <button *ngIf="!row.roles.includes('Admin')"
-                                    mat-icon-button
-                                    color="primary"
-                                    (click)="toggleRole(row)"
-                                    matTooltip="Cấp quyền quản trị">
-                                <mat-icon>add_moderator</mat-icon>
-                            </button>
-                            <button *ngIf="!row.roles.includes('Admin')"
-                                    mat-icon-button
-                                    color="accent"
+                        <div class="action-buttons">
+                            <button mat-icon-button color="accent"
+                                    *ngIf="!row.roles.includes('Admin')"
                                     (click)="openPermissionDialog(row)"
                                     matTooltip="Phân quyền chi tiết">
                                 <mat-icon>vpn_key</mat-icon>
                             </button>
+                            <ng-container *ngIf="row.email !== currentUserEmail">
+                                <button *ngIf="!isLocked(row)" mat-icon-button color="warn" (click)="toggleLock(row)" matTooltip="Khóa tài khoản này">
+                                    <mat-icon>lock_open</mat-icon>
+                                </button>
+                                <button *ngIf="isLocked(row)" mat-icon-button color="primary" (click)="toggleLock(row)" matTooltip="Mở khóa tài khoản">
+                                    <mat-icon>lock</mat-icon>
+                                </button>
+                            </ng-container>
                         </div>
                     </td>
                 </ng-container>
@@ -81,7 +88,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell no-data" colspan="4">Không tìm thấy user nào.</td>
+                    <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">Không tìm thấy user nào khớp với tìm kiếm.</td>
                 </tr>
             </table>
         </div>

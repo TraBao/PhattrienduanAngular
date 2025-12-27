@@ -6,6 +6,7 @@ import { MaterialModule } from '../../material-module';
 import { AuthApiService } from '../../services/auth-api.service';
 import { LoginRequest } from '../../models/auth/login-request.model';
 import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -31,9 +32,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.userService.isLoggedIn()) {
-      this.redirectToDashboard();
-    }
   }
 
   onSubmit(): void {
@@ -42,8 +40,8 @@ export class LoginComponent implements OnInit {
       const loginRequest: LoginRequest = this.loginForm.value;
       
       this.authApiService.login(loginRequest).subscribe({
-        next: () => {
-          this.redirectToDashboard();
+        next: (user: User) => {
+          this.redirectToDashboard(user);
         },
         error: (err) => {
           this.errorMessage = 'Email hoặc mật khẩu không đúng. Vui lòng thử lại.';
@@ -53,19 +51,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private redirectToDashboard(): void {
-    const user = this.userService.getCurrentUserValue(); 
-
-    if (user && user.roles.length > 0) {
-        if (user.roles.includes('Admin')) {
-            this.router.navigate(['/']); 
-        } else if (user.roles.includes('User')) {
-            this.router.navigate(['/user-dashboard']);
-        } else {
-            this.router.navigate(['/user-dashboard']);
-        }
+  private redirectToDashboard(user: User | null): void { 
+    if (user && user.roles.includes('Admin')) {
+        this.router.navigate(['/admin-dashboard']);
     } else {
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
     }
   }
 }

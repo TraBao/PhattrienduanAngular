@@ -28,6 +28,13 @@ namespace QuanLyNhanVien.Api.Models
         public string? AvatarUrl { get; set; }
         public decimal? PersonalDeduction { get; set; } = 11000000;
         public int? NumberOfDependents { get; set; } = 0;
+
+        [StringLength(20)]
+        public string? PhoneNumber { get; set; }
+
+        [StringLength(200)]
+        public string? Address { get; set; }
+
         [StringLength(50)]
         public string? BankName { get; set; }
 

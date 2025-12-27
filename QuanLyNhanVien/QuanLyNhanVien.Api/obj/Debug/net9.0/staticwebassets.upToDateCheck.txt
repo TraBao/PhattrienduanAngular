@@ -12,6 +12,7 @@ wwwroot\uploads\882eef28-5f3e-461d-aee5-8ace103434ae.png
 wwwroot\uploads\a8561efe-209a-4310-b607-a5897c369322.png
 wwwroot\uploads\ae558167-9665-4f98-b7c1-c95eb76a1de6.png
 wwwroot\uploads\ae9819d6-76f9-4d58-8913-0fb89b7f30f2.jpg
+wwwroot\uploads\avatars\3648140b-9776-4608-b21a-922e8ebc7c57.jpg
 wwwroot\uploads\ec123f94-9ba8-4041-a99b-d095fe2158ed.png
 wwwroot\uploads\f9314ea9-341f-44a3-acb7-5c1350f03dc0.png
 wwwroot\uploads\fa45c7ca-779f-45b7-9e81-7cd82b756739.png

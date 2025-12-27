@@ -53,11 +53,11 @@
                         <mat-form-field appearance="outline" class="soft-input full-width">
                             <mat-label>Số điện thoại</mat-label>
                             <mat-icon matPrefix class="prefix-icon">phone</mat-icon>
-                            <input matInput formControlName="phone" required placeholder="09xxxxxxx">
-                            <mat-error *ngIf="employeeForm.get('phone')?.hasError('required') && employeeForm.get('phone')?.touched">
+                            <input matInput formControlName="phoneNumber" placeholder="Nhập số điện thoại">
+                            <mat-error *ngIf="employeeForm.get('phoneNumber')?.hasError('required') && employeeForm.get('phoneNumber')?.touched">
                                 SĐT không được để trống.
                             </mat-error>
-                            <mat-error *ngIf="employeeForm.get('phone')?.hasError('pattern') && employeeForm.get('phone')?.touched">
+                            <mat-error *ngIf="employeeForm.get('phoneNumber')?.hasError('pattern') && employeeForm.get('phoneNumber')?.touched">
                                 SĐT không đúng định dạng.
                             </mat-error>
                         </mat-form-field>
@@ -102,7 +102,7 @@
 
                     <mat-form-field appearance="outline" class="soft-input full-width salary-field">
                         <mat-label>Mức lương (VND)</mat-label>
-                            <span matSuffix class="money-prefix">₫</span>
+                        <span matSuffix class="money-prefix">₫</span>
                         <input matInput type="number" formControlName="salary" required>
                         <mat-hint>Nhập số liền, không dấu chấm</mat-hint>
                         <mat-error *ngIf="employeeForm.get('salary')?.hasError('required') && employeeForm.get('salary')?.touched">
@@ -112,13 +112,32 @@
                             Mức lương phải là số dương.
                         </mat-error>
                     </mat-form-field>
+                    <div class="section-header payment-header">
+                        <div class="icon-bg payment"><mat-icon>account_balance</mat-icon></div>
+                        <h3>Thông tin Thanh toán</h3>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Tên ngân hàng</mat-label>
+                        <input matInput formControlName="bankName" placeholder="VD: MB Bank, Vietcombank...">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Số tài khoản</mat-label>
+                        <input matInput formControlName="bankAccountNumber" placeholder="Nhập số tài khoản">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="soft-input full-width">
+                        <mat-label>Tên chủ tài khoản</mat-label>
+                        <input matInput formControlName="bankAccountName" placeholder="Tên in trên thẻ/ứng dụng">
+                        <mat-hint>Viết không dấu, ví dụ: NGUYEN VAN A</mat-hint>
+                    </mat-form-field>
                 </div>
             </div>
             <div *ngIf="employeeId && canEdit" class="docs-wrapper">
                 <h4 class="docs-title"><mat-icon>folder_open</mat-icon> Hồ sơ & Tài liệu đính kèm</h4>
                 <app-employee-docs [employeeId]="employeeId"></app-employee-docs>
             </div>
-
             <div class="form-actions">
                 <a mat-button routerLink="/employees" class="btn-cancel">Hủy bỏ</a>
                 <button mat-flat-button 

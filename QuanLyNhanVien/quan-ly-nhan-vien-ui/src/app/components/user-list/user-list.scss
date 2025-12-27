@@ -46,7 +46,6 @@
     .email-text { font-weight: 500; color: #333; }
 }
 
-/* Role Badges */
 .role-chips {
     display: flex;
     gap: 8px;
@@ -86,6 +85,19 @@
 .btn-role {
     font-size: 12px;
     min-width: 100px;
+}
+.role-select-field {
+    .mat-mdc-form-field-flex {
+        background-color: #f0f2f5 !important;
+        border-radius: 8px !important;
+    }
+    .mat-mdc-form-field-underline {
+        display: none;
+    }i
+    .mat-mdc-form-field-infix {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
 }
 
 @keyframes fadeIn {

@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.AspNetCore.SignalR;
 using QuanLyNhanVien.Api.Hubs;
 using QuanLyNhanVien.Api.Dtos;
+using QuanLyNhanVien.Api.Filters;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -47,6 +48,7 @@ namespace QuanLyNhanVien.Api.Controllers
         private bool HasPermission(string p) => User.HasClaim(c => c.Type == "permissions" && c.Value.Contains(p));
 
         [HttpPost("calculate")]
+        [LogActivity("Tính lương tháng cho nhân viên")]
         public async Task<IActionResult> CalculatePayroll([FromBody] PayrollCalculationRequestDto request)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_PAYROLL")) return Forbid();
@@ -140,6 +142,7 @@ namespace QuanLyNhanVien.Api.Controllers
             return (taxableIncome * 0.35m) - 9850000;
         }
         [HttpPut("{id}/details")]
+        [LogActivity("Cập nhật chi tiết lương nhân viên")]
         public async Task<IActionResult> UpdatePayrollDetails(int id, [FromBody] UpdatePayrollDto input)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_PAYROLL")) return Forbid();
@@ -178,15 +181,41 @@ namespace QuanLyNhanVien.Api.Controllers
         public async Task<IActionResult> GetMonthlyPayroll([FromQuery] int month, [FromQuery] int year)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_PAYROLL")) return Forbid();
-
             var list = await _context.Payrolls
                 .Include(p => p.Employee)
                 .Where(p => p.Month == month && p.Year == year)
+                .Select(p => new PayrollDto
+                {
+                    Id = p.Id,
+                    EmployeeId = p.EmployeeId,
+                    EmployeeName = p.EmployeeName,
+                    Month = p.Month,
+                    Year = p.Year,
+                    BasicSalary = p.BasicSalary,
+                    ActualWorkDays = p.ActualWorkDays,
+                    PaidLeaveDays = p.PaidLeaveDays,
+                    OvertimePay = p.OvertimePay,
+                    Allowances = p.Allowances,
+                    Bonuses = p.Bonuses,
+                    GrossSalary = p.GrossSalary,
+                    SocialInsuranceDeduction = p.SocialInsuranceDeduction,
+                    HealthInsuranceDeduction = p.HealthInsuranceDeduction,
+                    UnemploymentInsuranceDeduction = p.UnemploymentInsuranceDeduction,
+                    PersonalIncomeTaxDeduction = p.PersonalIncomeTaxDeduction,
+                    TotalDeductions = p.TotalDeductions,
+                    NetSalary = p.NetSalary,
+                    Status = p.Status,
+                    BankName = p.Employee.BankName,
+                    BankAccountNumber = p.Employee.BankAccountNumber,
+                    BankAccountName = p.Employee.BankAccountName
+                })
                 .ToListAsync();
+
             return Ok(list);
         }
 
         [HttpPost("mark-paid/{id}")]
+        [LogActivity("Xác nhận thanh toán lương")]
         public async Task<IActionResult> MarkAsPaid(int id)
         {
             if (!IsAdmin() && !HasPermission("MANAGE_PAYROLL")) return Forbid();

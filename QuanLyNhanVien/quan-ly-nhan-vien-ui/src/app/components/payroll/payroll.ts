@@ -247,10 +247,17 @@ export class PayrollComponent implements OnInit, OnDestroy {
         this.snackBar.open('Vui lòng kiểm tra lại các giá trị đã nhập.', 'Đóng', { duration: 3000, panelClass: 'error-snackbar' });
     }
   }
-  openPaymentDialog(row: Payroll) {
-    const bankName = row.employee?.bankName || 'MB';
-    const bankAccount = row.employee?.bankAccountNumber || '0000123456789';
-    
+    openPaymentDialog(row: Payroll) {
+    const bankName = row.bankName;
+    const bankAccount = row.bankAccountNumber;
+    if (!bankName || !bankAccount) {
+      this.snackBar.open('Nhân viên này chưa có thông tin ngân hàng để thanh toán.', 'Đóng', { 
+        duration: 5000,
+        panelClass: 'error-snackbar'
+      });
+      return;
+    }
+
     const dialogRef = this.dialog.open(PaymentQrDialogComponent, {
       width: '400px',
       data: {
@@ -267,5 +274,5 @@ export class PayrollComponent implements OnInit, OnDestroy {
         this.markPaid(row.id);
       }
     });
-}
+  }
 }

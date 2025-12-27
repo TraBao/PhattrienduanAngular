@@ -1,35 +1,40 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material-module';
-import { UserService, UserInfo } from '../../services/user.service';
+import { UserService } from '../../services/user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { PermissionDialogComponent } from '../permission-dialog/permission-dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { User } from '../../models/user.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, MatTooltipModule],
   templateUrl: './user-list.html',
   styleUrls: ['./user-list.scss']
 })
 export class UserListComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['email', 'roles', 'permissions', 'actions'];
-  dataSource: MatTableDataSource<UserInfo> = new MatTableDataSource();
+  dataSource: MatTableDataSource<User> = new MatTableDataSource();
+  currentUserEmail: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.currentUserEmail = this.userService.getCurrentUserValue()?.username || '';
     this.loadUsers();
   }
 
@@ -64,32 +69,44 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  toggleRole(user: UserInfo) {
-    const isCurrentlyAdmin = user.roles.includes('Admin');
-    const newRoles = isCurrentlyAdmin ? ['User'] : ['Admin', 'User'];
-    const actionText = isCurrentlyAdmin ? 'Hạ quyền Admin' : 'Thăng cấp Admin';
-
-    if(confirm(`Bạn có chắc chắn muốn ${actionText} cho tài khoản ${user.email}?`)) {
-        this.userService.updateUserRole(user.email, newRoles).subscribe({
-            next: () => {
-                this.snackBar.open(`Thành công: Đã ${actionText} cho ${user.email}`, 'Đóng', {
-                    duration: 3000, 
-                    panelClass: ['success-snackbar']
-                });
-                this.loadUsers();
-            },
-            error: (err) => {
-                console.error(err);
-                this.snackBar.open('Lỗi: Không thể cập nhật quyền. Vui lòng thử lại.', 'Đóng', {
-                    duration: 3000,
-                    panelClass: ['error-snackbar']
-                });
-            }
-        });
+  openRoleDialog(user: User, newRoles: string[]) {
+      this.userService.updateUserRole(user.email, newRoles).subscribe({
+          next: () => {
+              this.snackBar.open(`Cập nhật vai trò cho ${user.email} thành công!`, 'Đóng', {
+                  duration: 3000, 
+                  panelClass: ['success-snackbar']
+              });
+              this.loadUsers();
+          },
+          error: (err) => {
+              this.snackBar.open(err.error?.message || 'Lỗi: Không thể cập nhật vai trò.', 'Đóng', {
+                  duration: 5000,
+                  panelClass: ['error-snackbar']
+              });
+              this.loadUsers(); 
+          }
+      });
+  }
+  isLocked(user: User): boolean {
+    if (!user.lockoutEnd) {
+      return false;
+    }
+    return new Date(user.lockoutEnd) > new Date();
+  }
+  toggleLock(user: User) {
+    const action = this.isLocked(user) ? 'mở khóa' : 'khóa';
+    if(confirm(`Bạn có chắc muốn ${action} tài khoản của ${user.email}? Người dùng sẽ bị đăng xuất (nếu đang online) và không thể đăng nhập lại.`)) {
+      this.userService.toggleLock(user.id).subscribe({
+        next: () => {
+          this.snackBar.open(`Đã ${action} tài khoản thành công!`, 'OK', { duration: 3000, panelClass: ['success-snackbar'] });
+          this.loadUsers();
+        },
+        error: (err) => this.snackBar.open(err.error?.message || `Lỗi khi ${action} tài khoản.`, 'Đóng', { panelClass: ['error-snackbar'] })
+      });
     }
   }
-  openPermissionDialog(user: UserInfo) {
+
+  openPermissionDialog(user: User) {
     if (user.roles.includes('Admin')) {
         this.snackBar.open('Tài khoản Admin đã có toàn quyền truy cập.', 'Đóng', { duration: 2000 });
         return;

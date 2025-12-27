@@ -12,11 +12,19 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
+import { AuthApiService } from '../../services/auth-api.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule, RouterModule, MatSortModule],
+  imports: [
+      CommonModule, 
+      MaterialModule, 
+      RouterModule, 
+      MatSortModule,
+      MatTooltipModule 
+  ],
   templateUrl: './employee-list.html',
   styleUrls: ['./employee-list.scss']
 })
@@ -40,7 +48,8 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
     private employeeService: EmployeeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    public userService: UserService
+    public userService: UserService,
+    private authApiService: AuthApiService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +57,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.canManage = this.isAdmin || this.userService.hasPermission('MANAGE_EMPLOYEES');
         this.loadEmployees();
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -65,8 +75,20 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   loadEmployees(): void {
     this.employeeService.getEmployees(this.searchKey, this.currentPage, this.pageSize).subscribe({
-      next: (res) => {
-        this.dataSource.data = res.data;
+      next: (res: any) => {
+        const mappedData = res.data.map((item: any) => {
+            if (item.employee) {
+                return {
+                    ...item.employee,
+                    isLocked: item.isLocked,
+                    userId: item.userId
+                } as Employee;
+            } else {
+                return item as Employee;
+            }
+        });
+
+        this.dataSource.data = mappedData;
         this.totalItems = res.totalItems;
         if (this.paginator) {
           this.paginator.length = this.totalItems;
@@ -77,6 +99,37 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.snackBar.open('Không thể tải danh sách nhân viên', 'Đóng', { duration: 3000 });
       }
     });
+  }
+
+  onToggleLock(element: Employee): void {
+      if (!element.userId) {
+          this.snackBar.open('Nhân viên này chưa liên kết tài khoản user hệ thống.', 'Đóng', { duration: 3000 });
+          return;
+      }
+
+      const actionText = element.isLocked ? 'MỞ KHÓA' : 'KHÓA';
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          width: '400px',
+          data: {
+              title: `Xác nhận ${actionText}`,
+              message: `Bạn có chắc muốn <b>${actionText}</b> tài khoản của nhân viên <b>${element.lastName}</b> không?`
+          }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+          if (result === true) {
+              this.authApiService.toggleLock(element.userId!).subscribe({
+                  next: (res) => {
+                      this.snackBar.open(res.message, 'Đóng', { duration: 3000 });
+                      element.isLocked = res.isLocked; 
+                  },
+                  error: (err) => {
+                      const msg = err.error?.message || 'Có lỗi xảy ra khi cập nhật trạng thái.';
+                      this.snackBar.open(msg, 'Đóng', { duration: 5000 });
+                  }
+              });
+          }
+      });
   }
 
   onPageChange(event: PageEvent) {

@@ -29,7 +29,7 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
   private dragOffset = { x: 0, y: 0 };
   private mouseMoveListener: any;
   private mouseUpListener: any;
-  private readonly apiUrl = 'http://localhost:8080/api/Ai/ask';
+  private readonly apiUrl = 'https://localhost:7132/api/Ai/ask';
 
   constructor(
     private http: HttpClient,
@@ -37,7 +37,7 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.btnPosition = { 
+    this.btnPosition = {
         x: window.innerWidth - 80,
         y: window.innerHeight - 150
     };
@@ -135,10 +135,14 @@ export class AiWidgetComponent implements AfterViewChecked, OnInit, OnDestroy {
         },
         error: (err) => {
           console.error("Lỗi AI:", err);
-          this.messages.push({
-            sender: 'ai',
-            text: 'Rất tiếc, mình không kết nối được với máy chủ AI (Cổng 8080). Bạn kiểm tra lại Backend nhé!' 
-          });
+          let errorMessage = 'Rất tiếc, mình không kết nối được với máy chủ AI.';
+          if (err.status === 0) {
+            errorMessage += ' Vui lòng kiểm tra xem Backend đã chạy chưa nhé!';
+          } else if (err.status === 401) {
+            errorMessage += ' Lỗi xác thực, vui lòng đăng nhập lại.';
+          }
+          
+          this.messages.push({ sender: 'ai', text: errorMessage });
           this.isLoading = false;
           this.scrollToBottom();
         }

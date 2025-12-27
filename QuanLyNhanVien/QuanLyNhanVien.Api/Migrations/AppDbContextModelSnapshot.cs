@@ -339,6 +339,10 @@ namespace QuanLyNhanVien.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -379,6 +383,10 @@ namespace QuanLyNhanVien.Api.Migrations
 
                     b.Property<decimal?>("PersonalDeduction")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18, 2)");
@@ -675,6 +683,39 @@ namespace QuanLyNhanVien.Api.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("Payrolls");
+                });
+
+            modelBuilder.Entity("QuanLyNhanVien.Api.Models.SystemActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemActivities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

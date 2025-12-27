@@ -43,11 +43,14 @@ export class EmployeeFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
       address: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       salary: ['', [Validators.required, Validators.min(0)]],
-      departmentId: ['', Validators.required]
+      departmentId: ['', Validators.required],
+      bankName: [''],
+      bankAccountNumber: [''],
+      bankAccountName: ['']
     });
   }
 
@@ -69,7 +72,9 @@ export class EmployeeFormComponent implements OnInit {
         this.employeeId = null;
         this.employeeForm.patchValue({
           firstName: '', lastName: '', email: '',
-          phone: '', address: '',
+          phoneNumber: '', 
+          
+          address: '',
           dateOfBirth: '', salary: '', departmentId: ''
         });
         this.employeeForm.markAsUntouched();
@@ -85,7 +90,6 @@ export class EmployeeFormComponent implements OnInit {
     this.employeeService.getEmployee(id).subscribe({
       next: (employee) => {
         let dateOfBirthValue = employee.dateOfBirth ? new Date(employee.dateOfBirth) : null;
-        
         this.employeeForm.patchValue({
           ...employee,
           dateOfBirth: dateOfBirthValue
@@ -146,15 +150,20 @@ export class EmployeeFormComponent implements OnInit {
                                 .toISOString()
                                 .split('T')[0];
       }
+      
       const employeeData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        phone: formData.phone,
+        phoneNumber: formData.phoneNumber,
+        
         address: formData.address,
         dateOfBirth: formattedDateOfBirth,
         salary: Number(formData.salary),
-        departmentId: Number(formData.departmentId)
+        departmentId: Number(formData.departmentId),
+        bankName: formData.bankName,
+        bankAccountNumber: formData.bankAccountNumber,
+        bankAccountName: formData.bankAccountName
       };
 
       if (this.employeeId) {

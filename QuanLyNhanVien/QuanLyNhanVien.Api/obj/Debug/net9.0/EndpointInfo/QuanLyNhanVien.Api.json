@@ -5,6 +5,45 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Activities": {
+      "get": {
+        "tags": [
+          "Activities"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Ai/ask": {
       "post": {
         "tags": [
@@ -265,6 +304,28 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/toggle-lock/{id}": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -954,6 +1015,29 @@
         }
       }
     },
+    "/api/LeaveRequests/cancel/{id}": {
+      "post": {
+        "tags": [
+          "LeaveRequests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LeaveRequests/all": {
       "get": {
         "tags": [
@@ -1468,6 +1552,18 @@
           "numberOfDependents": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
             "nullable": true
           },
           "bankName": {
