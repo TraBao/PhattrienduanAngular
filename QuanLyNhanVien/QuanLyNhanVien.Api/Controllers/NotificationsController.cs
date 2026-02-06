@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyNhanVien.Api.Data;
-using QuanLyNhanVien.Api.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.SignalR;
-using QuanLyNhanVien.Api.Hubs;
+using QuanLyNhanVien.Api.Models;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -15,64 +14,66 @@ namespace QuanLyNhanVien.Api.Controllers
     public class NotificationsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public NotificationsController(AppDbContext context, IHubContext<ChatHub> hubContext)
+        public NotificationsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            _hubContext = hubContext;
+            _userManager = userManager;
         }
-        private string GetCurrentUserEmail()
-        {
-            return User.FindFirstValue(ClaimTypes.Name)
-                ?? User.FindFirstValue(ClaimTypes.Email)
-                ?? User.FindFirstValue("email")
-                ?? User.FindFirstValue("sub")
-                ?? string.Empty;
-        }
+
+        private string GetCurrentUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         [HttpGet]
         public async Task<IActionResult> GetMyNotifications()
         {
-            var currentUserEmail = GetCurrentUserEmail();
-            if (string.IsNullOrEmpty(currentUserEmail)) return Unauthorized();
+            var userId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
             var notifications = await _context.Notifications
-                .Where(n => n.RecipientIdentifier == currentUserEmail)
+                .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.CreatedAt)
-                .Take(20)
+                .Take(15)
                 .ToListAsync();
 
-            return Ok(notifications);
+            var unreadCount = await _context.Notifications.CountAsync(n => n.UserId == userId && !n.IsRead);
+
+            return Ok(new
+            {
+                Items = notifications,
+                UnreadCount = unreadCount
+            });
         }
-        [HttpPost("mark-read/{id}")]
+
+        [HttpPost("mark-as-read/{id}")]
         public async Task<IActionResult> MarkAsRead(int id)
         {
-            var currentUserEmail = GetCurrentUserEmail();
-            if (string.IsNullOrEmpty(currentUserEmail)) return Unauthorized();
+            var userId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var notification = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.RecipientIdentifier == currentUserEmail);
+            var notification = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId);
             if (notification == null) return NotFound();
 
-            notification.IsRead = true;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            if (!notification.IsRead)
+            {
+                notification.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new { Message = "Đã đánh dấu là đã đọc." });
         }
-        [HttpPost("mark-all-read")]
+
+        [HttpPost("mark-all-as-read")]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            var currentUserEmail = GetCurrentUserEmail();
-            if (string.IsNullOrEmpty(currentUserEmail)) return Unauthorized();
+            var userId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var unreadNotifications = await _context.Notifications
-                .Where(n => n.RecipientIdentifier == currentUserEmail && !n.IsRead)
-                .ToListAsync();
+            await _context.Notifications
+                .Where(n => n.UserId == userId && !n.IsRead)
+                .ExecuteUpdateAsync(s => s.SetProperty(n => n.IsRead, true));
 
-            foreach (var n in unreadNotifications)
-            {
-                n.IsRead = true;
-            }
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(new { Message = "Đã đánh dấu tất cả là đã đọc." });
         }
     }
 }

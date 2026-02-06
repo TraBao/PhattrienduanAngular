@@ -5,6 +5,9 @@ using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Models;
 using System.Security.Claims;
 using QuanLyNhanVien.Api.Filters;
+using Microsoft.AspNetCore.SignalR;
+using QuanLyNhanVien.Api.Hubs;
+using Microsoft.AspNetCore.Identity;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -29,7 +32,17 @@ namespace QuanLyNhanVien.Api.Controllers
     public class LeaveRequestsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public LeaveRequestsController(AppDbContext context) => _context = context;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public LeaveRequestsController(
+            AppDbContext context,
+            IHubContext<NotificationHub> notificationHubContext,
+            UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _notificationHubContext = notificationHubContext;
+            _userManager = userManager;
+        }
 
         private string GetCurrentUserEmail()
         {
@@ -120,9 +133,28 @@ namespace QuanLyNhanVien.Api.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllRequests()
         {
-            if (!IsAdmin() && !HasPermission("MANAGE_LEAVES")) return Forbid();
+            var currentUserEmail = GetCurrentUserEmail();
+            var currentUser = await _context.Employees.FirstOrDefaultAsync(e => e.Email == currentUserEmail);
 
-            var requests = await _context.LeaveRequests
+            var managedDepartmentId = await _context.Departments
+                .Where(d => d.ManagerId == currentUser.Id)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            bool isManager = managedDepartmentId > 0;
+            bool isAdmin = IsAdmin() || HasPermission("MANAGE_LEAVES");
+
+            if (!isAdmin && !isManager) return Forbid();
+
+            var query = _context.LeaveRequests.AsQueryable();
+
+            if (isManager && !isAdmin)
+            {
+                query = query.Include(r => r.Employee)
+                             .Where(r => r.Employee.DepartmentId == managedDepartmentId);
+            }
+
+            var requests = await query
                 .OrderByDescending(r => r.CreatedAt)
                 .Select(r => new {
                     r.Id,
@@ -134,6 +166,7 @@ namespace QuanLyNhanVien.Api.Controllers
                     r.TotalDays,
                     r.CreatedAt,
                     r.AdminComment,
+                    DepartmentName = r.Employee.Department.Name,
                     FullName = r.Employee != null ? (r.Employee.FirstName + " " + r.Employee.LastName) : "Ẩn danh"
                 })
                 .ToListAsync();
@@ -145,13 +178,65 @@ namespace QuanLyNhanVien.Api.Controllers
         [LogActivity("Phê duyệt/Từ chối đơn nghỉ phép")]
         public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusDto dto)
         {
-            if (!IsAdmin() && !HasPermission("MANAGE_LEAVES")) return Forbid();
+            var currentUserEmail = GetCurrentUserEmail();
+            var currentUser = await _context.Employees.FirstOrDefaultAsync(e => e.Email == currentUserEmail);
 
-            var record = await _context.LeaveRequests.FindAsync(dto.RequestId);
+            var managedDepartmentId = await _context.Departments
+                .Where(d => d.ManagerId == currentUser.Id)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            bool isManager = managedDepartmentId > 0;
+            bool isAdmin = IsAdmin() || HasPermission("MANAGE_LEAVES");
+
+            if (!isAdmin && !isManager) return Forbid();
+
+            var record = await _context.LeaveRequests
+                                       .Include(r => r.Employee)
+                                       .FirstOrDefaultAsync(r => r.Id == dto.RequestId);
+
             if (record == null) return NotFound();
+            if (record.Employee == null) return BadRequest("Đơn nghỉ phép không liên kết với nhân viên nào.");
 
+            if (isManager && !isAdmin)
+            {
+                if (record.Employee.DepartmentId != managedDepartmentId)
+                {
+                    return Forbid("Bạn chỉ có thể duyệt đơn của nhân viên thuộc phòng ban mình quản lý.");
+                }
+            }
             record.Status = dto.Status;
             record.AdminComment = dto.AdminComment;
+
+            var user = await _userManager.FindByEmailAsync(record.Employee.Email);
+            if (user != null)
+            {
+                string notiMessage = "";
+                if (dto.Status == "Approved")
+                {
+                    notiMessage = "Đơn xin nghỉ phép của bạn đã được PHÊ DUYỆT.";
+                }
+                else if (dto.Status == "Rejected")
+                {
+                    notiMessage = "Đơn xin nghỉ phép của bạn đã bị TỪ CHỐI.";
+                }
+
+                if (!string.IsNullOrEmpty(notiMessage))
+                {
+                    var noti = new Notification
+                    {
+                        UserId = user.Id,
+                        Type = "LeaveRequest",
+                        Message = notiMessage,
+                        Link = "/my-leaves",
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    _context.Notifications.Add(noti);
+
+                    await _notificationHubContext.Clients.User(user.Email).SendAsync("ReceiveNotification", noti);
+                }
+            }
+
             await _context.SaveChangesAsync();
             return Ok(new { Message = "Đã cập nhật trạng thái đơn." });
         }

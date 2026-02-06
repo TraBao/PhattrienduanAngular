@@ -258,6 +258,15 @@ namespace QuanLyNhanVien.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double?>("CheckInLatitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("CheckInLongitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CheckInSelfieUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CheckInTime")
                         .HasColumnType("datetime2");
 
@@ -301,12 +310,17 @@ namespace QuanLyNhanVien.Api.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Departments");
 
@@ -391,6 +405,11 @@ namespace QuanLyNhanVien.Api.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<string>("WorkMode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -408,7 +427,8 @@ namespace QuanLyNhanVien.Api.Migrations
                             LastName = "An",
                             NumberOfDependents = 0,
                             PersonalDeduction = 11000000m,
-                            Salary = 60000.00m
+                            Salary = 60000.00m,
+                            WorkMode = "Onsite"
                         },
                         new
                         {
@@ -420,7 +440,8 @@ namespace QuanLyNhanVien.Api.Migrations
                             LastName = "Bình",
                             NumberOfDependents = 0,
                             PersonalDeduction = 11000000m,
-                            Salary = 55000.00m
+                            Salary = 55000.00m,
+                            WorkMode = "Onsite"
                         });
                 });
 
@@ -542,6 +563,37 @@ namespace QuanLyNhanVien.Api.Migrations
                     b.ToTable("LeaveRequests");
                 });
 
+            modelBuilder.Entity("QuanLyNhanVien.Api.Models.Meeting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Meetings");
+                });
+
             modelBuilder.Entity("QuanLyNhanVien.Api.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -589,22 +641,32 @@ namespace QuanLyNhanVien.Api.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Link")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecipientIdentifier")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -769,6 +831,16 @@ namespace QuanLyNhanVien.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("QuanLyNhanVien.Api.Models.Department", b =>
+                {
+                    b.HasOne("QuanLyNhanVien.Api.Models.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Manager");
+                });
+
             modelBuilder.Entity("QuanLyNhanVien.Api.Models.Employee", b =>
                 {
                     b.HasOne("QuanLyNhanVien.Api.Models.Department", "Department")
@@ -789,6 +861,23 @@ namespace QuanLyNhanVien.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("QuanLyNhanVien.Api.Models.Notification", b =>
+                {
+                    b.HasOne("QuanLyNhanVien.Api.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.HasOne("QuanLyNhanVien.Api.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLyNhanVien.Api.Models.Payroll", b =>

@@ -43,5 +43,9 @@ namespace QuanLyNhanVien.Api.Models
 
         [StringLength(100)]
         public string? BankAccountName { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string WorkMode { get; set; } = "Onsite";
     }
 }

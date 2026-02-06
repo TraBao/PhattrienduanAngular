@@ -23,7 +23,10 @@
                                 {{ row.email.charAt(0).toUpperCase() }}
                             </div>
                             <div class="email-wrapper">
-                                <span class="email-text">{{row.email}}</span>
+                                <div class="email-line">
+                                    <span class="email-text">{{row.email}}</span>
+                                    <mat-icon *ngIf="!row.isLinkedToEmployee" class="warning-icon" matTooltip="Tài khoản này chưa được liên kết với hồ sơ nhân viên.">warning</mat-icon>
+                                </div>
                                 <span *ngIf="isLocked(row)" class="locked-tag">
                                     <mat-icon>lock</mat-icon> Đã khóa
                                 </span>
@@ -31,6 +34,7 @@
                         </div>
                     </td>
                 </ng-container>
+
                 <ng-container matColumnDef="roles">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Vai trò </th>
                     <td mat-cell *matCellDef="let row">
@@ -46,6 +50,7 @@
                         </mat-form-field>
                     </td>
                 </ng-container>
+
                 <ng-container matColumnDef="permissions">
                     <th mat-header-cell *matHeaderCellDef> Quyền chi tiết </th>
                     <td mat-cell *matCellDef="let row">
@@ -62,6 +67,7 @@
                         </span>
                     </td>
                 </ng-container>
+
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Thao tác </th>
                     <td mat-cell *matCellDef="let row" class="text-center">
@@ -79,6 +85,12 @@
                                 <button *ngIf="isLocked(row)" mat-icon-button color="primary" (click)="toggleLock(row)" matTooltip="Mở khóa tài khoản">
                                     <mat-icon>lock</mat-icon>
                                 </button>
+                                <button mat-icon-button color="warn" 
+                                        *ngIf="!row.isLinkedToEmployee && !row.roles.includes('Admin')" 
+                                        (click)="deleteUser(row)" 
+                                        matTooltip="Xóa vĩnh viễn tài khoản này">
+                                    <mat-icon>delete_forever</mat-icon>
+                                </button>
                             </ng-container>
                         </div>
                     </td>
@@ -88,7 +100,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">Không tìm thấy user nào khớp với tìm kiếm.</td>
+                    <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">Không tìm thấy tài khoản nào khớp với tìm kiếm.</td>
                 </tr>
             </table>
         </div>

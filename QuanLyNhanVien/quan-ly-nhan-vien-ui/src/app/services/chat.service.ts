@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { HubConnection, HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr'; 
 
 export enum MessageType {
   General = 0,
@@ -32,13 +33,15 @@ export class ChatService {
         }
     }
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:8080/chatHub', {
-        accessTokenFactory: () => {
-            return localStorage.getItem('jwtToken') || '';
-        }
-      })
-      .withAutomaticReconnect()
-      .build();
+  .withUrl('http://localhost:8080/chatHub', {
+    skipNegotiation: true,
+    transport: signalR.HttpTransportType.WebSockets,
+    accessTokenFactory: () => {
+        return localStorage.getItem('jwtToken') || '';
+    }
+  })
+  .withAutomaticReconnect()
+  .build();
     this.hubConnection.on('ReceiveMessage', (user, message, time, receiver, type) => {
       this.messageReceived.next({ user, message, time, receiver, type });
     });

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs'; // Thêm 'map'
+import { Observable, map } from 'rxjs';
 import { LoginRequest } from '../models/auth/login-request.model';
 import { LoginResponse } from '../models/auth/login-response.model';
-import { User } from '../models/user.model';
-import { UserService } from './user.service';
+import { UserService, LoggedInUser } from './user.service'; 
 import { RegisterDto } from '../models/auth/register-request.model';
 
 @Injectable({
@@ -21,7 +20,7 @@ export class AuthApiService {
     register(request: RegisterDto): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, request);
     }
-    login(request: LoginRequest): Observable<User> {
+    login(request: LoginRequest): Observable<LoggedInUser> {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request)
             .pipe(
                 map(response => {
@@ -41,8 +40,7 @@ export class AuthApiService {
     toggleLock(userId: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/toggle-lock/${userId}`, {});
     }
-
-    private decodeToken(token: string): User {
+    private decodeToken(token: string): LoggedInUser {
         const payload = JSON.parse(atob(token.split('.')[1]));
         const email = payload.name || payload.email || '';
         const MICROSOFT_ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';

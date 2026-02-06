@@ -8,9 +8,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { PermissionDialogComponent } from '../permission-dialog/permission-dialog';
-import { MatSelectChange } from '@angular/material/select';
 import { User } from '../../models/user.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfirmDialogComponent } from '../confirm-dialog';
 
 @Component({
   selector: 'app-user-list',
@@ -34,13 +34,20 @@ export class UserListComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentUserEmail = this.userService.getCurrentUserValue()?.username || '';
+    this.currentUserEmail = this.userService.getCurrentUserValue()?.email || '';
     this.loadUsers();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'roles': return item.roles.join(',');
+        default: return (item as any)[property];
+      }
+    };
   }
 
   loadUsers() {
@@ -69,41 +76,65 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  
   openRoleDialog(user: User, newRoles: string[]) {
-      this.userService.updateUserRole(user.email, newRoles).subscribe({
-          next: () => {
-              this.snackBar.open(`Cập nhật vai trò cho ${user.email} thành công!`, 'Đóng', {
-                  duration: 3000, 
-                  panelClass: ['success-snackbar']
-              });
-              this.loadUsers();
-          },
-          error: (err) => {
-              this.snackBar.open(err.error?.message || 'Lỗi: Không thể cập nhật vai trò.', 'Đóng', {
-                  duration: 5000,
-                  panelClass: ['error-snackbar']
-              });
-              this.loadUsers(); 
-          }
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '400px',
+        data: { title: 'Xác nhận thay đổi vai trò', message: `Bạn có chắc muốn thay đổi vai trò của tài khoản <b>${user.email}</b> không?` }
+      });
+      
+      dialogRef.afterClosed().subscribe(confirmed => {
+        if(confirmed) {
+            this.userService.updateUserRole(user.email, newRoles).subscribe({
+                next: () => {
+                    this.snackBar.open(`Cập nhật vai trò cho ${user.email} thành công!`, 'Đóng', {
+                        duration: 3000, 
+                        panelClass: ['success-snackbar']
+                    });
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    this.snackBar.open(err.error?.message || 'Lỗi: Không thể cập nhật vai trò.', 'Đóng', {
+                        duration: 5000,
+                        panelClass: ['error-snackbar']
+                    });
+                    this.loadUsers(); 
+                }
+            });
+        } else {
+            this.loadUsers();
+        }
       });
   }
+  
   isLocked(user: User): boolean {
     if (!user.lockoutEnd) {
       return false;
     }
     return new Date(user.lockoutEnd) > new Date();
   }
+  
   toggleLock(user: User) {
-    const action = this.isLocked(user) ? 'mở khóa' : 'khóa';
-    if(confirm(`Bạn có chắc muốn ${action} tài khoản của ${user.email}? Người dùng sẽ bị đăng xuất (nếu đang online) và không thể đăng nhập lại.`)) {
-      this.userService.toggleLock(user.id).subscribe({
-        next: () => {
-          this.snackBar.open(`Đã ${action} tài khoản thành công!`, 'OK', { duration: 3000, panelClass: ['success-snackbar'] });
-          this.loadUsers();
-        },
-        error: (err) => this.snackBar.open(err.error?.message || `Lỗi khi ${action} tài khoản.`, 'Đóng', { panelClass: ['error-snackbar'] })
-      });
-    }
+    const action = this.isLocked(user) ? 'Mở khóa' : 'Khóa';
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '400px',
+        data: { 
+            title: `Xác nhận ${action}`,
+            message: `Bạn có chắc muốn <b>${action}</b> tài khoản của <b>${user.email}</b>?`
+        }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+        if(confirmed) {
+            this.userService.toggleLock(user.id).subscribe({
+              next: () => {
+                this.snackBar.open(`Đã ${action} tài khoản thành công!`, 'OK', { duration: 3000, panelClass: ['success-snackbar'] });
+                this.loadUsers();
+              },
+              error: (err) => this.snackBar.open(err.error?.message || `Lỗi khi ${action} tài khoản.`, 'Đóng', { panelClass: ['error-snackbar'] })
+            });
+        }
+    });
   }
 
   openPermissionDialog(user: User) {
@@ -134,6 +165,35 @@ export class UserListComponent implements OnInit, AfterViewInit {
                     console.error(err);
                     this.snackBar.open('Lỗi: Không thể lưu quyền hạn.', 'Đóng', { panelClass: ['error-snackbar'] });
                 }
+            });
+        }
+    });
+  }
+  
+  deleteUser(user: User): void {
+    if (user.isLinkedToEmployee) {
+      this.snackBar.open('Không thể xóa tài khoản đã liên kết với nhân viên.', 'Đóng', { duration: 4000 });
+      return;
+    }
+  
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '400px',
+        data: { 
+            title: `Xác nhận xóa tài khoản`,
+            message: `Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản <b>${user.email}</b>? Hành động này không thể hoàn tác.`
+        }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+            this.userService.deleteUser(user.id).subscribe({
+              next: () => {
+                this.snackBar.open('Đã xóa tài khoản thành công!', 'OK', { duration: 3000, panelClass: ['success-snackbar'] });
+                this.loadUsers();
+              },
+              error: (err) => {
+                this.snackBar.open(err.error?.message || 'Lỗi khi xóa tài khoản.', 'Đóng', { panelClass: ['error-snackbar'] });
+              }
             });
         }
     });

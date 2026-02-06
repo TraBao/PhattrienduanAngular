@@ -14,7 +14,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 const MaterialComponents = [
   MatToolbarModule,
@@ -30,7 +35,13 @@ const MaterialComponents = [
   MatDialogModule,
   MatSnackBarModule,
   MatPaginatorModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSidenavModule,
+  MatListModule,
+  MatTooltipModule,
+  MatCheckboxModule,
+  MatProgressSpinnerModule,
+  MatMenuModule 
 ];
 
 @NgModule({

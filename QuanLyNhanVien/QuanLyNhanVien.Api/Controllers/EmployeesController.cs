@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using QuanLyNhanVien.Api.Filters;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -26,7 +27,28 @@ namespace QuanLyNhanVien.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetEmployees([FromQuery] string? search, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
+            var currentUserEmail = GetCurrentUserEmail();
+            var currentUser = await _context.Employees.FirstOrDefaultAsync(e => e.Email == currentUserEmail);
+
+            var managedDepartmentId = await _context.Departments
+                .Where(d => d.ManagerId == currentUser.Id)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
             var query = _context.Employees.AsQueryable();
+
+            if (IsAdmin() || HasPermission("MANAGE_EMPLOYEES"))
+            {
+            }
+            else if (managedDepartmentId > 0)
+            {
+                query = query.Where(e => e.DepartmentId == managedDepartmentId);
+            }
+            else
+            {
+                return Forbid();
+            }
+
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(e => e.FirstName.Contains(search)
@@ -93,10 +115,72 @@ namespace QuanLyNhanVien.Api.Controllers
         [LogActivity("Cập nhật thông tin nhân viên")]
         public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
-            if (!IsAdmin() && !HasPermission("MANAGE_EMPLOYEES")) return Forbid();
+            if (id != employee.Id) return BadRequest(new { Message = "Dữ liệu không hợp lệ." });
 
-            if (id != employee.Id) return BadRequest();
+            var requesterEmail = GetCurrentUserEmail();
+            Console.WriteLine($"[DEBUG] Requester Email: {requesterEmail}"); // LOG 1
+
+            if (string.IsNullOrEmpty(requesterEmail)) return Unauthorized();
+
+            var requesterProfile = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Email == requesterEmail);
+
+            if (requesterProfile == null)
+            {
+                Console.WriteLine($"[DEBUG] Không tìm thấy profile nhân viên cho email: {requesterEmail}"); // LOG 2
+                return Forbid("Tài khoản của bạn chưa liên kết với hồ sơ nhân viên.");
+            }
+
+            Console.WriteLine($"[DEBUG] Requester ID: {requesterProfile.Id}"); // LOG 3
+
+            bool requesterIsAdmin = IsAdmin();
+            bool requesterHasPerm = HasPermission("MANAGE_EMPLOYEES");
+
+            var managedDepartmentId = await _context.Departments
+                .Where(d => d.ManagerId == requesterProfile.Id)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            bool requesterIsManager = managedDepartmentId > 0;
+            Console.WriteLine($"[DEBUG] IsAdmin: {requesterIsAdmin}, IsManager: {requesterIsManager}, ManagedDeptId: {managedDepartmentId}"); // LOG 4
+
+            if (!requesterIsAdmin && !requesterHasPerm && !requesterIsManager)
+            {
+                Console.WriteLine("[DEBUG] Bị chặn ở bước kiểm tra quyền chung."); // LOG 5
+                return Forbid();
+            }
+
+            var targetEmployeeInDb = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+            if (targetEmployeeInDb == null) return NotFound(new { Message = "Không tìm thấy nhân viên cần sửa." });
+
+            Console.WriteLine($"[DEBUG] Target Employee DeptId: {targetEmployeeInDb.DepartmentId}"); // LOG 6
+
+            if (!requesterIsAdmin)
+            {
+                if (targetEmployeeInDb.DepartmentId != managedDepartmentId)
+                {
+                    Console.WriteLine($"[DEBUG] Sai phòng ban. Target Dept: {targetEmployeeInDb.DepartmentId}, Managed Dept: {managedDepartmentId}"); // LOG 7
+                    return Forbid("Bạn chỉ có quyền chỉnh sửa nhân viên thuộc phòng ban của mình.");
+                }
+
+                var targetUserAccount = await _userManager.FindByEmailAsync(targetEmployeeInDb.Email);
+                if (targetUserAccount != null)
+                {
+                    var targetRoles = await _userManager.GetRolesAsync(targetUserAccount);
+                    if (targetRoles.Contains("Admin"))
+                    {
+                        Console.WriteLine("[DEBUG] Đang cố sửa Admin."); // LOG 8
+                        return Forbid("Bạn không có quyền chỉnh sửa hồ sơ của Quản trị viên (Admin).");
+                    }
+                }
+
+                if (employee.DepartmentId != managedDepartmentId)
+                {
+                    return BadRequest(new { Message = "Bạn không thể chuyển nhân viên sang phòng ban khác." });
+                }
+            }
+
             _context.Entry(employee).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -106,7 +190,8 @@ namespace QuanLyNhanVien.Api.Controllers
                 if (!EmployeeExists(id)) return NotFound();
                 else throw;
             }
-            return NoContent();
+
+            return Ok(new { Message = "Cập nhật hồ sơ thành công." });
         }
 
         [HttpDelete("{id}")]
@@ -146,6 +231,36 @@ namespace QuanLyNhanVien.Api.Controllers
             }
 
             return Ok(employee);
+        }
+        [HttpPut("{id}/workmode")]
+        [LogActivity("Cập nhật chế độ làm việc của nhân viên")]
+        public async Task<IActionResult> UpdateWorkMode(int id, [FromBody] WorkModeUpdateRequest request)
+        {
+            if (!IsAdmin() && !HasPermission("MANAGE_EMPLOYEES"))
+            {
+                return Forbid();
+            }
+
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound(new { Message = "Không tìm thấy nhân viên." });
+            }
+
+            employee.WorkMode = request.WorkMode;
+            _context.Entry(employee).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EmployeeExists(id)) return NotFound();
+                else throw;
+            }
+
+            return Ok(new { Message = "Cập nhật chế độ làm việc thành công." });
         }
 
         [HttpPost("upload-avatar")]
@@ -202,7 +317,11 @@ namespace QuanLyNhanVien.Api.Controllers
         private bool EmployeeExists(int id) => _context.Employees.Any(e => e.Id == id);
 
         private bool IsAdmin() => User.IsInRole("Admin");
-
+        public class WorkModeUpdateRequest
+        {
+            [Required]
+            public string WorkMode { get; set; }
+        }
         private bool HasPermission(string p) => User.HasClaim(c => c.Type == "permissions" && c.Value.Contains(p));
 
         private string GetCurrentUserEmail()
@@ -214,4 +333,5 @@ namespace QuanLyNhanVien.Api.Controllers
                 ?? string.Empty;
         }
     }
+
 }

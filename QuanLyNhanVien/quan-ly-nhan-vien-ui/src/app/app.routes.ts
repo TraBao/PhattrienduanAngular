@@ -1,10 +1,14 @@
 import { Routes } from '@angular/router';
-import { EmployeeListComponent } from './components/employee-list/employee-list';
-import { EmployeeFormComponent } from './components/employee-form/employee-form';
-import { LoginComponent } from './components/login/login';
-import { RegisterComponent } from './components/register/register';
 import { AuthGuard } from './guards/auth.guard';
 import { PermissionGuard } from './guards/permission.guard';
+
+import { MainLayoutComponent } from './layouts/main-layout/main-layout';
+
+import { LandingPageComponent } from './components/landing-page/landing-page';
+import { LoginComponent } from './components/login/login';
+import { RegisterComponent } from './components/register/register';
+import { EmployeeListComponent } from './components/employee-list/employee-list';
+import { EmployeeFormComponent } from './components/employee-form/employee-form';
 import { UserListComponent } from './components/user-list/user-list';
 import { LeaveManagerComponent } from './components/leave-manager/leave-manager';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard';
@@ -14,79 +18,52 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { AdminAnnouncementsComponent } from './components/admin-announcements/admin-announcements';
 import { DepartmentManagerComponent } from './components/department-manager/department-manager';
 import { FormsManagerComponent } from './components/forms-manager/forms-manager';
-import { InitialRedirectComponent } from './components/initial-redirect/initial-redirect.component';
 import { ActivityLogComponent } from './components/activity-log/activity-log';
+import { MeetingListComponent } from './components/meeting-list/meeting-list';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: InitialRedirectComponent,
-        canActivate: [AuthGuard]
-    },
+    { path: '', component: LandingPageComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+
     {
-        path: 'employees',
-        component: EmployeeListComponent,
-        canActivate: [AuthGuard, PermissionGuard],
-        data: { permission: 'MANAGE_EMPLOYEES' }
-    },
-    {
-        path: 'employees/create',
-        component: EmployeeFormComponent,
-        canActivate: [AuthGuard, PermissionGuard],
-        data: { permission: 'MANAGE_EMPLOYEES' }
-    },
-    {
-        path: 'employees/edit/:id',
-        component: EmployeeFormComponent,
-        canActivate: [AuthGuard, PermissionGuard],
-        data: { permission: 'MANAGE_EMPLOYEES' }
+        path: '',
+        component: MainLayoutComponent,
+        canActivate: [AuthGuard],
+        children: [
+            { path: 'dashboard', component: UserDashboardComponent },
+            { path: 'admin-dashboard', component: AdminDashboardComponent },
+            { path: 'my-profile', component: MyProfileComponent },
+            {
+                path: 'employees',
+                component: EmployeeListComponent,
+            },
+            {
+                path: 'employees/create',
+                component: EmployeeFormComponent,
+            },
+            {
+                path: 'employees/edit/:id',
+                component: EmployeeFormComponent,
+            },
+            {
+                path: 'payroll',
+                component: PayrollComponent,
+                canActivate: [PermissionGuard], data: { permission: 'MANAGE_PAYROLL' }
+            },
+            {
+                path: 'announcements',
+                component: AdminAnnouncementsComponent,
+                canActivate: [PermissionGuard], data: { permission: 'MANAGE_ANNOUNCEMENTS' }
+            },
+            { path: 'meetings', component: MeetingListComponent },
+            { path: 'departments', component: DepartmentManagerComponent, canActivate: [PermissionGuard], data: { roles: ['Admin'] } },
+            { path: 'forms', component: FormsManagerComponent },
+            { path: 'users', component: UserListComponent, canActivate: [PermissionGuard], data: { roles: ['Admin'] } },
+            { path: 'activity-log', component: ActivityLogComponent, canActivate: [PermissionGuard], data: { roles: ['Admin'] } },
+            { path: 'leaves', component: LeaveManagerComponent },
+        ]
     },
 
-    { path: 'my-profile', component: MyProfileComponent, canActivate: [AuthGuard] },
-    {
-        path: 'payroll',
-        component: PayrollComponent,
-        canActivate: [AuthGuard, PermissionGuard],
-        data: { permission: 'MANAGE_PAYROLL' }
-    },
-
-    { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
-    
-    {
-        path: 'announcements',
-        component: AdminAnnouncementsComponent,
-        canActivate: [AuthGuard, PermissionGuard],
-        data: { permission: 'MANAGE_ANNOUNCEMENTS' }
-    },
-
-    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] },
-    
-    {
-        path: 'departments',
-        component: DepartmentManagerComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ['Admin'] }
-    },
-    {
-        path: 'forms',
-        component: FormsManagerComponent,
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'users',
-        component: UserListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ['Admin'] }
-    },
-    {
-        path: 'activity-log',
-        component: ActivityLogComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ['Admin'] }
-    },
-
-    { path: 'leaves', component: LeaveManagerComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

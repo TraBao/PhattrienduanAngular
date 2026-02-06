@@ -147,29 +147,38 @@ export class ChatWidgetComponent implements OnInit, OnDestroy {
     });
   }
   loadEmployees(): void {
-    this.employeeService.getEmployees('', 1, 1000).subscribe({ 
-      next: (res: any) => {
-        console.log('👥 API Nhân viên trả về:', res);
-
-        let dataArray = [];
-        if (res && Array.isArray(res.data)) {
-            dataArray = res.data;
-        }
-        const extractedEmployees = dataArray.map((item: any) => {
-          return item.employee || item; 
-        });
-        this.employees = extractedEmployees.filter((e: any) => {
-            const eMail = e.email || e.Email;
-            return eMail && this.currentUserEmail && 
-                    eMail.toLowerCase() !== this.currentUserEmail.toLowerCase();
-        });
-        
-        this.filteredEmployees = [...this.employees];
-        console.log(`✅ Đã load được ${this.filteredEmployees.length} đồng nghiệp.`);
-      },
-      error: (err) => console.error('❌ Lỗi API Nhân viên:', err)
-    });
+  if (!this.currentUserEmail) {
+    console.warn("Chưa có currentUserEmail, tạm dừng loadEmployees.");
+    return;
   }
+
+  this.employeeService.getAllEmployeesForSelection().subscribe({
+    next: (employeesFromApi: any[]) => {
+      console.log("--- EMAIL DÙNG ĐỂ LỌC ---", this.currentUserEmail);
+      console.log("--- DỮ LIỆU NHÂN VIÊN TỪ API (DẠNG BẢNG) ---");
+      console.table(employeesFromApi);
+
+      if (!Array.isArray(employeesFromApi)) {
+          console.error("API không trả về một mảng!", employeesFromApi);
+          this.employees = [];
+          this.filteredEmployees = [];
+          return;
+      }
+      
+      const currentUserEmailLower = this.currentUserEmail.toLowerCase();
+
+      this.employees = employeesFromApi.filter(e => {
+          const employeeEmail = e.email || e.Email;
+          return employeeEmail && employeeEmail.toLowerCase() !== currentUserEmailLower;
+      });
+      
+      this.filteredEmployees = [...this.employees];
+
+      console.log(`✅ Đã load và filter, còn lại ${this.filteredEmployees.length} đồng nghiệp.`);
+    },
+    error: (err: any) => console.error('❌ Lỗi API Nhân viên:', err)
+  });
+}
 
 loadMyDepartment(): void {
     this.employeeService.getMyProfile().subscribe((emp: any) => {

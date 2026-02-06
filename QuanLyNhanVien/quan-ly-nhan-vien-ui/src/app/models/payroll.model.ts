@@ -9,7 +9,9 @@ export interface Payroll {
     basicSalary: number;
     actualWorkDays: number;
     paidLeaveDays: number;
+    totalWorkDaysInMonth: number;
     overtimePay: number;
+    overtimeHours?: number;
     allowances: number;
     bonuses: number;
     grossSalary: number;
@@ -19,7 +21,7 @@ export interface Payroll {
     personalIncomeTaxDeduction: number;
     totalDeductions: number;
     netSalary: number;
-    status: string;
+    status: 'Pending' | 'Paid';
     createdAt: string;
     paymentDate?: string;
     employee?: Employee;

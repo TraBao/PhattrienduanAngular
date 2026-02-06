@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLyNhanVien.Api.Models
 {
@@ -9,18 +10,29 @@ namespace QuanLyNhanVien.Api.Models
         public int Id { get; set; }
 
         [Required]
-        public string RecipientIdentifier { get; set; } = string.Empty;
+        public string UserId { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Type { get; set; } = "System";
 
         [Required]
-        public string Title { get; set; } = string.Empty;
+        [StringLength(500)]
+        public string Message { get; set; }
 
-        public string? Message { get; set; }
+        [StringLength(255)]
+        public string? Link { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? SenderId { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsRead { get; set; } = false;
+
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser? User { get; set; }
+
+        [ForeignKey("SenderId")]
+        public virtual ApplicationUser? Sender { get; set; }
     }
 }

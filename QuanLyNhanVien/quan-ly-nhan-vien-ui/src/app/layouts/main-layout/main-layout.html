@@ -1,0 +1,153 @@
+<mat-sidenav-container class="app-root-container" *ngIf="currentUser$ | async as user">
+
+    <mat-sidenav mode="side" opened class="app-sidebar">
+        <div class="sidebar-header" [routerLink]="isCurrentUserAdmin() ? '/admin-dashboard' : '/dashboard'">
+            <mat-icon class="app-icon">admin_panel_settings</mat-icon>
+            <span class="app-title">HR Manager</span>
+        </div>
+
+        <mat-nav-list>
+            <a mat-list-item 
+               [routerLink]="isCurrentUserAdmin() ? '/admin-dashboard' : '/dashboard'" 
+               routerLinkActive="active-link">
+                <mat-icon matListItemIcon>dashboard</mat-icon>
+                <span matListItemTitle>{{ isCurrentUserAdmin() ? 'Tổng quan' : 'Bảng tin' }}</span>
+            </a>
+
+            <a mat-list-item routerLink="/announcements" routerLinkActive="active-link"
+               *ngIf="hasPerm('MANAGE_ANNOUNCEMENTS')">
+                <mat-icon matListItemIcon>campaign</mat-icon>
+                <span matListItemTitle>Thông báo</span>
+            </a>
+
+            <a mat-list-item routerLink="/employees" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>people</mat-icon>
+                <span matListItemTitle>Nhân viên</span>
+            </a>
+
+            <a mat-list-item routerLink="/users" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
+                <mat-icon matListItemIcon>manage_accounts</mat-icon>
+                <span matListItemTitle>Tài khoản</span>
+            </a>
+
+            <a mat-list-item routerLink="/activity-log" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
+                <mat-icon matListItemIcon>history</mat-icon>
+                <span matListItemTitle>Lịch sử</span>
+            </a>
+
+            <a mat-list-item routerLink="/departments" routerLinkActive="active-link" *ngIf="isCurrentUserAdmin()">
+                <mat-icon matListItemIcon>apartment</mat-icon>
+                <span matListItemTitle>Phòng ban</span>
+            </a>
+
+            <a mat-list-item routerLink="/payroll" routerLinkActive="active-link"
+               *ngIf="hasPerm('MANAGE_PAYROLL')">
+                <mat-icon matListItemIcon>payments</mat-icon>
+                <span matListItemTitle>Lương</span>
+            </a>
+
+            <a mat-list-item routerLink="/leaves" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>date_range</mat-icon>
+                <span matListItemTitle>Nghỉ phép</span>
+            </a>
+
+            <a mat-list-item routerLink="/forms" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>topic</mat-icon>
+                <span matListItemTitle>Biểu mẫu</span>
+            </a>
+
+            <a mat-list-item routerLink="/my-profile" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <span matListItemTitle>Hồ sơ</span>
+            </a>
+            <a mat-list-item routerLink="/meetings" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>video_camera_front</mat-icon>
+                <span matListItemTitle>Phòng họp</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <mat-toolbar color="primary" class="app-header">
+            <span class="page-title">Hệ thống quản lý nhân sự</span>
+            <span class="spacer"></span>
+            <div class="header-actions">
+                <button mat-icon-button class="policy-btn" (click)="openPolicyDialog()" matTooltip="Quy định công ty">
+                    <mat-icon>menu_book</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
+                    class="notify-btn"
+                    [matMenuTriggerFor]="notifyMenu"
+                    [class.shake]="((unreadCount$ | async) ?? 0) > 0"
+                >
+                    <mat-icon
+                        [matBadge]="(unreadCount$ | async) ?? 0"
+                        matBadgeColor="warn"
+                        [matBadgeHidden]="((unreadCount$ | async) ?? 0) === 0"
+                        matBadgeSize="small"
+                    >
+                        notifications
+                    </mat-icon>
+                </button>
+                <div class="user-profile-menu" [matMenuTriggerFor]="userMenu">
+                    <span class="welcome-text hidden-mobile">
+                        <ng-container *ngIf="user.roles.includes('Admin'); else userRoleInfo">Admin</ng-container>
+                        <ng-template #userRoleInfo>{{ (user.email || '').split('@')[0] }}</ng-template>
+                    </span>
+                    <button mat-icon-button>
+                        <mat-icon>account_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-toolbar>
+
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+
+        <div class="chat-wrapper">
+            <app-chat-widget></app-chat-widget>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container> 
+
+<mat-menu #notifyMenu="matMenu" class="notify-menu-panel" xPosition="before">
+    <div class="menu-header">
+        <h3>Hộp thư thông báo</h3>
+        <button mat-button color="primary" (click)="markAllAsRead()" *ngIf="(unreadCount$ | async) ?? 0 > 0">Đọc tất cả</button>
+    </div>
+    
+    <div class="notify-list" *ngIf="(notifications$ | async) as notifications">
+        <div *ngFor="let item of notifications"
+                class="notify-item"
+                [class.unread]="!item.isRead">
+
+                <div class="item-icon" [ngClass]="getNotificationIconClass(item.type)">
+                    <mat-icon>{{ getNotificationIcon(item.type) }}</mat-icon>
+                </div>
+
+                <div class="item-content">
+                    <div class="item-message">{{ item.message }}</div>
+                    <div class="item-time">{{ formatTime(item.createdAt) }}</div>
+                </div>
+
+            </div>
+        <div *ngIf="notifications.length === 0" class="empty-notify">
+            <p>Không có thông báo mới.</p>
+        </div>
+    </div>
+</mat-menu>
+
+<mat-menu #userMenu="matMenu">
+    <button mat-menu-item disabled *ngIf="currentUser$ | async as user">
+        <mat-icon>email</mat-icon>
+        <span>{{ user.email }}</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Đăng xuất</span>
+    </button>
+</mat-menu>

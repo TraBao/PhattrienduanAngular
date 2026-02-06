@@ -18,19 +18,34 @@ export class PermissionGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+    if (this.userService.isAdmin()) {
+        return true; 
+    }
+
     const requiredPermission = route.data['permission'] as string;
-    if (!requiredPermission) {
+    const requiredRoles = route.data['roles'] as string[];
+
+    if (!requiredPermission && !requiredRoles) {
       return true;
     }
-    if (this.userService.hasPermission(requiredPermission)) {
+
+    if (requiredPermission && this.userService.hasPermission(requiredPermission)) {
       return true;
-    } else {
-      this.snackBar.open('Bạn không có đủ quyền truy cập tính năng này.', 'Đóng', {
-        duration: 3000,
-        panelClass: ['error-snackbar']
-      });
-      const redirectPath = this.userService.isAdmin() ? '/admin-dashboard' : '/dashboard';
-      return this.router.createUrlTree([redirectPath]);
     }
+
+    if (requiredRoles) {
+        const userRoles = this.userService.getCurrentUserValue()?.roles || [];
+        const hasRole = requiredRoles.some(role => userRoles.includes(role));
+        if(hasRole) return true;
+    }
+    
+    this.snackBar.open('Bạn không có đủ quyền truy cập tính năng này.', 'Đóng', {
+      duration: 3000,
+      panelClass: ['error-snackbar']
+    });
+
+    const redirectPath = this.userService.isAdmin() ? '/admin-dashboard' : '/dashboard';
+    return this.router.createUrlTree([redirectPath]);
   }
 }

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization; 
+﻿// Models/Department.cs
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema; // Thêm cái này
+using System.Text.Json.Serialization;
 
 namespace QuanLyNhanVien.Api.Models
 {
@@ -14,6 +16,11 @@ namespace QuanLyNhanVien.Api.Models
 
         [StringLength(500)]
         public string? Description { get; set; }
+        public int? ManagerId { get; set; }
+
+        [ForeignKey("ManagerId")]
+        public Employee? Manager { get; set; }
+
         [JsonIgnore]
         public ICollection<Employee>? Employees { get; set; }
     }

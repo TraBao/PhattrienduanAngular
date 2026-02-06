@@ -7,16 +7,23 @@ using Microsoft.IdentityModel.Tokens;
 using QuanLyNhanVien.Api.Data;
 using QuanLyNhanVien.Api.Hubs;
 using QuanLyNhanVien.Api.Models;
-using System;
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ===================== SERVICES =====================
+
+// DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// SignalR
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
 
+// Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -24,139 +31,166 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 0;
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
+
+// Authentication - JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-    options.SaveToken = true;
     options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters()
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        )
     };
+
+    // JWT cho SignalR
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
             var accessToken = context.Request.Query["access_token"];
             var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/chathub") ||
+                 path.StartsWithSegments("/notificationhub")))
             {
                 context.Token = accessToken;
             }
+
             return Task.CompletedTask;
         }
     };
 });
 
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200", "http://localhost:8080")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials()
-                  .SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
+    options.AddPolicy("AllowWebAppPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200", "http://localhost:81")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
-builder.Services.AddControllersWithViews();
+// Controllers + JSON
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddJsonOptions(o =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        o.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// ===================== APP =====================
+
 var app = builder.Build();
+
+// Seed roles + admin
 using (var scope = app.Services.CreateScope())
 {
-    var serviceProvider = scope.ServiceProvider;
+    var services = scope.ServiceProvider;
     try
     {
-        await CreateRolesAndAdmin(serviceProvider);
+        await CreateRolesAndAdmin(services);
     }
     catch (Exception ex)
     {
-        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Lỗi khi tạo dữ liệu mẫu (Roles/Admin).");
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Seed DB error");
     }
 }
-
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuanLyNhanVien.Api v1");
+    c.RoutePrefix = "swagger";
+});
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowWebAppPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/Uploads"
+});
 app.MapControllers();
-app.MapHub<ChatHub>("/chatHub");
+
+// SignalR
+app.MapHub<ChatHub>("/chathub");
+app.MapHub<NotificationHub>("/notificationhub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-static async Task CreateRolesAndAdmin(IServiceProvider serviceProvider)
+async Task CreateRolesAndAdmin(IServiceProvider services)
 {
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-    string[] roleNames = { "Admin", "User" };
-    foreach (var roleName in roleNames)
+    string[] roles = { "Admin", "User" };
+
+    foreach (var role in roles)
     {
-        if (!await roleManager.RoleExistsAsync(roleName))
-        {
-            await roleManager.CreateAsync(new IdentityRole(roleName));
-        }
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
     }
 
-    string adminEmail = "admin@gmail.com";
-    string adminPassword = "admin123";
+    var email = "admin@gmail.com";
+    var password = "admin123";
 
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-    if (adminUser == null)
+    if (await userManager.FindByEmailAsync(email) == null)
     {
-        var newAdmin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
-        var result = await userManager.CreateAsync(newAdmin, adminPassword);
-
-        if (result.Succeeded)
+        var admin = new ApplicationUser
         {
-            await userManager.AddToRoleAsync(newAdmin, "Admin");
-        }
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(admin, password);
+        if (result.Succeeded)
+            await userManager.AddToRoleAsync(admin, "Admin");
     }
 }
+
 public class EmailBasedUserIdProvider : IUserIdProvider
 {
     public string? GetUserId(HubConnectionContext connection)
     {
-        return connection.User?.Identity?.Name;
+        return connection.User?.FindFirst(ClaimTypes.Name)?.Value;
     }
 }

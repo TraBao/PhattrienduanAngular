@@ -1,3 +1,5 @@
+<!-- department-manager.component.html -->
+
 <div class="dept-container">
     <div class="page-header">
         <div class="title-box">
@@ -25,6 +27,18 @@
                     <input matInput [(ngModel)]="deptForm.name" name="name" required placeholder="Ví dụ: Phòng Kỹ thuật">
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Trưởng phòng (Quản lý)</mat-label>
+                    <mat-icon matPrefix>badge</mat-icon>
+                    <mat-select [(ngModel)]="deptForm.managerId" name="managerId">
+                        <mat-option [value]="null">-- Chưa bổ nhiệm --</mat-option>
+                        <mat-option *ngFor="let emp of employees" [value]="emp.id">
+                            {{ emp.lastName }} {{ emp.firstName }} ({{ emp.email }})
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint>Người chịu trách nhiệm quản lý phòng ban này</mat-hint>
+                </mat-form-field>
+
                 <mat-form-field appearance="outline" class="full-width desc-field">
                     <mat-label>Mô tả chức năng</mat-label>
                     <textarea matInput [(ngModel)]="deptForm.description" name="description" rows="4" placeholder="Mô tả nhiệm vụ của phòng ban..."></textarea>
@@ -49,24 +63,45 @@
 
             <div class="table-responsive">
                 <table mat-table [dataSource]="departments" class="full-width-table">
+                    <!-- Column ID -->
                     <ng-container matColumnDef="id">
                         <th mat-header-cell *matHeaderCellDef style="width: 60px;"> ID </th>
                         <td mat-cell *matCellDef="let element" class="id-cell"> 
                             <span class="id-badge">#{{element.id}}</span> 
                         </td>
                     </ng-container>
+
+                    <!-- Column Name -->
                     <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef style="width: 25%;"> Tên phòng </th>
+                        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Tên phòng </th>
                         <td mat-cell *matCellDef="let element"> 
                             <span class="dept-name">{{element.name}}</span>
                         </td>
                     </ng-container>
+
+                    <!-- Column Manager -->
+                    <ng-container matColumnDef="manager">
+                        <th mat-header-cell *matHeaderCellDef> Trưởng phòng </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="manager-info" *ngIf="element.manager; else noManager">
+                                <mat-icon class="manager-icon">person</mat-icon>
+                                <span>{{ element.manager.lastName }} {{ element.manager.firstName }}</span>
+                            </div>
+                            <ng-template #noManager>
+                                <span class="text-muted italic">-- Trống --</span>
+                            </ng-template>
+                        </td>
+                    </ng-container>
+
+                    <!-- Column Description -->
                     <ng-container matColumnDef="description">
                         <th mat-header-cell *matHeaderCellDef> Mô tả </th>
                         <td mat-cell *matCellDef="let element" class="desc-text">
                             {{element.description || 'Chưa có mô tả'}}
                         </td>
                     </ng-container>
+
+                    <!-- Column Actions -->
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-right" style="width: 100px;"> Thao tác </th>
                         <td mat-cell *matCellDef="let element">

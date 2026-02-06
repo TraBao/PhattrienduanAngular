@@ -1,110 +1,95 @@
 <div class="list-container">
-    <mat-card class="table-card">
-        <div class="table-header">
-            <div class="header-title">
-                <h2>Danh sách Nhân viên</h2>
-                <span class="subtitle">Quản lý thông tin nhân sự</span>
-            </div>
-
-            <div class="header-actions">
-                <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
-                    <mat-label>Tìm kiếm</mat-label>
-                    <mat-icon matPrefix>search</mat-icon>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Tên, email..." #input>
-                    <button *ngIf="input.value" matSuffix mat-icon-button (click)="input.value=''; applyFilter($event)">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <button mat-raised-button 
-                        color="primary" 
-                        class="btn-add" 
-                        [disabled]="!canManage" 
-                        *ngIf="canManage"
-                        routerLink="/employees/create">
-                    <mat-icon>add</mat-icon> Thêm nhân viên
+    <div class="page-header">
+        <div class="header-content">
+            <h2>Danh sách Nhân sự</h2>
+            <span class="subtitle">Quản lý {{ (totalItems$ | async) || 0 }} hồ sơ nhân viên trong hệ thống</span>
+        </div>
+        
+        <div class="header-actions">
+            <div class="search-box">
+                <mat-icon>search</mat-icon>
+                <input type="text" placeholder="Tìm theo tên, email..." [formControl]="searchControl">
+                <button mat-icon-button *ngIf="searchControl.value" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
                 </button>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource" matSort class="hover-table">
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                    <td mat-cell *matCellDef="let element"> #{{element.id}} </td>
-                </ng-container>
-                <ng-container matColumnDef="avatar">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <ng-container *ngIf="element.avatarUrl; else defaultAvatar">
-                            <img [src]="getFullUrl(element.avatarUrl)" 
-                                class="avatar-img-table"
-                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0;">
-                        </ng-container>
-                        <ng-template #defaultAvatar>
-                            <div class="avatar-circle" [style.background-color]="'#3f51b5'">
-                                {{ element.firstName ? element.firstName.charAt(0).toUpperCase() : '?' }}
-                            </div>
-                        </ng-template>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="firstName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên </th>
-                    <td mat-cell *matCellDef="let element" class="font-bold"> {{element.firstName}} </td>
-                </ng-container>
-                <ng-container matColumnDef="lastName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ </th>
-                    <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
-                </ng-container>
-                <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-                    <td mat-cell *matCellDef="let element" class="text-muted"> {{element.email}} </td>
-                </ng-container>
-                <ng-container matColumnDef="salary">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right"> Lương </th>
-                    <td mat-cell *matCellDef="let element" class="text-right amount-text"> 
-                        {{element.salary | currency:'VND':'symbol':'1.0-0'}} 
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 160px;"> Thao tác </th>
-                    <td mat-cell *matCellDef="let element">
-                        <div class="actions-cell">
-                            <button *ngIf="isAdmin"
-                                    mat-icon-button
-                                    [color]="element.isLocked ? 'warn' : 'accent'"
-                                    (click)="onToggleLock(element)"
-                                    [matTooltip]="element.isLocked ? 'Mở khóa tài khoản' : 'Khóa tài khoản'">
-                                <mat-icon>{{ element.isLocked ? 'lock' : 'lock_open' }}</mat-icon>
-                            </button>
-                            <ng-container *ngIf="canManage">
-                                <button mat-icon-button color="primary" [routerLink]="['/employees/edit', element.id]" matTooltip="Sửa">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                                <button mat-icon-button color="warn" (click)="onDelete(element.id)" matTooltip="Xóa">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </ng-container>
-                        </div>
-                    </td>
-                </ng-container>
-                
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
-                        <mat-icon>search_off</mat-icon>
-                        <span>Không tìm thấy kết quả nào cho "{{input.value}}"</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
 
-        <mat-paginator
-            [length]="totalItems"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="[5, 10, 25, 100]"
-            (page)="onPageChange($event)"
-            showFirstLastButtons 
-            aria-label="Chọn trang">
-        </mat-paginator>
-    </mat-card>
+            <button mat-raised-button color="primary" class="btn-add" [disabled]="!canManage" *ngIf="canManage" routerLink="/employees/create">
+    <mat-icon>person_add</mat-icon> Thêm mới
+</button>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="loading-overlay" *ngIf="isLoading$ | async">
+            <mat-spinner diameter="50"></mat-spinner>
+            <p>Đang tải dữ liệu...</p>
+        </div>
+        <ng-container *ngIf="(employees$ | async) as employees">
+            <div class="employee-grid" *ngIf="employees.length > 0; else emptyState">
+                <mat-card class="employee-card" *ngFor="let emp of employees">
+                    <div class="card-status-dot" [class.locked]="emp.isLocked" [matTooltip]="emp.isLocked ? 'Tài khoản bị khóa' : 'Đang hoạt động'"></div>
+                    
+                    <div class="card-body">
+                        <div class="avatar-wrapper">
+                            <img [src]="emp.avatarUrl ? getFullUrl(emp.avatarUrl) : 'assets/avatar-placeholder.png'" 
+                                alt="Avatar" 
+                                onerror="this.src='assets/avatar-placeholder.png'">
+                        </div>
+                        <div class="info-wrapper">
+                            <h3 class="emp-name">{{ emp.lastName }} {{ emp.firstName }}</h3>
+                            <span class="emp-role">Nhân viên chính thức</span>
+                            <span class="emp-email">{{ emp.email }}</span>
+                            
+                            <div class="emp-salary">
+                                <span class="label">Lương cơ bản:</span>
+                                <span class="value">{{ emp.salary | number }} ₫</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="work-mode-section" *ngIf="canManage">
+                        <span class="label">Làm việc từ xa</span>
+                        <mat-slide-toggle
+                            [checked]="emp.workMode === 'Remote'"
+                            (change)="onWorkModeChange($event, emp)"
+                            [matTooltip]="emp.workMode === 'Remote' ? 'Chuyển sang làm tại văn phòng' : 'Cho phép làm việc từ xa'">
+                        </mat-slide-toggle>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="card-actions">
+                        <button mat-icon-button color="primary" [routerLink]="['/employees/edit', emp.id]" matTooltip="Chỉnh sửa hồ sơ">
+                            <mat-icon>edit_note</mat-icon>
+                        </button>
+                        
+                        <button mat-icon-button *ngIf="isAdmin" 
+                                [color]="emp.isLocked ? 'warn' : 'accent'" 
+                                (click)="onToggleLock(emp)" 
+                                [matTooltip]="emp.isLocked ? 'Mở khóa' : 'Khóa tài khoản'">
+                            <mat-icon>{{ emp.isLocked ? 'lock' : 'lock_open' }}</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="warn" *ngIf="canManage" (click)="onDelete(emp.id)" matTooltip="Xóa hồ sơ">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </div>
+                </mat-card>
+            </div>
+        </ng-container>
+        <ng-template #emptyState>
+            <div *ngIf="!(isLoading$ | async)" class="empty-state-container">
+                <img src="assets/not-found.png" alt="Not found">
+                <h3>Không tìm thấy nhân viên nào</h3>
+                <p>Thử tìm kiếm với từ khóa khác hoặc thêm nhân viên mới.</p>
+            </div>
+        </ng-template>
+    </div>
+    <mat-paginator 
+        class="custom-paginator"
+        [length]="(totalItems$ | async) || 0"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[8, 12, 24]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+    </mat-paginator>
 </div>

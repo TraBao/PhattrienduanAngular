@@ -23,33 +23,41 @@ export class AdminDashboardComponent implements OnInit {
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth() + 1;
   today = new Date();
-  stats: any = {
-    totalEmployees: 0,
-    totalSalary: 0,
-    pendingLeaves: 0,
-    attendanceToday: {
-        present: 0,
-        late: 0,
-        absent: 0
-    },
-    departmentStats: []
-  };
+  stats: any = {};
+  dailyCheckIns: any[] = [];
   
   chartLoaded = false;
+  
   public pieChartData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom' } }
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: 'Inter' } } }
+    }
   };
+
   public barChartData: ChartData<'bar'> = {
     labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
     datasets: [{
         data: [],
-        label: 'Quỹ lương (VNĐ)',
-        backgroundColor: '#3f51b5',
-        borderRadius: 4
+        label: 'Quỹ lương',
+        backgroundColor: '#4361ee',
+        hoverBackgroundColor: '#3f37c9',
+        borderRadius: 8,
+        barThickness: 20,
     }]
+  };
+  public barChartOptions: ChartOptions<'bar'> = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Inter' } } },
+          y: { grid: { color: '#e2e8f0' }, ticks: { font: { family: 'Inter' } } }
+      },
+      plugins: {
+          legend: { display: false }
+      }
   };
 
   constructor(private dashboardService: DashboardService) {}
@@ -62,17 +70,19 @@ export class AdminDashboardComponent implements OnInit {
     this.chartLoaded = false;
     forkJoin({
       statsResponse: this.dashboardService.getStats(),
-      growth: this.dashboardService.getSalaryGrowth(this.currentYear)
+      growth: this.dashboardService.getSalaryGrowth(this.currentYear),
+      checkIns: this.dashboardService.getDailyCheckIns() 
     }).subscribe({
       next: (res: any) => {
         this.stats = res.statsResponse.stats ? res.statsResponse.stats : res.statsResponse;
+        this.dailyCheckIns = res.checkIns;
         
-        console.log("Dữ liệu stats nhận được:", this.stats);
-        if (this.stats && this.stats.departmentStats) {
+        const departmentStats = this.stats.departmentStats || this.stats.DepartmentStats;
+        if (departmentStats) {
           this.pieChartData = {
-            labels: this.stats.departmentStats.map((d: any) => d.name || d.departmentId),
+            labels: departmentStats.map((d: any) => d.name || d.Name),
             datasets: [{
-              data: this.stats.departmentStats.map((d: any) => d.count),
+              data: departmentStats.map((d: any) => d.count || d.Count),
               backgroundColor: ['#3b82f6', '#ec4899', '#f59e0b', '#10b981', '#6366f1']
             }]
           };

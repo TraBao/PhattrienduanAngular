@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material-module';
 import { AuthApiService } from '../../services/auth-api.service';
 import { LoginRequest } from '../../models/auth/login-request.model';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { LoggedInUser } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -15,23 +14,20 @@ import { User } from '../../models/user.model';
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  hidePassword = true; 
 
   constructor(
     private fb: FormBuilder,
     private authApiService: AuthApiService,
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   onSubmit(): void {
@@ -40,18 +36,18 @@ export class LoginComponent implements OnInit {
       const loginRequest: LoginRequest = this.loginForm.value;
       
       this.authApiService.login(loginRequest).subscribe({
-        next: (user: User) => {
+        next: (user: LoggedInUser) => {
           this.redirectToDashboard(user);
         },
         error: (err) => {
-          this.errorMessage = 'Email hoặc mật khẩu không đúng. Vui lòng thử lại.';
+          this.errorMessage = err.error?.message || 'Email hoặc mật khẩu không đúng.';
           console.error('Login Error:', err);
         }
       });
     }
   }
 
-  private redirectToDashboard(user: User | null): void { 
+  private redirectToDashboard(user: LoggedInUser | null): void { 
     if (user && user.roles.includes('Admin')) {
         this.router.navigate(['/admin-dashboard']);
     } else {

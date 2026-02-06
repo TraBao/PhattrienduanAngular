@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Models/Attendance.cs
+
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyNhanVien.Api.Models
@@ -23,5 +25,9 @@ namespace QuanLyNhanVien.Api.Models
         public string? IpAddress { get; set; }
 
         public string? Note { get; set; }
+        public double? CheckInLatitude { get; set; }
+        public double? CheckInLongitude { get; set; }
+
+        public string? CheckInSelfieUrl { get; set; }
     }
 }

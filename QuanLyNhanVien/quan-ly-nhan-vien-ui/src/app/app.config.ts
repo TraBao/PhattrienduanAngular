@@ -14,12 +14,15 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideCharts(withDefaultRegisterables()),
-    provideHttpClient(withInterceptorsFromDi()),
+    
+    provideHttpClient(withInterceptorsFromDi()), 
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     },
+
     provideAnimations(),
     importProvidersFrom(MatSnackBarModule),
   ]

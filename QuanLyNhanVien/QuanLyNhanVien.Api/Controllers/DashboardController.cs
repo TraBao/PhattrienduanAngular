@@ -66,5 +66,28 @@ namespace QuanLyNhanVien.Api.Controllers
             }
             return Ok(result);
         }
+        [HttpGet("daily-check-ins")]
+        public async Task<IActionResult> GetDailyCheckIns()
+        {
+            var today = DateTime.Today;
+
+            var checkIns = await (from attendance in _context.Attendances
+                                  join employee in _context.Employees
+                                  on attendance.UserId.ToLower() equals employee.Email.ToLower()
+                                  where attendance.Date == today
+                                  orderby attendance.CheckInTime
+                                  select new
+                                  {
+                                      Employee = new
+                                      {
+                                          FullName = (employee.FirstName ?? "") + " " + (employee.LastName ?? ""),
+                                          AvatarUrl = employee.AvatarUrl
+                                      },
+                                      Time = attendance.CheckInTime,
+                                      Status = attendance.Status
+                                  }).ToListAsync();
+
+            return Ok(checkIns);
+        }
     }
 }

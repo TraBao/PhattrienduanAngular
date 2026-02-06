@@ -1,0 +1,70 @@
+<div class="meeting-page" style="padding: 20px; background-color: #f8f9fa; min-height: 85vh;">
+    
+    <div class="lobby-container" *ngIf="!isInMeeting">
+        <div class="lobby-header" style="background: white; padding: 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 30px;">
+            
+            <div class="header-text">
+                <h2 style="margin: 0; font-size: 24px; color: #1e293b; font-weight: 700;">Phòng Họp Trực Tuyến 📹</h2>
+                <p style="margin: 5px 0 0; color: #64748b;">Tạo cuộc họp nhanh chóng, không cần cài đặt phần mềm.</p>
+            </div>
+            <div class="create-box-simple" style="display: flex; gap: 10px; align-items: center; position: relative; z-index: 10000;">
+                <input type="text" 
+                       [value]="newMeetingTitle"
+                       (input)="newMeetingTitle = $any($event.target).value"
+                       (keyup.enter)="createMeeting()"
+                       placeholder="Nhập tên cuộc họp..." 
+                       style="height: 48px; width: 300px; padding: 0 16px; border: 1px solid #3b82f6; border-radius: 8px; font-size: 16px; outline: none; background: white; color: #333; position: relative; z-index: 10001;">
+                <button mat-raised-button color="primary" (click)="createMeeting()" 
+        style="height: 48px; z-index: 10001; position: relative; cursor: pointer;">
+    <mat-icon>add</mat-icon> Tạo phòng
+</button>
+            </div>
+
+        </div>
+        <div class="meeting-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; position: relative; z-index: 1;">
+            <mat-card *ngFor="let m of meetings" class="meeting-card" style="border-radius: 16px; cursor: pointer;">
+                <mat-card-header>
+                    <div mat-card-avatar style="background: #e0e7ff; color: #4338ca; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <mat-icon>groups</mat-icon>
+                    </div>
+                    <mat-card-title>{{ m.title }}</mat-card-title>
+                    <mat-card-subtitle>Host: {{ m.createdBy }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p style="color: #64748b; font-size: 13px; margin-top: 8px;">
+                        <mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;">schedule</mat-icon> 
+                        {{ m.createdAt | date:'HH:mm dd/MM' }}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-button color="warn" (click)="endMeeting(m.id, $event)">Kết thúc</button>
+                    <button mat-raised-button color="accent" (click)="joinMeeting(m)">Tham gia</button>
+                </mat-card-actions>
+            </mat-card>
+
+            <div *ngIf="meetings.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 50px; margin-top: 20px;">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/business-meeting-illustration-download-in-svg-png-gif-file-formats--conference-discussion-group-team-pack-people-illustrations-4389657.png" alt="No meeting" style="width: 200px; opacity: 0.8;">
+                <h3 style="margin-top: 20px;">Chưa có cuộc họp nào</h3>
+                <p style="color: #888;">Hãy tạo phòng họp mới để bắt đầu thảo luận.</p>
+            </div>
+        </div>
+    </div>
+    <div class="video-room-container" *ngIf="isInMeeting" style="display: flex; flex-direction: column; height: 85vh; background: #000; border-radius: 16px; overflow: hidden;">
+        <div class="video-header" style="height: 60px; background: #1f1f1f; color: white; display: flex; align-items: center; padding: 0 16px;">
+            <button mat-icon-button (click)="leaveMeeting()" style="color: white;">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <h3 style="margin-left: 10px;">{{ currentMeetingTitle }}</h3>
+            <span style="flex: 1;"></span>
+            <button mat-flat-button color="warn" (click)="leaveMeeting()">
+                <mat-icon>call_end</mat-icon> Rời cuộc họp
+            </button>
+        </div>
+        <div class="iframe-wrapper" style="flex: 1; background: black;">
+            <iframe [src]="currentMeetingUrl" 
+                    allow="camera; microphone; fullscreen; display-capture; autoplay" 
+                    style="width: 100%; height: 100%; border: 0;">
+            </iframe>
+        </div>
+    </div>
+</div>

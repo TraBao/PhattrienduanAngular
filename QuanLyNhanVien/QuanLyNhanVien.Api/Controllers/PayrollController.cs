@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using QuanLyNhanVien.Api.Data;
-using QuanLyNhanVien.Api.Models;
-using System.Security.Claims;
-using ClosedXML.Excel;
-using System.IO;
-using Microsoft.AspNetCore.SignalR;
-using QuanLyNhanVien.Api.Hubs;
 using QuanLyNhanVien.Api.Dtos;
 using QuanLyNhanVien.Api.Filters;
+using QuanLyNhanVien.Api.Hubs;
+using QuanLyNhanVien.Api.Models;
+using System.IO;
+using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyNhanVien.Api.Controllers
 {
@@ -19,7 +21,6 @@ namespace QuanLyNhanVien.Api.Controllers
     public class PayrollController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IHubContext<ChatHub> _hubContext;
         private const decimal STANDARD_WORK_DAYS_IN_MONTH = 26.0m;
         private const decimal STANDARD_WORK_HOURS_PER_DAY = 8.0m;
         private const decimal OVERTIME_RATE = 1.5m;
@@ -28,11 +29,21 @@ namespace QuanLyNhanVien.Api.Controllers
         private const decimal BHXH_RATE = 0.08m;
         private const decimal BHYT_RATE = 0.015m;
         private const decimal BHTN_RATE = 0.01m;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PayrollController(AppDbContext context, IHubContext<ChatHub> hubContext)
+        private readonly IHubContext<ChatHub> _chatHubContext;
+
+        public PayrollController(
+            AppDbContext context,
+            IHubContext<NotificationHub> notificationHubContext,
+            UserManager<ApplicationUser> userManager,
+            IHubContext<ChatHub> chatHubContext)
         {
             _context = context;
-            _hubContext = hubContext;
+            _notificationHubContext = notificationHubContext;
+            _userManager = userManager;
+            _chatHubContext = chatHubContext;
         }
 
         private string GetCurrentUserEmail()
@@ -224,24 +235,29 @@ namespace QuanLyNhanVien.Api.Controllers
             if (payroll.Status == "Paid") return BadRequest(new { Message = "Bảng lương này đã được thanh toán rồi." });
 
             payroll.Status = "Paid";
-            payroll.PaymentDate = DateTime.Now;
-            await _context.SaveChangesAsync();
+            payroll.PaymentDate = DateTime.UtcNow;
+
             var employee = await _context.Employees.FindAsync(payroll.EmployeeId);
             if (employee != null)
             {
-                var noti = new Notification
+                var user = await _userManager.FindByEmailAsync(employee.Email);
+                if (user != null)
                 {
-                    RecipientIdentifier = employee.Email!,
-                    Type = "Payroll",
-                    Title = $"Đã thanh toán lương tháng {payroll.Month}/{payroll.Year}",
-                    Message = $"Thực lĩnh: {payroll.NetSalary:N0} VNĐ.",
-                    CreatedAt = DateTime.Now,
-                    IsRead = false
-                };
-                _context.Notifications.Add(noti);
-                await _context.SaveChangesAsync();
-                await _hubContext.Clients.Group($"User_{employee.Email}").SendAsync("ReceiveNotification", noti);
+                    var noti = new Notification
+                    {
+                        UserId = user.Id,
+                        Type = "Payroll",
+                        Message = $"Đã thanh toán lương tháng {payroll.Month}/{payroll.Year}. Thực lĩnh: {payroll.NetSalary:N0} VNĐ.", // Dùng Message thay vì Title
+                        Link = "/my-payslips",
+                        CreatedAt = DateTime.UtcNow,
+                    };
+                    _context.Notifications.Add(noti);
+
+                    await _notificationHubContext.Clients.User(user.Email).SendAsync("ReceiveNotification", noti);
+                }
             }
+
+            await _context.SaveChangesAsync();
             return Ok(new { Message = "Đã xác nhận thanh toán." });
         }
 

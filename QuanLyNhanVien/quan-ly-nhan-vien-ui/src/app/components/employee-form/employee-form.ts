@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { EmployeeService, NewEmployee } from '../../services/employee';
-import { Employee } from '../../models/employee.model';
+import { EmployeeService } from '../../services/employee';
 import { MaterialModule } from '../../material-module';
 import { Department } from '../../models/department.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -29,7 +28,12 @@ export class EmployeeFormComponent implements OnInit {
   employeeForm: FormGroup;
   employeeId: number | null = null;
   departments: Department[] = [];
-  canEdit: boolean = false;
+  
+  // === SỬA: Luôn cho phép edit ở frontend, backend sẽ chặn nếu không được phép ===
+  canEdit: boolean = true; 
+  
+  previewUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -55,8 +59,6 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.canEdit = this.userService.isAdmin() || this.userService.hasPermission('MANAGE_EMPLOYEES');
-    
     this.employeeService.getDepartments().subscribe(data => {
       this.departments = data;
     });
@@ -64,26 +66,16 @@ export class EmployeeFormComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idString = params.get('id');
       this.employeeForm.reset();
+      this.previewUrl = null;
       
       if (idString && +idString > 0) {
         this.employeeId = +idString;
         this.loadEmployeeData(this.employeeId);
       } else {
         this.employeeId = null;
-        this.employeeForm.patchValue({
-          firstName: '', lastName: '', email: '',
-          phoneNumber: '', 
-          
-          address: '',
-          dateOfBirth: '', salary: '', departmentId: ''
-        });
         this.employeeForm.markAsUntouched();
-        this.employeeForm.markAsPristine();
       }
     });
-    if (!this.canEdit) {
-      this.employeeForm.disable();
-    }
   }
 
   loadEmployeeData(id: number): void {
@@ -94,105 +86,87 @@ export class EmployeeFormComponent implements OnInit {
           ...employee,
           dateOfBirth: dateOfBirthValue
         });
-        if (!this.canEdit) {
-          this.employeeForm.disable();
+        if(employee.avatarUrl) {
+            this.previewUrl = employee.avatarUrl.startsWith('http') ? employee.avatarUrl : `http://localhost:8080${employee.avatarUrl}`;
         }
       },
       error: (err) => {
         console.error('Lỗi tải dữ liệu nhân viên:', err);
-        this.router.navigate(['/employees']);
+        if (err.status === 403 || err.status === 404) {
+             this.snackBar.open('Bạn không có quyền truy cập hồ sơ này.', 'Đóng', { duration: 3000 });
+             this.router.navigate(['/employees']);
+        }
       }
     });
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   handleServerError = (err: any): void => {
-    if (err.status === 403) {
-      this.snackBar.open('Bạn không có quyền thực hiện thao tác này.', 'Đóng', {
-        duration: 5000, panelClass: ['error-snackbar']
-      });
-      this.router.navigate(['/employees']);
-      return;
-    }
-    if (err.status === 400 && err.error && err.error.errors) {
-      const serverErrors = err.error.errors;
-      for (const key in serverErrors) {
-        if (serverErrors.hasOwnProperty(key)) {
-          const formControlName = key.charAt(0).toLowerCase() + key.slice(1);
-          const control = this.employeeForm.get(formControlName);
-          if (control) {
-            control.setErrors({ 'server': serverErrors[key][0] });
-          }
-        }
-      }
-      this.snackBar.open('Vui lòng kiểm tra lại thông tin trên form.', 'Đóng', {
-        duration: 5000, panelClass: ['error-snackbar']
-      });
-    } else {
-      this.snackBar.open('Có lỗi xảy ra, vui lòng thử lại.', 'Đóng', {
-        duration: 5000, panelClass: ['error-snackbar']
-      });
-      console.error('API Error:', err);
-    }
+      this.snackBar.open('Có lỗi xảy ra: ' + (err.error?.message || err.statusText), 'Đóng', { duration: 3000 });
   };
 
   onSubmit(): void {
-    if (!this.canEdit) {
-      this.snackBar.open('Bạn không có quyền sửa/tạo thông tin nhân viên.', 'Đóng', { duration: 3000 });
-      return;
+    if (!this.employeeForm.valid) {
+        this.employeeForm.markAllAsTouched();
+        this.snackBar.open('Vui lòng kiểm tra lại form.', 'Đóng', { duration: 3000 });
+        return;
     }
 
-    if (this.employeeForm.valid) {
-      const formData = this.employeeForm.value;
-      let formattedDateOfBirth = '';
-      if (formData.dateOfBirth) {
+    const formData = this.employeeForm.value;
+    let formattedDateOfBirth = '';
+    if (formData.dateOfBirth) {
         const date = new Date(formData.dateOfBirth);
-        formattedDateOfBirth = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-                                .toISOString()
-                                .split('T')[0];
-      }
-      
-      const employeeData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        
-        address: formData.address,
-        dateOfBirth: formattedDateOfBirth,
-        salary: Number(formData.salary),
-        departmentId: Number(formData.departmentId),
-        bankName: formData.bankName,
-        bankAccountNumber: formData.bankAccountNumber,
-        bankAccountName: formData.bankAccountName
-      };
-
-      if (this.employeeId) {
+        formattedDateOfBirth = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+    }
+    const employeeData = { ...formData, dateOfBirth: formattedDateOfBirth, salary: Number(formData.salary), departmentId: Number(formData.departmentId) };
+    
+    if (this.employeeId) {
         const updatePayload = { ...employeeData, id: this.employeeId };
         this.employeeService.updateEmployee(updatePayload).subscribe({
-          next: () => {
-            this.snackBar.open('Cập nhật thành công!', 'OK', {
-              duration: 3000, panelClass: ['success-snackbar']
-            });
-            this.router.navigate(['/employees']);
-          },
-          error: this.handleServerError
+            next: () => {
+                this.handleAvatarUpload(this.employeeId!, 'Cập nhật thành công!');
+            },
+            error: this.handleServerError
         });
-      } else {
+    } 
+    else {
         this.employeeService.createEmployee(employeeData).subscribe({
-          next: () => {
-            this.snackBar.open('Tạo mới thành công!', 'OK', {
-              duration: 3000, panelClass: ['success-snackbar']
-            });
-            this.router.navigate(['/employees']);
-          },
-          error: this.handleServerError
+            next: (newlyCreatedEmployee) => {
+                if (newlyCreatedEmployee && newlyCreatedEmployee.id) {
+                    this.handleAvatarUpload(newlyCreatedEmployee.id, 'Tạo mới thành công!');
+                }
+            },
+            error: this.handleServerError
         });
-      }
-    } else {
-        this.snackBar.open('Vui lòng kiểm tra lại tất cả các trường bị lỗi trong form.', 'Đóng', {
-            duration: 5000, panelClass: ['error-snackbar']
-        });
-        this.employeeForm.markAllAsTouched();
     }
+  }
+
+  private handleAvatarUpload(empId: number, successMsg: string) {
+      if (this.selectedFile) {
+          this.employeeService.uploadAvatar(empId, this.selectedFile).subscribe({
+              next: () => {
+                  this.snackBar.open(successMsg, 'OK', { duration: 3000 });
+                  this.router.navigate(['/employees']);
+              },
+              error: (err) => {
+                  this.snackBar.open(successMsg + ' (Nhưng lỗi upload ảnh)', 'OK', { duration: 3000 });
+                  this.router.navigate(['/employees']);
+              }
+          });
+      } else {
+          this.snackBar.open(successMsg, 'OK', { duration: 3000 });
+          this.router.navigate(['/employees']);
+      }
   }
 }

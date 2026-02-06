@@ -68,11 +68,14 @@ namespace QuanLyNhanVien.Api.Controllers
                 await _userManager.ResetAccessFailedCountAsync(user);
 
                 var roles = await _userManager.GetRolesAsync(user);
+
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Email!),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
+
                 foreach (var userRole in roles) { authClaims.Add(new Claim(ClaimTypes.Role, userRole)); }
                 if (!string.IsNullOrEmpty(user.Permissions)) { authClaims.Add(new Claim("permissions", user.Permissions)); }
 
@@ -84,6 +87,7 @@ namespace QuanLyNhanVien.Api.Controllers
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
+
                 try
                 {
                     _context.SystemActivities.Add(new SystemActivity
@@ -114,25 +118,55 @@ namespace QuanLyNhanVien.Api.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
+            var employeeEmails = await _context.Employees
+                                               .Select(e => e.Email.ToLower())
+                                               .ToHashSetAsync();
+
             var userList = new List<object>();
 
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                bool isLocked = await _userManager.IsLockedOutAsync(user);
 
                 userList.Add(new
                 {
                     user.Id,
                     user.Email,
                     Roles = roles,
-                    Permissions = user.Permissions,
-                    LockoutEnd = user.LockoutEnd,
-                    IsLocked = isLocked
+                    user.Permissions,
+                    user.LockoutEnd,
+                    IsLinkedToEmployee = employeeEmails.Contains(user.Email.ToLower())
                 });
             }
 
             return Ok(userList);
+        }
+
+        [HttpDelete("users/{userId}")]
+        [Authorize(Roles = "Admin")]
+        [LogActivity("Xóa tài khoản người dùng")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { Message = "Không tìm thấy tài khoản." });
+            }
+
+            var isLinked = await _context.Employees.AnyAsync(e => e.Email.ToLower() == user.Email.ToLower());
+            if (isLinked)
+            {
+                return BadRequest(new { Message = "Không thể xóa tài khoản đã được liên kết với một nhân viên." });
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Xóa tài khoản thành công." });
+            }
+
+            return BadRequest(new { Message = "Xóa tài khoản thất bại.", Errors = result.Errors });
         }
 
         [HttpPost("assign-role")]

@@ -5,7 +5,8 @@ import { MaterialModule } from '../../material-module';
 import { DepartmentService } from '../../services/department.service';
 import { Department } from '../../models/department.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { EmployeeService } from '../../services/employee';
+import { Employee } from '../../models/employee.model';
 @Component({
   selector: 'app-department-manager',
   standalone: true,
@@ -15,18 +16,24 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DepartmentManagerComponent implements OnInit {
   departments: Department[] = [];
-  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
-  deptForm: any = { name: '', description: '' };
+  displayedColumns: string[] = ['id', 'name', 'manager', 'description', 'actions'];
+  
+  deptForm: any = { name: '', description: '', managerId: null };
+  
   isEditMode = false;
   editingId: number | null = null;
 
+  employees: Employee[] = [];
+
   constructor(
     private deptService: DepartmentService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit(): void {
     this.loadData();
+    this.loadEmployees();
   }
 
   loadData() {
@@ -34,6 +41,13 @@ export class DepartmentManagerComponent implements OnInit {
         next: (data) => this.departments = data,
         error: (err) => console.error(err)
     });
+  }
+
+  loadEmployees() {
+      this.employeeService.getAllEmployeesForSelection().subscribe({
+          next: (data) => this.employees = data,
+          error: (err) => console.error('Lỗi tải nhân viên:', err)
+      });
   }
 
   saveDepartment() {
@@ -45,7 +59,7 @@ export class DepartmentManagerComponent implements OnInit {
                 this.resetForm();
                 this.loadData();
             },
-            error: () => this.snackBar.open('Lỗi khi cập nhật', 'Đóng', { duration: 3000 })
+            error: (err) => this.snackBar.open('Lỗi: ' + (err.error?.message || 'Cập nhật thất bại'), 'Đóng', { duration: 3000 })
         });
     } else {
         this.deptService.create(this.deptForm).subscribe({
@@ -54,7 +68,7 @@ export class DepartmentManagerComponent implements OnInit {
                 this.resetForm();
                 this.loadData();
             },
-            error: () => this.snackBar.open('Lỗi khi thêm mới', 'Đóng', { duration: 3000 })
+            error: (err) => this.snackBar.open('Lỗi: ' + (err.error?.message || 'Thêm mới thất bại'), 'Đóng', { duration: 3000 })
         });
     }
   }
@@ -62,7 +76,11 @@ export class DepartmentManagerComponent implements OnInit {
   editDept(dept: Department) {
       this.isEditMode = true;
       this.editingId = dept.id;
-      this.deptForm = { name: dept.name, description: dept.description };
+      this.deptForm = { 
+          name: dept.name, 
+          description: dept.description,
+          managerId: dept.managerId
+      };
   }
 
   deleteDept(id: number) {
@@ -83,6 +101,6 @@ export class DepartmentManagerComponent implements OnInit {
   resetForm() {
       this.isEditMode = false;
       this.editingId = null;
-      this.deptForm = { name: '', description: '' };
+      this.deptForm = { name: '', description: '', managerId: null };
   }
 }

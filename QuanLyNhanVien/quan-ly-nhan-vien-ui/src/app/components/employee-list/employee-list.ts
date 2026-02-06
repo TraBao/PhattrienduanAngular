@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EmployeeService } from '../../services/employee';
@@ -7,13 +7,13 @@ import { MaterialModule } from '../../material-module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import { UserService } from '../../services/user.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, debounceTime } from 'rxjs';
 import { AuthApiService } from '../../services/auth-api.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-employee-list',
@@ -22,85 +22,75 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       CommonModule, 
       MaterialModule, 
       RouterModule, 
-      MatSortModule,
-      MatTooltipModule 
+      MatTooltipModule,
+      ReactiveFormsModule
   ],
   templateUrl: './employee-list.html',
   styleUrls: ['./employee-list.scss']
 })
-export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EmployeeListComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   canManage: boolean = false; 
-  dataSource = new MatTableDataSource<Employee>();
-  displayedColumns: string[] = ['id', 'avatar', 'firstName', 'lastName', 'email', 'salary', 'actions'];
-  totalItems = 0;
-  pageSize = 10;
-  currentPage = 1;
-  searchKey = '';
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  employees$: Observable<Employee[]>;
+  totalItems$: Observable<number>;
+  isLoading$: Observable<boolean>;
   
-  private userSub: Subscription = new Subscription();
+  pageSize = 12;
+  currentPage = 1;
+  searchControl = new FormControl('');
+  private searchSubscription: Subscription | undefined;
+
   private baseUrl = 'http://localhost:8080';
 
   constructor(
-    private employeeService: EmployeeService,
+    public employeeService: EmployeeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     public userService: UserService,
     private authApiService: AuthApiService
-  ) {}
+  ) {
+    this.employees$ = this.employeeService.employees$;
+    this.totalItems$ = this.employeeService.totalItems$;
+    this.isLoading$ = this.employeeService.isLoading$;
+  }
 
   ngOnInit(): void {
-        this.isAdmin = this.userService.isAdmin();
-        this.canManage = this.isAdmin || this.userService.hasPermission('MANAGE_EMPLOYEES');
+    this.isAdmin = this.userService.isAdmin();
+    this.canManage = this.isAdmin || this.userService.hasPermission('MANAGE_EMPLOYEES');
+    this.loadEmployees();
+
+    this.searchSubscription = this.searchControl.valueChanges.pipe(
+        debounceTime(400)
+    ).subscribe(value => {
+        this.currentPage = 1;
         this.loadEmployees();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.dataSource.sortingDataAccessor = (item: Employee, property: string) => {
-      switch (property) {
-        case 'id': return item.id;
-        case 'firstName': return item.firstName;
-        case 'lastName': return item.lastName;
-        case 'email': return item.email;
-        case 'salary': return item.salary;
-        default: return (item as any)[property];
-      }
-    };
-  }
-
-  loadEmployees(): void {
-    this.employeeService.getEmployees(this.searchKey, this.currentPage, this.pageSize).subscribe({
-      next: (res: any) => {
-        const mappedData = res.data.map((item: any) => {
-            if (item.employee) {
-                return {
-                    ...item.employee,
-                    isLocked: item.isLocked,
-                    userId: item.userId
-                } as Employee;
-            } else {
-                return item as Employee;
-            }
-        });
-
-        this.dataSource.data = mappedData;
-        this.totalItems = res.totalItems;
-        if (this.paginator) {
-          this.paginator.length = this.totalItems;
-        }
-      },
-      error: (err) => {
-        console.error('Lỗi tải data:', err);
-        this.snackBar.open('Không thể tải danh sách nhân viên', 'Đóng', { duration: 3000 });
-      }
     });
   }
 
+  loadEmployees(): void {
+    const searchTerm = this.searchControl.value || '';
+    this.employeeService.getEmployees(searchTerm, this.currentPage, this.pageSize);
+  }
+
+  onWorkModeChange(event: MatSlideToggleChange, employee: Employee): void {
+    const newMode = event.checked ? 'Remote' : 'Onsite';
+    const modeText = newMode === 'Remote' ? 'Làm việc từ xa' : 'Làm tại văn phòng';
+
+    this.employeeService.updateWorkMode(employee.id, newMode).subscribe({
+      next: (res) => {
+        this.snackBar.open(`Đã cập nhật chế độ cho ${employee.lastName} thành "${modeText}"`, 'Đóng', { 
+          duration: 3000, 
+          panelClass: 'success-snackbar' 
+        });
+        employee.workMode = newMode; 
+      },
+      error: (err) => {
+        this.snackBar.open('Cập nhật thất bại: ' + (err.error?.message || err.message), 'Đóng', { duration: 4000 });
+        event.source.checked = !event.checked; 
+      }
+    });
+  }
   onToggleLock(element: Employee): void {
       if (!element.userId) {
           this.snackBar.open('Nhân viên này chưa liên kết tài khoản user hệ thống.', 'Đóng', { duration: 3000 });
@@ -121,7 +111,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
               this.authApiService.toggleLock(element.userId!).subscribe({
                   next: (res) => {
                       this.snackBar.open(res.message, 'Đóng', { duration: 3000 });
-                      element.isLocked = res.isLocked; 
+                      this.loadEmployees(); 
                   },
                   error: (err) => {
                       const msg = err.error?.message || 'Có lỗi xảy ra khi cập nhật trạng thái.';
@@ -137,12 +127,11 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageSize = event.pageSize;
     this.loadEmployees();
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.searchKey = filterValue.trim().toLowerCase();
-    this.currentPage = 1;
-    this.loadEmployees();
+
+  clearSearch() {
+      this.searchControl.setValue('');
   }
+
   getFullUrl(url: string | undefined): string {
     if (!url) return '';
     return url.startsWith('http') ? url : `${this.baseUrl}${url}`;
@@ -162,7 +151,9 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.employeeService.deleteEmployee(id).subscribe({
           next: () => {
             this.snackBar.open('Xóa thành công!', 'Đóng', { duration: 3000 });
-            this.loadEmployees();
+          },
+          error: (err) => {
+             this.snackBar.open('Xóa thất bại: ' + err.message, 'Đóng', { duration: 3000 });
           }
         });
       }
@@ -170,6 +161,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
+    this.searchSubscription?.unsubscribe();
   }
 }

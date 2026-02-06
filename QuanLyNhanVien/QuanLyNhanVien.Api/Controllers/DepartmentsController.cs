@@ -16,16 +16,22 @@ namespace QuanLyNhanVien.Api.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            return await _context.Departments.ToListAsync();
+            return await _context.Departments
+                .Include(d => d.Manager)
+                .ToListAsync();
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _context.Departments
+                .Include(d => d.Manager)
+                .FirstOrDefaultAsync(d => d.Id == id);
 
             if (department == null)
             {
@@ -34,15 +40,23 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return department;
         }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
+            if (department.ManagerId.HasValue)
+            {
+                var employee = await _context.Employees.FindAsync(department.ManagerId);
+                if (employee == null) return BadRequest(new { Message = "Nhân viên được chọn làm trưởng phòng không tồn tại." });
+            }
+
             _context.Departments.Add(department);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
         }
+
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutDepartment(int id, Department department)
@@ -50,6 +64,12 @@ namespace QuanLyNhanVien.Api.Controllers
             if (id != department.Id)
             {
                 return BadRequest();
+            }
+
+            if (department.ManagerId.HasValue)
+            {
+                var employee = await _context.Employees.FindAsync(department.ManagerId);
+                if (employee == null) return BadRequest(new { Message = "Nhân viên được chọn làm trưởng phòng không tồn tại." });
             }
 
             _context.Entry(department).State = EntityState.Modified;
@@ -72,6 +92,7 @@ namespace QuanLyNhanVien.Api.Controllers
 
             return NoContent();
         }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteDepartment(int id)
@@ -90,6 +111,7 @@ namespace QuanLyNhanVien.Api.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
         private bool DepartmentExists(int id)
         {
             return _context.Departments.Any(e => e.Id == id);

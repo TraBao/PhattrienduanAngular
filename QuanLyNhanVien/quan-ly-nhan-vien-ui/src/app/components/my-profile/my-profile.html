@@ -13,45 +13,49 @@
                     </ng-template>
                     
                     <button mat-icon-button class="upload-btn" (click)="fileInput.click()" matTooltip="Đổi ảnh đại diện">
-                        <mat-icon>camera_alt</mat-icon>
+                        <mat-icon>photo_camera</mat-icon>
                     </button>
                     <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*">
                 </div>
             </div>
+
             <div class="text-center user-identity">
                 <h2 class="user-name">{{ employee.lastName }} {{ employee.firstName }}</h2>
                 <span class="user-role">{{ employee.jobTitle || 'Nhân viên chính thức' }}</span>
-                <p class="user-email"><mat-icon>email</mat-icon> {{ employee.email }}</p>
+                <p class="user-email"><mat-icon>alternate_email</mat-icon> {{ employee.email }}</p>
             </div>
 
             <mat-divider></mat-divider>
+
             <div class="info-grid">
                 <div class="info-box">
-                    <span class="label">Mã nhân viên</span>
+                    <span class="label"><mat-icon>badge</mat-icon>Mã nhân viên</span>
                     <strong class="value">#{{ employee.id }}</strong>
                 </div>
                 <div class="info-box">
-                    <span class="label">Phòng ban</span>
-                    <strong class="value">Phòng {{ employee.departmentId }}</strong>
+                    <span class="label"><mat-icon>corporate_fare</mat-icon>Phòng ban</span>
+                    <strong class="value">{{ employee.department?.name || 'Chưa rõ' }}</strong>
                 </div>
                 <div class="info-box">
-                    <span class="label">Ngày sinh</span>
+                    <span class="label"><mat-icon>cake</mat-icon>Ngày sinh</span>
                     <strong class="value">{{ employee.dateOfBirth | date:'dd/MM/yyyy' }}</strong>
                 </div>
                 <div class="info-box">
-                    <span class="label">Số điện thoại</span>
+                    <span class="label"><mat-icon>phone</mat-icon>Số điện thoại</span>
                     <strong class="value">{{ employee.phoneNumber || 'Chưa cập nhật' }}</strong>
                 </div>
                 <div class="info-box full-width">
-                    <span class="label">Địa chỉ</span>
+                    <span class="label"><mat-icon>home</mat-icon>Địa chỉ</span>
                     <strong class="value">{{ employee.address || 'Chưa cập nhật' }}</strong>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="docs-section">
         <div class="section-header">
-            <mat-icon>folder_shared</mat-icon> Hồ sơ & Bằng cấp
+            <h3><mat-icon>folder_shared</mat-icon> Hồ sơ & Bằng cấp</h3>
+            <span class="header-subtitle">Quản lý tài liệu, hợp đồng và các giấy tờ liên quan</span>
         </div>
         
         <div class="docs-container">
@@ -59,6 +63,7 @@
         </div>
     </div>
 </div>
+
 <ng-template #noData>
     <div class="empty-state-wrapper">
         <mat-card class="empty-card">
